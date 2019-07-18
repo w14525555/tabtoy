@@ -19,6 +19,8 @@ const (
 	FieldType_Enum   FieldType = 8
 	FieldType_Struct FieldType = 9
 	FieldType_Table  FieldType = 10 // 表格, 仅限二进制使用
+	FieldType_Int    FieldType = 11 // = int64
+	FieldType_Text   FieldType = 12 // 可以有中文逗号
 )
 
 // 一列的描述
@@ -128,6 +130,7 @@ func (self *FieldDescriptor) DefaultValue() string {
 		FieldType_UInt32,
 		FieldType_Int64,
 		FieldType_UInt64,
+		FieldType_Int,
 		FieldType_Float:
 		return "0"
 	case FieldType_Bool:
@@ -172,6 +175,8 @@ var strByFieldDescriptor = map[FieldType]string{
 	FieldType_Bool:   "bool",
 	FieldType_Enum:   "enum",
 	FieldType_Struct: "struct",
+	FieldType_Int:    "int",
+	FieldType_Text:   "text",
 }
 
 var fieldTypeByString = make(map[string]FieldType)

@@ -10,6 +10,7 @@ const (
 	ConvertValue_EnumTypeNil StringID = iota
 	ConvertValue_StructTypeNil
 	ConvertValue_EnumValueNotFound
+	ConvertValue_CannotHaveCNComma
 	ConvertValue_UnknownFieldType
 	StructParser_LexerError
 	StructParser_ExpectField

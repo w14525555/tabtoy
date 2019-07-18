@@ -2,6 +2,7 @@ package filter
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/davyxu/tabtoy/v2/i18n"
 	"github.com/davyxu/tabtoy/v2/model"
@@ -25,7 +26,8 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 
 		ret = value
 		node.AddValue(ret)
-	case model.FieldType_Int64:
+	// 添加新的支持类型 int默认为int64
+	case model.FieldType_Int64, model.FieldType_Int:
 		_, err := strconv.ParseInt(value, 10, 64)
 
 		if err != nil {
@@ -90,8 +92,16 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 		}
 
 		node.AddValue(ret)
-
 	case model.FieldType_String:
+		// 这里要检查中文字符
+		if strings.Contains(value, "，") {
+			log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_CannotHaveCNComma), value)
+			return "", false
+		} else {
+			ret = value
+			node.AddValue(ret)
+		}
+	case model.FieldType_Text:
 		ret = value
 		node.AddValue(ret)
 	case model.FieldType_Enum:
@@ -118,7 +128,6 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 		}
 
 		if value == "" {
-
 			if !fillStructDefaultValue(fd.Complex, fileD, node) {
 				return "", false
 			}
