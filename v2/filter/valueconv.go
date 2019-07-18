@@ -1,6 +1,7 @@
 package filter
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -104,6 +105,39 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 	case model.FieldType_Text:
 		ret = value
 		node.AddValue(ret)
+	case model.FieldType_Vector3:
+		value = strings.Trim(value, "{")
+		value = strings.Trim(value, "}")
+		value = strings.Replace(value, " ", "", -1)
+		values := strings.Split(value, ",")
+		if len(values) == 3 {
+			ret = "{" + "x=" + values[0] + "," + "y=" + values[1] + "," + "z=" + values[2] + "}"
+			ret = strings.Trim(ret, " ")
+			node.AddValue(ret)
+		} else if value == "" {
+			ret = "{x=0;y=0;z=0}"
+			node.AddValue(ret)
+		} else {
+			log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_VectorError), value)
+			return "", false
+		}
+	case model.FieldType_Vector2:
+		value = strings.Trim(value, "{")
+		value = strings.Trim(value, "}")
+		value = strings.Replace(value, " ", "", -1)
+		values := strings.Split(value, ",")
+		if len(values) == 2 {
+			ret = "{" + "x=" + values[0] + "," + "y=" + values[1] + "}"
+			ret = strings.Trim(ret, " ")
+			fmt.Println(ret)
+			node.AddValue(ret)
+		} else if value == "" {
+			ret = "{x=0;y=0}"
+			node.AddValue(ret)
+		} else {
+			log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_VectorError), value)
+			return "", false
+		}
 	case model.FieldType_Enum:
 		if fd.Complex == nil {
 			log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_EnumTypeNil), fd.Name)

@@ -11,6 +11,7 @@ const (
 	ConvertValue_StructTypeNil
 	ConvertValue_EnumValueNotFound
 	ConvertValue_CannotHaveCNComma
+	ConvertValue_VectorError
 	ConvertValue_UnknownFieldType
 	StructParser_LexerError
 	StructParser_ExpectField

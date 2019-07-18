@@ -8,6 +8,7 @@ func init() {
 		ConvertValue_EnumValueNotFound:                        "[TT103] 值转换: 枚举值未找到",
 		ConvertValue_UnknownFieldType:                         "[TT104] 值转换: 未知的字段类型",
 		ConvertValue_CannotHaveCNComma:                        "[TT105] 值转换: string类不可包含中文逗号",
+		ConvertValue_VectorError:                              "[TT106] 值转换: vector类格式错误",
 		StructParser_LexerError:                               "[TT201] 结构体解析: 词法错误",
 		StructParser_ExpectField:                              "[TT202] 结构体解析: 期望字段",
 		StructParser_UnexpectedSpliter:                        "[TT203] 结构体解析: 非预期的键值分割符",

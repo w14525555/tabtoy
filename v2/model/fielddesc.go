@@ -8,19 +8,21 @@ import (
 type FieldType int
 
 const (
-	FieldType_None   FieldType = 0
-	FieldType_Int32  FieldType = 1
-	FieldType_Int64  FieldType = 2
-	FieldType_UInt32 FieldType = 3
-	FieldType_UInt64 FieldType = 4
-	FieldType_Float  FieldType = 5
-	FieldType_String FieldType = 6
-	FieldType_Bool   FieldType = 7
-	FieldType_Enum   FieldType = 8
-	FieldType_Struct FieldType = 9
-	FieldType_Table  FieldType = 10 // 表格, 仅限二进制使用
-	FieldType_Int    FieldType = 11 // = int64
-	FieldType_Text   FieldType = 12 // 可以有中文逗号
+	FieldType_None    FieldType = 0
+	FieldType_Int32   FieldType = 1
+	FieldType_Int64   FieldType = 2
+	FieldType_UInt32  FieldType = 3
+	FieldType_UInt64  FieldType = 4
+	FieldType_Float   FieldType = 5
+	FieldType_String  FieldType = 6
+	FieldType_Bool    FieldType = 7
+	FieldType_Enum    FieldType = 8
+	FieldType_Struct  FieldType = 9
+	FieldType_Table   FieldType = 10 // 表格, 仅限二进制使用
+	FieldType_Int     FieldType = 11 // = int64
+	FieldType_Text    FieldType = 12 // 可以有中文逗号
+	FieldType_Vector3 FieldType = 13
+	FieldType_Vector2 FieldType = 14
 )
 
 // 一列的描述
@@ -170,13 +172,15 @@ var strByFieldDescriptor = map[FieldType]string{
 	FieldType_UInt32: "uint32",
 	FieldType_UInt64: "uint64",
 
-	FieldType_Float:  "float",
-	FieldType_String: "string",
-	FieldType_Bool:   "bool",
-	FieldType_Enum:   "enum",
-	FieldType_Struct: "struct",
-	FieldType_Int:    "int",
-	FieldType_Text:   "text",
+	FieldType_Float:   "float",
+	FieldType_String:  "string",
+	FieldType_Bool:    "bool",
+	FieldType_Enum:    "enum",
+	FieldType_Struct:  "struct",
+	FieldType_Int:     "int",
+	FieldType_Text:    "text",
+	FieldType_Vector3: "Vector3",
+	FieldType_Vector2: "Vector2",
 }
 
 var fieldTypeByString = make(map[string]FieldType)
