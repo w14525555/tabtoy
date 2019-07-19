@@ -1,7 +1,6 @@
 package filter
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -106,10 +105,7 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 		ret = value
 		node.AddValue(ret)
 	case model.FieldType_Vector3:
-		value = strings.Trim(value, "{")
-		value = strings.Trim(value, "}")
-		value = strings.Replace(value, " ", "", -1)
-		values := strings.Split(value, ",")
+		values := parseVectors(value)
 		if len(values) == 3 {
 			ret = "{" + "x=" + values[0] + "," + "y=" + values[1] + "," + "z=" + values[2] + "}"
 			ret = strings.Trim(ret, " ")
@@ -122,14 +118,10 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 			return "", false
 		}
 	case model.FieldType_Vector2:
-		value = strings.Trim(value, "{")
-		value = strings.Trim(value, "}")
-		value = strings.Replace(value, " ", "", -1)
-		values := strings.Split(value, ",")
+		values := parseVectors(value)
 		if len(values) == 2 {
 			ret = "{" + "x=" + values[0] + "," + "y=" + values[1] + "}"
 			ret = strings.Trim(ret, " ")
-			fmt.Println(ret)
 			node.AddValue(ret)
 		} else if value == "" {
 			ret = "{x=0;y=0}"
@@ -180,6 +172,18 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 	ok = true
 
 	return
+}
+
+func parseVectors(value string) []string {
+	value = strings.Trim(value, "{")
+	value = strings.Trim(value, "}")
+	value = strings.Replace(value, " ", "", -1)
+	value = strings.Replace(value, "x=", "", 1)
+	value = strings.Replace(value, "y=", "", 1)
+	value = strings.Replace(value, "z=", "", 1)
+	values := strings.Split(value, ",")
+
+	return values
 }
 
 // 填充空结构体的默认值
