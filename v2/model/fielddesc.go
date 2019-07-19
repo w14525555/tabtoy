@@ -23,6 +23,7 @@ const (
 	FieldType_Text    FieldType = 12 // 可以有中文逗号
 	FieldType_Vector3 FieldType = 13
 	FieldType_Vector2 FieldType = 14
+	FieldType_Key     FieldType = 15 // key 这里会检查是否重复
 )
 
 // 一列的描述
@@ -181,6 +182,7 @@ var strByFieldDescriptor = map[FieldType]string{
 	FieldType_Text:    "text",
 	FieldType_Vector3: "Vector3",
 	FieldType_Vector2: "Vector2",
+	FieldType_Key:     "key",
 }
 
 var fieldTypeByString = make(map[string]FieldType)

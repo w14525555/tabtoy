@@ -2,36 +2,30 @@
 -- Version: 2.9.1
 
 local tab = {
-	Sample = {
-		{ ID = 100, Name = "黑猫警长", TextName = 黑猫警长，, IconID = 0, NumericalRate = 0.6, ItemID = 100, BuffID = { 10 }, Pos = { X= 100, Y= 89 }, Type = "Leader", SkillID = { 4, 6, 7 }, AttackParam = { Value= 1 }, SingleStruct = { HP= 100, AttackRate= 1.2 }, StrStruct = { { HP= 3, ExType= "Leader" }, { HP= 10, ExType= "Monkey" } }, Vector3Test = {x=3,y=4,z=5}, Vector2Test = {x=1,y=2} 	},
-		{ ID = 101, Name = "葫芦\n娃", TextName = , IconID = 0, NumericalRate = 0.8, ItemID = 100, BuffID = { 3, 1 }, Pos = {  }, Type = "Pig", SkillID = { 1 }, AttackParam = {  }, SingleStruct = { HP= 10, AttackRate= 0, ExType= "Leader" }, StrStruct = { {  } }, Vector3Test = {x=0;y=0;z=0}, Vector2Test = {x=0;y=0} 	},
-		{ ID = 102, Name = "舒\"克\"", TextName = , IconID = 0, NumericalRate = 0.7, ItemID = 100, BuffID = {  }, Pos = {  }, Type = "Hammer", SkillID = {  }, AttackParam = {  }, SingleStruct = { HP= 10, AttackRate= 0, ExType= "Leader" }, StrStruct = { {  } }, Vector3Test = {x=0;y=0;z=0}, Vector2Test = {x=0;y=0} 	},
-		{ ID = 103, Name = "贝\n塔", TextName = , IconID = 0, NumericalRate = 0, ItemID = 100, BuffID = {  }, Pos = {  }, Type = "Monkey", SkillID = {  }, AttackParam = {  }, SingleStruct = { HP= 10, AttackRate= 0, ExType= "Leader" }, StrStruct = { {  } }, Vector3Test = {x=0;y=0;z=0}, Vector2Test = {x=0;y=0} 	},
-		{ ID = 104, Name = "邋遢大王", TextName = , IconID = 0, NumericalRate = 1, ItemID = 100, BuffID = {  }, Pos = {  }, Type = "Pig", SkillID = {  }, AttackParam = {  }, SingleStruct = { HP= 10, AttackRate= 0, ExType= "Leader" }, StrStruct = { {  } }, Vector3Test = {x=0;y=0;z=0}, Vector2Test = {x=0;y=0} 	}
+	 = {
+		{ ID = 100, Name = "黑猫警长", TextName = 黑猫警长，, IconID = 0, NumericalRate = 0.6, ItemID = 100, BuffID = { 10 }, SkillID = { 4, 6, 7 }, AttackParam = 1, Vector3Test = {x=3,y=4,z=5}, Vector2Test = {x=1,y=2} 	},
+		{ ID = 101, Name = "葫芦\n娃", TextName = , IconID = 0, NumericalRate = 0.8, ItemID = 100, BuffID = { 3, 1 }, SkillID = { 1 }, AttackParam = 0, Vector3Test = {x=0;y=0;z=0}, Vector2Test = {x=0;y=0} 	},
+		{ ID = 102, Name = "舒\"克\"", TextName = , IconID = 0, NumericalRate = 0.7, ItemID = 100, BuffID = {  }, SkillID = {  }, AttackParam = 0, Vector3Test = {x=0;y=0;z=0}, Vector2Test = {x=0;y=0} 	},
+		{ ID = 103, Name = "贝\n塔", TextName = , IconID = 0, NumericalRate = 0, ItemID = 100, BuffID = {  }, SkillID = {  }, AttackParam = 0, Vector3Test = {x=0;y=0;z=0}, Vector2Test = {x=0;y=0} 	},
+		{ ID = 104, Name = "邋遢大王", TextName = , IconID = 0, NumericalRate = 1, ItemID = 100, BuffID = {  }, SkillID = {  }, AttackParam = 0, Vector3Test = {x=0;y=0;z=0}, Vector2Test = {x=0;y=0} 	}
 	}
 
 }
 
 
 -- ID
-tab.SampleByID = {}
-for _, rec in pairs(tab.Sample) do
-	tab.SampleByID[rec.ID] = rec
+tab.ByID = {}
+for _, rec in pairs(tab.) do
+	tab.ByID[rec.ID] = rec
 end
 
 -- Name
-tab.SampleByName = {}
-for _, rec in pairs(tab.Sample) do
-	tab.SampleByName[rec.Name] = rec
+tab.ByName = {}
+for _, rec in pairs(tab.) do
+	tab.ByName[rec.Name] = rec
 end
 
 tab.Enum = {
-	ActorType = {
-		[0] = "Leader",
-		[2] = "Pig",
-		Monkey = 1,
-		Hammer = 3,
-	},
 }
 
 return tab

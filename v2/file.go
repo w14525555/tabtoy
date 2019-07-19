@@ -61,10 +61,10 @@ func (self *File) ExportLocalType(mainFile *File) bool {
 		}
 	}
 
-	if typeSheet == nil {
-		log.Errorf("%s", i18n.String(i18n.File_TypeSheetNotFound))
-		return false
-	}
+	// if typeSheet == nil {
+	// 	log.Errorf("%s", i18n.String(i18n.File_TypeSheetNotFound))
+	// 	return false
+	// }
 
 	// 解析表头
 	for _, rawSheet := range self.coreFile.Sheets {
