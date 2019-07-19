@@ -2,6 +2,7 @@ package printer
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/davyxu/tabtoy/util"
 	"github.com/davyxu/tabtoy/v2/i18n"
@@ -75,117 +76,33 @@ func (self *luaPrinter) Run(g *Globals) *Stream {
 	// 	return stream
 	// }
 
-	stream.Printf("\nreturn data")
+	stream.Printf("\nreturn {data, title}")
 
 	return stream
 }
 
+// 打印标题
 func printTitleLua(g *Globals, stream *Stream) bool {
 
-	stream.Printf("local title = {}")
+	stream.Printf("local title = {")
 
-	// // 遍历每一行
-	// for rIndex, r := range tab.Recs {
+	nodes := g.Tables[0].Recs[0].Nodes
+	length := len(nodes)
+	var str string
+	for index, node := range nodes {
+		str = "[" + "'" + node.Name + "'" + "]=" + strconv.Itoa(index)
+		if index != length-1 {
+			str = str + ","
+		}
+		stream.Printf(str)
+	}
 
-	// 	// 每一行开始
-	// 	stream.Printf("{ ")
-
-	// 	// 遍历每一列
-	// 	for rootFieldIndex, node := range r.Nodes {
-
-	// 		if node.IsRepeated {
-	// 			stream.Printf("%s = { ", node.Name)
-	// 		} else {
-	// 			stream.Printf("%s = ", node.Name)
-	// 		}
-
-	// 		// 普通值
-	// 		if node.Type != model.FieldType_Struct {
-
-	// 			if node.IsRepeated {
-
-	// 				// repeated 值序列
-	// 				for arrIndex, valueNode := range node.Child {
-
-	// 					stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode))
-
-	// 					// 多个值分割
-	// 					if arrIndex < len(node.Child)-1 {
-	// 						stream.Printf(", ")
-	// 					}
-
-	// 				}
-	// 			} else {
-	// 				// 单值
-	// 				valueNode := node.Child[0]
-
-	// 				stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode))
-
-	// 			}
-
-	// 		} else {
-
-	// 			// 遍历repeated的结构体
-	// 			for structIndex, structNode := range node.Child {
-
-	// 				// 结构体开始
-	// 				stream.Printf("{ ")
-
-	// 				// 遍历一个结构体的字段
-	// 				for structFieldIndex, fieldNode := range structNode.Child {
-
-	// 					// 值节点总是在第一个
-	// 					valueNode := fieldNode.Child[0]
-
-	// 					stream.Printf("%s= %s", fieldNode.Name, valueWrapperLua(g, fieldNode.Type, valueNode))
-
-	// 					// 结构体字段分割
-	// 					if structFieldIndex < len(structNode.Child)-1 {
-	// 						stream.Printf(", ")
-	// 					}
-
-	// 				}
-
-	// 				// 结构体结束
-	// 				stream.Printf(" }")
-
-	// 				// 多个结构体分割
-	// 				if structIndex < len(node.Child)-1 {
-	// 					stream.Printf(", ")
-	// 				}
-
-	// 			}
-
-	// 		}
-
-	// 		if node.IsRepeated {
-	// 			stream.Printf(" }")
-	// 		}
-
-	// 		// 根字段分割
-	// 		if rootFieldIndex < len(r.Nodes)-1 {
-	// 			stream.Printf(", ")
-	// 		}
-
-	// 	}
-
-	// 	// 每一行结束
-	// 	stream.Printf(" 	}")
-
-	// 	if rIndex < len(tab.Recs)-1 {
-	// 		stream.Printf(",")
-	// 	}
-
-	// 	stream.Printf("\n")
-
-	// }
+	stream.Printf("}")
 
 	return true
 }
 
 func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
-	//stream.Printf("{\n")
-
 	// 遍历每一行
 	for rIndex, r := range tab.Recs {
 
@@ -210,7 +127,6 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 					for arrIndex, valueNode := range node.Child {
 
 						stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode))
-
 						// 多个值分割
 						if arrIndex < len(node.Child)-1 {
 							stream.Printf(", ")
@@ -222,7 +138,6 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 					valueNode := node.Child[0]
 
 					stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode))
-
 				}
 
 			} else {
@@ -272,7 +187,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 		}
 
 		// 每一行结束
-		stream.Printf(" 	}")
+		stream.Printf("}")
 
 		if rIndex < len(tab.Recs)-1 {
 			stream.Printf(",")
@@ -281,9 +196,6 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 		stream.Printf("\n")
 
 	}
-
-	// Sample = {
-	//stream.Printf("	}")
 
 	return true
 

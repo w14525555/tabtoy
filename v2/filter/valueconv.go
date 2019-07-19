@@ -111,7 +111,7 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 			ret = strings.Trim(ret, " ")
 			node.AddValue(ret)
 		} else if value == "" {
-			ret = "{x=0;y=0;z=0}"
+			ret = "{x=0,y=0,z=0}"
 			node.AddValue(ret)
 		} else {
 			log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_VectorError), value)
@@ -124,7 +124,7 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 			ret = strings.Trim(ret, " ")
 			node.AddValue(ret)
 		} else if value == "" {
-			ret = "{x=0;y=0}"
+			ret = "{x=0,y=0}"
 			node.AddValue(ret)
 		} else {
 			log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_VectorError), value)
