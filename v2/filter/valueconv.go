@@ -1,7 +1,6 @@
 package filter
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -11,7 +10,7 @@ import (
 
 // 从单元格原始数据到最终输出的数值, 检查并转换, 处理默认值及根据meta转换情况
 func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDescriptor, node *model.Node) (ret string, ok bool) {
-	fmt.Println(fd.Name)
+	//fmt.Println(fd.Name)
 	// 空格, 且有默认值时, 使用默认值
 	if value == "" {
 		value = fd.DefaultValue()
