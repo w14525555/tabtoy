@@ -11,7 +11,7 @@ import (
 func valueWrapperLua(g *Globals, t model.FieldType, n *model.Node) string {
 
 	switch t {
-	case model.FieldType_String:
+	case model.FieldType_String, model.FieldType_Text:
 		return util.StringEscape(n.Value)
 	case model.FieldType_Enum:
 		if g.LuaEnumIntValue {
@@ -39,7 +39,7 @@ func (self *luaPrinter) Run(g *Globals) *Stream {
 		stream.Printf("\n%s\n", g.LuaTabHeader)
 	}
 
-	stream.Printf("\nlocal tab = {\n")
+	stream.Printf("\nlocal data = {\n")
 
 	for tabIndex, tab := range g.Tables {
 
@@ -57,7 +57,7 @@ func (self *luaPrinter) Run(g *Globals) *Stream {
 			stream.Printf(", ")
 		}
 
-		stream.Printf("\n\n")
+		// stream.Printf("\n")
 	}
 
 	// local tab = {
@@ -79,7 +79,7 @@ func (self *luaPrinter) Run(g *Globals) *Stream {
 
 func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 
-	stream.Printf("	%s = {\n", tab.LocalFD.Name)
+	//stream.Printf("{\n")
 
 	// 遍历每一行
 	for rIndex, r := range tab.Recs {
@@ -178,7 +178,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 	}
 
 	// Sample = {
-	stream.Printf("	}")
+	//stream.Printf("	}")
 
 	return true
 
