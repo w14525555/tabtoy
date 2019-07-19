@@ -73,11 +73,12 @@ func dataProcessor(gc model.GlobalChecker, fd *model.FieldDescriptor, raw string
 	} else {
 
 		// 值重复检查
-		if fd.Meta.GetBool("RepeatCheck") && !gc.CheckValueRepeat(fd, cv) {
+		if (fd.Meta.GetBool("RepeatCheck") || fd.Name == "key") && !gc.CheckValueRepeat(fd, cv) {
 			log.Errorf("%s, %s raw: '%s'", i18n.String(i18n.DataSheet_ValueRepeated), fd.String(), cv)
 			return false
 		}
 	}
+	//  || fd.Name == "key"
 
 	return true
 

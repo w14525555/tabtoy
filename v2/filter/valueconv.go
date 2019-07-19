@@ -131,7 +131,16 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 			return "", false
 		}
 	case model.FieldType_Key:
+		// 暂时用int64的方式来解析key
+		_, err := strconv.ParseInt(value, 10, 64)
 
+		if err != nil {
+			log.Debugln(err)
+			return "", false
+		}
+
+		ret = value
+		node.AddValue(ret)
 	case model.FieldType_Enum:
 		if fd.Complex == nil {
 			log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_EnumTypeNil), fd.Name)
