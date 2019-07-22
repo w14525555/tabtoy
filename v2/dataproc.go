@@ -12,8 +12,15 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 
 	spliter := fd.ListSpliter()
 
-	if fd.IsRepeated && spliter != "" {
+	if fd.IsRepeated {
+		if spliter == "" {
+			spliter = ","
+		}
 
+		raw = strings.TrimLeft(raw, "{")
+		raw = strings.TrimRight(raw, "}")
+
+		//fmt.Println(raw)
 		valueList := strings.Split(raw, spliter)
 
 		var node *model.Node
