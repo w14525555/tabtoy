@@ -14,6 +14,14 @@ func valueWrapperLua(g *Globals, t model.FieldType, n *model.Node) string {
 	switch t {
 	case model.FieldType_String, model.FieldType_Text:
 		return util.StringEscape(n.Value)
+	case model.FieldType_Key:
+		// 暂时用int64的方式来解析key
+		_, err := strconv.ParseInt(n.Value, 10, 64)
+
+		// 不等于0 则认为是str key
+		if err != nil {
+			return util.StringEscape(n.Value)
+		}
 	case model.FieldType_Enum:
 		if g.LuaEnumIntValue {
 			return fmt.Sprintf("%d", n.EnumValue)
