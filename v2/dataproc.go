@@ -1,6 +1,7 @@
 package v2
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/davyxu/tabtoy/v2/filter"
@@ -17,11 +18,17 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 			spliter = ","
 		}
 
-		raw = strings.TrimLeft(raw, "{")
-		raw = strings.TrimRight(raw, "}")
+		var valueList []string
+
+		if fd.Type != model.FieldType_Vector2 && fd.Type != model.FieldType_Vector3 {
+			raw = strings.TrimLeft(raw, "{")
+			raw = strings.TrimRight(raw, "}")
+			valueList = strings.Split(raw, spliter)
+		} else {
+			valueList = parseVector(fd.Type, raw)
+		}
 
 		//fmt.Println(raw)
-		valueList := strings.Split(raw, spliter)
 
 		var node *model.Node
 
@@ -69,6 +76,29 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 	}
 
 	return true
+}
+
+func parseVector(ft model.FieldType, raw string) []string {
+	raw = strings.Replace(raw, "{", "", -1)
+	raw = strings.Replace(raw, "}", "", -1)
+	fmt.Println(raw)
+	valueList := strings.Split(raw, ",")
+
+	if ft == model.FieldType_Vector2 {
+		var result []string
+		for i, v := range valueList {
+			if i%2 == 0 {
+				result = append(result, v)
+			} else {
+				result[i/2] = result[i/2] + "," + v
+			}
+		}
+		return result
+	} else if ft == model.FieldType_Vector3 {
+
+	}
+
+	return valueList
 }
 
 func dataProcessor(gc model.GlobalChecker, fd *model.FieldDescriptor, raw string, node *model.Node) bool {
