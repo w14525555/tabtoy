@@ -8,6 +8,7 @@ type StringID int
 
 const (
 	ConvertValue_EnumTypeNil StringID = iota
+	ConvertValue_KeyNil
 	ConvertValue_StructTypeNil
 	ConvertValue_EnumValueNotFound
 	ConvertValue_CannotHaveCNComma

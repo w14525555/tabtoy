@@ -78,7 +78,6 @@ func dataProcessor(gc model.GlobalChecker, fd *model.FieldDescriptor, raw string
 			return false
 		}
 	}
-	//  || fd.Name == "key"
 
 	return true
 

@@ -219,6 +219,11 @@ func (self *FieldDescriptor) ParseType(fileD *FileDescriptor, rawstr string) boo
 		puretype = rawstr[SliceKeywordLen:]
 
 		self.IsRepeated = true
+	} else if strings.HasSuffix(rawstr, SliceKeyword) {
+		length := len(rawstr)
+		puretype = rawstr[:length-SliceKeywordLen]
+
+		self.IsRepeated = true
 	} else {
 		puretype = rawstr
 	}

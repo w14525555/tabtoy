@@ -7,6 +7,7 @@ func init() {
 		ConvertValue_StructTypeNil:                            "[TT102] ConvertValue: Struct type nil",
 		ConvertValue_EnumValueNotFound:                        "[TT103] ConvertValue: Enum value not found",
 		ConvertValue_UnknownFieldType:                         "[TT104] ConvertValue: Unknown field type",
+		ConvertValue_KeyNil:                                   "[TT105] ConvertValue: Key type nil",
 		StructParser_LexerError:                               "[TT201] StructParser: Lexer error",
 		StructParser_ExpectField:                              "[TT202] StructParser: Expect field",
 		StructParser_UnexpectedSpliter:                        "[TT203] StructParser: Unexpected k-v spliter",

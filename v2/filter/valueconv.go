@@ -131,12 +131,18 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 			return "", false
 		}
 	case model.FieldType_Key:
+		if value == "" {
+			log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_KeyNil), fd.Name)
+			return "", false
+		}
+
 		// 暂时用int64的方式来解析key
 		_, err := strconv.ParseInt(value, 10, 64)
 
+		// 不等于0 则认为是str key
 		if err != nil {
-			log.Debugln(err)
-			return "", false
+			ret = value
+			node.AddValue(ret)
 		}
 
 		ret = value
