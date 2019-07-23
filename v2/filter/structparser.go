@@ -1,6 +1,8 @@
 package filter
 
 import (
+	"fmt"
+
 	"github.com/davyxu/golexer"
 	"github.com/davyxu/tabtoy/v2/i18n"
 	"github.com/davyxu/tabtoy/v2/model"
@@ -17,6 +19,9 @@ const (
 	Token_String
 	Token_Comma
 	Token_Unknown
+	Token_Equal
+	Token_BraceLeft
+	Token_BraceRight
 )
 
 type structParser struct {
@@ -43,7 +48,7 @@ func (self *structParser) Run(fd *model.FieldDescriptor, callback func(string, s
 
 		self.NextToken()
 
-		if self.TokenID() != Token_Comma {
+		if self.TokenID() != Token_Equal {
 			log.Errorf("%s, '%s'", i18n.String(i18n.StructParser_UnexpectedSpliter), key)
 			return false
 		}
@@ -57,6 +62,11 @@ func (self *structParser) Run(fd *model.FieldDescriptor, callback func(string, s
 		}
 
 		self.NextToken()
+		// 这里加入逗号分隔符的判定 因为原作中是直接用空格分割的
+		if self.TokenID() == Token_Comma {
+			self.NextToken()
+			fmt.Println(self.TokenID())
+		}
 
 	}
 
@@ -72,8 +82,11 @@ func newStructParser(value string) *structParser {
 	l.AddIgnoreMatcher(golexer.NewWhiteSpaceMatcher(Token_WhiteSpace))
 	l.AddIgnoreMatcher(golexer.NewLineEndMatcher(Token_LineEnd))
 	l.AddIgnoreMatcher(golexer.NewUnixStyleCommentMatcher(Token_UnixStyleComment))
+	l.AddIgnoreMatcher(golexer.NewSignMatcher(Token_BraceLeft, "{"))
+	l.AddIgnoreMatcher(golexer.NewSignMatcher(Token_BraceLeft, "}"))
 
-	l.AddMatcher(golexer.NewSignMatcher(Token_Comma, ":"))
+	l.AddMatcher(golexer.NewSignMatcher(Token_Equal, "="))
+	l.AddMatcher(golexer.NewSignMatcher(Token_Comma, ","))
 
 	l.AddMatcher(golexer.NewIdentifierMatcher(Token_Identifier))
 
