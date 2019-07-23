@@ -30,17 +30,20 @@ func V2Entry() {
 
 	g.Version = Version
 
-	// 可自动加载Global类型表
+	// 可自动加载Global类型表 这里单独循环是必要的的 因为Global要加到前面才行
 	hasGlobal := false
 	for _, v := range flag.Args() {
 		if v == "Globals.xlsx" {
 			hasGlobal = true
 		}
-		g.InputFileList = append(g.InputFileList, v)
 	}
 
 	if !hasGlobal {
 		g.InputFileList = append(g.InputFileList, "Globals.xlsx")
+	}
+
+	for _, v := range flag.Args() {
+		g.InputFileList = append(g.InputFileList, v)
 	}
 
 	g.ParaMode = *paramPara
