@@ -2,10 +2,11 @@ package main
 
 import (
 	"flag"
-	"github.com/davyxu/tabtoy/v2"
+	"os"
+
+	v2 "github.com/davyxu/tabtoy/v2"
 	"github.com/davyxu/tabtoy/v2/i18n"
 	"github.com/davyxu/tabtoy/v2/printer"
-	"os"
 )
 
 // v2特有
@@ -29,8 +30,17 @@ func V2Entry() {
 
 	g.Version = Version
 
+	// 可自动加载Global类型表
+	hasGlobal := false
 	for _, v := range flag.Args() {
+		if v == "Globals.xlsx" {
+			hasGlobal = true
+		}
 		g.InputFileList = append(g.InputFileList, v)
+	}
+
+	if !hasGlobal {
+		g.InputFileList = append(g.InputFileList, "Globals.xlsx")
 	}
 
 	g.ParaMode = *paramPara

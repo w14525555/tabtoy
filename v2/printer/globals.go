@@ -1,9 +1,10 @@
 package printer
 
 import (
+	"strings"
+
 	"github.com/davyxu/tabtoy/v2/i18n"
 	"github.com/davyxu/tabtoy/v2/model"
-	"strings"
 )
 
 type TableIndex struct {
@@ -100,11 +101,12 @@ func (self *Globals) AddTypes(localFD *model.FileDescriptor) bool {
 	// 有表格里描述的包名不一致, 无法合成最终的文件
 	if self.Pragma.GetString("Package") == "" {
 		self.Pragma.SetString("Package", localFD.Pragma.GetString("Package"))
-	} else if self.Pragma.GetString("Package") != localFD.Pragma.GetString("Package") {
-
-		log.Errorf("%s, '%s' '%s'", i18n.String(i18n.Globals_PackageNameDiff), localFD.Pragma.GetString("TableName"), self.Pragma.GetString("TableType"))
-		return false
 	}
+	// else if self.Pragma.GetString("Package") != localFD.Pragma.GetString("Package") {
+
+	// 	log.Errorf("%s, '%s' '%s'", i18n.String(i18n.Globals_PackageNameDiff), localFD.Pragma.GetString("TableName"), self.Pragma.GetString("TableType"))
+	// 	return false
+	// }
 
 	// 将行定义结构也添加到文件中
 	for _, d := range localFD.Descriptors {

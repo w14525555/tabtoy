@@ -111,7 +111,6 @@ func getVectorResult(vectorNum int, valueList []string) []string {
 }
 
 func dataProcessor(gc model.GlobalChecker, fd *model.FieldDescriptor, raw string, node *model.Node) bool {
-
 	// 单值
 	if cv, ok := filter.ConvertValue(fd, raw, gc.GlobalFileDesc(), node); !ok {
 		goto ConvertError
