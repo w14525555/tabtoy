@@ -1,7 +1,6 @@
 package v2
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/davyxu/tabtoy/v2/filter"
@@ -78,27 +77,35 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 	return true
 }
 
+// 解析vector类型
 func parseVector(ft model.FieldType, raw string) []string {
 	raw = strings.Replace(raw, "{", "", -1)
 	raw = strings.Replace(raw, "}", "", -1)
-	fmt.Println(raw)
 	valueList := strings.Split(raw, ",")
 
 	if ft == model.FieldType_Vector2 {
-		var result []string
-		for i, v := range valueList {
-			if i%2 == 0 {
-				result = append(result, v)
-			} else {
-				result[i/2] = result[i/2] + "," + v
-			}
-		}
-		return result
+		return getVectorResult(2, valueList)
 	} else if ft == model.FieldType_Vector3 {
-
+		return getVectorResult(3, valueList)
 	}
 
 	return valueList
+}
+
+func getVectorResult(vectorNum int, valueList []string) []string {
+	if len(valueList)%vectorNum != 0 {
+		log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_VectorError), valueList)
+	}
+
+	var result []string
+	for i, v := range valueList {
+		if i%vectorNum == 0 {
+			result = append(result, v)
+		} else {
+			result[i/vectorNum] = result[i/vectorNum] + "," + v
+		}
+	}
+	return result
 }
 
 func dataProcessor(gc model.GlobalChecker, fd *model.FieldDescriptor, raw string, node *model.Node) bool {
