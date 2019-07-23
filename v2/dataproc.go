@@ -79,6 +79,7 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 
 // 解析vector类型
 func parseVector(ft model.FieldType, raw string) []string {
+
 	raw = strings.Replace(raw, "{", "", -1)
 	raw = strings.Replace(raw, "}", "", -1)
 	valueList := strings.Split(raw, ",")
@@ -93,7 +94,8 @@ func parseVector(ft model.FieldType, raw string) []string {
 }
 
 func getVectorResult(vectorNum int, valueList []string) []string {
-	if len(valueList)%vectorNum != 0 {
+	//  valueList[0] != "" 对应空的字符串数组的情况 空字符串数组长度为1
+	if len(valueList)%vectorNum != 0 && valueList[0] != "" {
 		log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_VectorError), valueList)
 	}
 
