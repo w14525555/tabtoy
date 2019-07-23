@@ -1,8 +1,6 @@
 package filter
 
 import (
-	"fmt"
-
 	"github.com/davyxu/golexer"
 	"github.com/davyxu/tabtoy/v2/i18n"
 	"github.com/davyxu/tabtoy/v2/model"
@@ -65,7 +63,6 @@ func (self *structParser) Run(fd *model.FieldDescriptor, callback func(string, s
 		// 这里加入逗号分隔符的判定 因为原作中是直接用空格分割的
 		if self.TokenID() == Token_Comma {
 			self.NextToken()
-			fmt.Println(self.TokenID())
 		}
 
 	}

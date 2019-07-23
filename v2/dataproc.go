@@ -18,8 +18,11 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 		}
 
 		var valueList []string
-
-		if fd.Type != model.FieldType_Vector2 && fd.Type != model.FieldType_Vector3 {
+		raw = strings.ReplaceAll(raw, " ", "")
+		if fd.Type == model.FieldType_Struct {
+			// 结构体数组分割
+			valueList = strings.Split(raw, "},{")
+		} else if fd.Type != model.FieldType_Vector2 && fd.Type != model.FieldType_Vector3 {
 			raw = strings.TrimLeft(raw, "{")
 			raw = strings.TrimRight(raw, "}")
 			valueList = strings.Split(raw, spliter)
@@ -79,7 +82,6 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 
 // 解析vector类型
 func parseVector(ft model.FieldType, raw string) []string {
-
 	raw = strings.Replace(raw, "{", "", -1)
 	raw = strings.Replace(raw, "}", "", -1)
 	valueList := strings.Split(raw, ",")
