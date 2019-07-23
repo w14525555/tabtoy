@@ -121,7 +121,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 		for rootFieldIndex, node := range r.Nodes {
 
 			if node.IsRepeated {
-				stream.Printf("%s = { ", node.Name)
+				stream.Printf("%s = {", node.Name)
 			} else {
 				stream.Printf("%s = ", node.Name)
 			}
@@ -154,7 +154,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 				for structIndex, structNode := range node.Child {
 
 					// 结构体开始
-					stream.Printf("{ ")
+					stream.Printf("{")
 
 					// 遍历一个结构体的字段
 					for structFieldIndex, fieldNode := range structNode.Child {
@@ -162,21 +162,21 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 						// 值节点总是在第一个
 						valueNode := fieldNode.Child[0]
 
-						stream.Printf("%s= %s", fieldNode.Name, valueWrapperLua(g, fieldNode.Type, valueNode))
+						stream.Printf("%s=%s", fieldNode.Name, valueWrapperLua(g, fieldNode.Type, valueNode))
 
 						// 结构体字段分割
 						if structFieldIndex < len(structNode.Child)-1 {
-							stream.Printf(", ")
+							stream.Printf(",")
 						}
 
 					}
 
 					// 结构体结束
-					stream.Printf(" }")
+					stream.Printf("}")
 
 					// 多个结构体分割
 					if structIndex < len(node.Child)-1 {
-						stream.Printf(", ")
+						stream.Printf(",")
 					}
 
 				}
@@ -184,7 +184,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 			}
 
 			if node.IsRepeated {
-				stream.Printf(" }")
+				stream.Printf("}")
 			}
 
 			// 根字段分割
