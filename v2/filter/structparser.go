@@ -128,10 +128,10 @@ func parseStruct(fd *model.FieldDescriptor, value string, fileD *model.FileDescr
 			}
 		}
 
-		// if sfList.Exists(bnField) {
-		// 	log.Errorf("%s, '%s'", i18n.String(i18n.StructParser_DuplicateFieldInCell), key)
-		// 	return false
-		// }
+		if sfList.Exists(bnField) {
+			log.Errorf("%s, '%s'", i18n.String(i18n.StructParser_DuplicateFieldInCell), key)
+			return false
+		}
 
 		sfList.Add(bnField, value)
 

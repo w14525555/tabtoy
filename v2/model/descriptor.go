@@ -2,7 +2,6 @@ package model
 
 import (
 	"errors"
-	"fmt"
 )
 
 type DescriptorKind int
@@ -90,11 +89,8 @@ func (self *Descriptor) FieldByValueAndMeta(value string) *FieldDescriptor {
 
 func (self *Descriptor) FieldByGlobalMap(value string, count int) *FieldDescriptor {
 	mapList := self.FdMap[value]
-	fmt.Println(count)
-	fmt.Println(mapList)
 	if mapList != nil {
 		name := mapList[count]
-		fmt.Println(name)
 		if name == "" {
 			return nil
 		}
