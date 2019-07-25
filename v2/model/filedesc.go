@@ -4,8 +4,8 @@ type FileDescriptor struct {
 	Name             string
 	DescriptorByName map[string]*Descriptor
 	Descriptors      []*Descriptor
-
-	Pragma *MetaInfo
+	Pragma           *MetaInfo
+	Fdmap            map[string][]string
 }
 
 func (self *FileDescriptor) MatchTag(tag string) bool {

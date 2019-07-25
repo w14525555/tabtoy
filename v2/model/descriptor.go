@@ -1,6 +1,9 @@
 package model
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 type DescriptorKind int
 
@@ -24,13 +27,15 @@ type Descriptor struct {
 	Usage DescriptorUsage
 
 	FieldByName   map[string]*FieldDescriptor
+	FieldByIndex  map[int32]*FieldDescriptor
 	FieldByNumber map[int32]*FieldDescriptor
 	Fields        []*FieldDescriptor
 
 	Indexes     []*FieldDescriptor
 	IndexByName map[string]*FieldDescriptor
 
-	File *FileDescriptor
+	File  *FileDescriptor
+	FdMap map[string][]string
 }
 
 var (
@@ -38,7 +43,7 @@ var (
 	ErrDuplicateIndexName = errors.New("Duplicate index name")
 )
 
-func (self *Descriptor) Add(def *FieldDescriptor) error {
+func (self *Descriptor) Add(def *FieldDescriptor, fdmap map[string][]string) error {
 
 	def.Parent = self
 	def.Order = int32(len(self.Fields))
@@ -63,13 +68,13 @@ func (self *Descriptor) Add(def *FieldDescriptor) error {
 		}
 	}
 
+	self.FdMap = fdmap
+
 	return nil
 }
 
 func (self *Descriptor) FieldByValueAndMeta(value string) *FieldDescriptor {
-
 	for _, v := range self.FieldByName {
-
 		if v.Name == value {
 			return v
 		}
@@ -78,6 +83,30 @@ func (self *Descriptor) FieldByValueAndMeta(value string) *FieldDescriptor {
 			return v
 		}
 
+	}
+
+	return nil
+}
+
+func (self *Descriptor) FieldByGlobalMap(value string, count int) *FieldDescriptor {
+	mapList := self.FdMap[value]
+	fmt.Println(count)
+	fmt.Println(mapList)
+	if mapList != nil {
+		name := mapList[count]
+		fmt.Println(name)
+		if name == "" {
+			return nil
+		}
+		for _, v := range self.FieldByName {
+			if v.Name == name {
+				return v
+			}
+
+			if v.Meta.GetString("Alias") == name {
+				return v
+			}
+		}
 	}
 
 	return nil

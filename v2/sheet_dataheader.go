@@ -95,7 +95,7 @@ func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.
 
 	if index == 0 {
 		// 添加第一个数据表的定义
-		if !self.makeRowDescriptor(localFD, self.headerFields) {
+		if !self.makeRowDescriptor(localFD, self.headerFields, globalFD.Fdmap) {
 			goto ErrorStop
 		}
 	}
@@ -214,7 +214,7 @@ func (self *DataHeader) addHeaderElement(he *DataHeaderElement, localFD *model.F
 	return -1
 }
 
-func (self *DataHeader) makeRowDescriptor(fileD *model.FileDescriptor, rootField []*model.FieldDescriptor) bool {
+func (self *DataHeader) makeRowDescriptor(fileD *model.FileDescriptor, rootField []*model.FieldDescriptor, fdmap map[string][]string) bool {
 
 	rowType := model.NewDescriptor()
 	rowType.Usage = model.DescriptorUsage_RowType
@@ -232,7 +232,7 @@ func (self *DataHeader) makeRowDescriptor(fileD *model.FileDescriptor, rootField
 	// 将表格中的列添加到类型中, 方便导出
 	for _, field := range rootField {
 
-		rowType.Add(field)
+		rowType.Add(field, fdmap)
 	}
 
 	return true

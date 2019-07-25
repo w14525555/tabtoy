@@ -96,7 +96,7 @@ func (self *TypeSheet) parseTable(root *typeModelRoot) bool {
 
 			// 头的类型
 			typeDeclare := self.GetCellData(TypeSheetRow_FieldDesc, col)
-
+			// 这里是对头的类型检查
 			if _, ok := typeHeader[typeDeclare]; !ok {
 				self.Row = TypeSheetRow_FieldDesc
 				self.Column = col
@@ -106,7 +106,6 @@ func (self *TypeSheet) parseTable(root *typeModelRoot) bool {
 
 			// 值
 			typeValue := self.GetCellData(row, col)
-
 			if typeDeclare == "ObjectType" && typeValue == "" {
 				self.Row = row
 				self.Column = col

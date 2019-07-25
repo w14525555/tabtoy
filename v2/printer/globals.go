@@ -146,7 +146,7 @@ func (self *Globals) AddContent(tab *model.Table) bool {
 
 	// 去掉注释中的回车,避免代码生成错误
 	rowFD.Comment = strings.Replace(localFD.Name, "\n", " ", -1)
-	self.CombineStruct.Add(rowFD)
+	self.CombineStruct.Add(rowFD, self.Fdmap)
 
 	if localFD.RowDescriptor() == nil {
 		panic("row field null:" + localFD.Name)

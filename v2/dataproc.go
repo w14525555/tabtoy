@@ -30,8 +30,6 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 			valueList = parseVector(fd.Type, raw)
 		}
 
-		//fmt.Println(raw)
-
 		var node *model.Node
 
 		if fd.Type != model.FieldType_Struct {

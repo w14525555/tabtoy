@@ -2,10 +2,10 @@ package v2
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/davyxu/tabtoy/v2/i18n"
 	"github.com/davyxu/tabtoy/v2/model"
-	"strings"
 )
 
 type typeCell struct {
@@ -48,6 +48,9 @@ type typeModelRoot struct {
 
 	unknownModel []*typeModel
 	fieldTypeCol int
+
+	// 存储字段的名称
+	fdmap map[string][]string
 
 	Col int
 	Row int
@@ -110,8 +113,25 @@ func (self *typeModelRoot) ParseData(localFD *model.FileDescriptor, globalFD *mo
 		// 字段名
 		m.fd.Name, self.Col = m.getValue("FieldName")
 
+		if globalFD.Fdmap == nil {
+			globalFD.Fdmap = make(map[string][]string)
+		}
+
+		// 已经存在 则添加新的元素
+		//m.fd.Name = strings.TrimSpace(m.fd.Name)
+		if m.fd.Name != "" {
+			if _, ok := globalFD.Fdmap[rawTypeName]; ok {
+				globalFD.Fdmap[rawTypeName] = append(globalFD.Fdmap[rawTypeName], m.fd.Name)
+			} else {
+				// 这里必须是0 否则就不是从零开始了
+				globalFD.Fdmap[rawTypeName] = make([]string, 0)
+				globalFD.Fdmap[rawTypeName] = append(globalFD.Fdmap[rawTypeName], m.fd.Name)
+			}
+		}
+
 		// 解析类型
 		m.rawFieldType, self.Col = m.getValue("FieldType")
+
 		self.fieldTypeCol = self.Col
 
 		fieldType, isrepeated, complexType, ok := findFieldType(localFD, globalFD, m.rawFieldType)
@@ -180,11 +200,10 @@ func (self *typeModelRoot) ParseData(localFD *model.FileDescriptor, globalFD *mo
 			m.fd.Meta.SetString("Default", rawDefault)
 		}
 
-		if td.Add(m.fd) != nil {
+		if td.Add(m.fd, globalFD.Fdmap) != nil {
 			log.Errorf("%s '%s'", i18n.String(i18n.TypeSheet_DuplicateFieldName), m.fd.Name)
 			return false
 		}
-
 	}
 
 	return true

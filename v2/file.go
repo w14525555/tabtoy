@@ -48,7 +48,6 @@ func (self *File) ExportLocalType(mainFile *File) bool {
 				log.Errorf("%s", i18n.String(i18n.File_TypeSheetKeepSingleton))
 				return false
 			}
-
 			typeSheet = newTypeSheet(NewSheet(self, rawSheet))
 
 			// 从cell添加类型
