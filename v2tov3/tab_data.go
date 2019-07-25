@@ -1,11 +1,12 @@
 package v2tov3
 
 import (
+	"strings"
+
 	"github.com/davyxu/tabtoy/util"
 	"github.com/davyxu/tabtoy/v2tov3/model"
 	"github.com/davyxu/tabtoy/v3/helper"
 	"github.com/tealeg/xlsx"
-	"strings"
 )
 
 func importDatas(sourceSheet, targetSheet *xlsx.Sheet, headerList []model.ObjectFieldType, fileName string) error {

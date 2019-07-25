@@ -13,7 +13,7 @@ import (
 var (
 	paramProtoVersion = flag.Int("protover", 3, "output .proto file version, 2 or 3")
 
-	paramLuaEnumIntValue = flag.Bool("luaenumintvalue", false, "use int type in lua enum value")
+	paramLuaEnumIntValue = flag.Bool("luaenumintvalue", true, "use int type in lua enum value")
 	paramLuaTabHeader    = flag.String("luatabheader", "", "output string to lua tab header")
 
 	paramGenCSharpBinarySerializeCode = flag.Bool("cs_gensercode", true, "generate c# binary serialize code, default is true")

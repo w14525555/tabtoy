@@ -211,7 +211,6 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 
 func anyFieldOutput(d *model.Descriptor) bool {
 	for _, fd := range d.Fields {
-
 		if fd.Meta.GetBool("LuaValueMapperString") {
 			return true
 		}
