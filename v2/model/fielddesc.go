@@ -206,6 +206,10 @@ const RepeatedKeywordLen = len(RepeatedKeyword)
 const SliceKeyword = "[]"
 const SliceKeywordLen = len(SliceKeyword)
 
+// 二维数组支持
+const SliceExKeyWord = "[][]"
+const SliceExKeyWordLen = len(SliceExKeyWord)
+
 func (self *FieldDescriptor) ParseType(fileD *FileDescriptor, rawstr string) bool {
 
 	var puretype string
@@ -224,6 +228,12 @@ func (self *FieldDescriptor) ParseType(fileD *FileDescriptor, rawstr string) boo
 		puretype = rawstr[:length-SliceKeywordLen]
 
 		self.IsRepeated = true
+	} else if strings.HasPrefix(rawstr, SliceExKeyWord) {
+		//二维数组前缀类型[][]
+
+	} else if strings.HasSuffix(rawstr, SliceExKeyWord) {
+		//二维数组后缀类型[][]
+
 	} else {
 		puretype = rawstr
 	}
