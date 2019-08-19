@@ -60,7 +60,6 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 			log.Debugln(err)
 			return "", false
 		}
-
 		ret = value
 		node.AddValue(ret)
 	case model.FieldType_Bool:
