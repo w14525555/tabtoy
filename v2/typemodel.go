@@ -118,7 +118,6 @@ func (self *typeModelRoot) ParseData(localFD *model.FileDescriptor, globalFD *mo
 		}
 
 		// 已经存在 则添加新的元素
-		//m.fd.Name = strings.TrimSpace(m.fd.Name)
 		if m.fd.Name != "" {
 			if _, ok := globalFD.Fdmap[rawTypeName]; ok {
 				globalFD.Fdmap[rawTypeName] = append(globalFD.Fdmap[rawTypeName], m.fd.Name)

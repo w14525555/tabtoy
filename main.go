@@ -3,8 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/davyxu/golog"
 	"os"
+
+	"github.com/davyxu/golog"
 )
 
 var log = golog.New("main")

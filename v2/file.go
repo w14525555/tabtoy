@@ -1,6 +1,9 @@
 package v2
 
 import (
+	"encoding/csv"
+	"fmt"
+	"os"
 	"strings"
 
 	"github.com/davyxu/tabtoy/v2/i18n"
@@ -163,7 +166,18 @@ func NewFile(filename string) *File {
 	}
 
 	var err error
-	self.coreFile, err = xlsx.OpenFile(filename)
+	if strings.HasSuffix(filename, "xlsx") {
+		self.coreFile, err = xlsx.OpenFile(filename)
+	} else {
+		self.coreFile = generateXLSXFromCSV(filename, ",")
+		if self.coreFile == nil {
+			fmt.Println("NAnui")
+		}
+		if err != nil {
+			fmt.Printf(err.Error())
+			return nil
+		}
+	}
 
 	if err != nil {
 		log.Errorln(err.Error())
@@ -173,4 +187,36 @@ func NewFile(filename string) *File {
 	}
 
 	return self
+}
+
+func generateXLSXFromCSV(csvPath string, delimiter string) *xlsx.File {
+	csvFile, err := os.Open(csvPath)
+	if err != nil {
+		fmt.Printf(err.Error())
+	}
+	defer csvFile.Close()
+	reader := csv.NewReader(csvFile)
+	if len(delimiter) > 0 {
+		reader.Comma = rune(delimiter[0])
+	} else {
+		reader.Comma = rune(',')
+	}
+	xl := xlsx.NewFile()
+	sheet, err := xl.AddSheet(csvPath)
+	if err != nil {
+		fmt.Printf(err.Error())
+	}
+	fields, err := reader.Read()
+	for err == nil {
+		row := sheet.AddRow()
+		for _, field := range fields {
+			cell := row.AddCell()
+			cell.Value = field
+		}
+		fields, err = reader.Read()
+	}
+	if err != nil {
+		fmt.Printf(err.Error())
+	}
+	return xl
 }

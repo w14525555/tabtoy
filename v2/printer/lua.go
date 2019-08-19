@@ -3,6 +3,7 @@ package printer
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/davyxu/tabtoy/util"
 	"github.com/davyxu/tabtoy/v2/i18n"
@@ -91,14 +92,14 @@ func (self *luaPrinter) Run(g *Globals) *Stream {
 
 // 打印标题
 func printTitleLua(g *Globals, stream *Stream) bool {
-
 	stream.Printf("local title = {")
 
 	nodes := g.Tables[0].Recs[0].Nodes
 	length := len(nodes)
 	var str string
 	for index, node := range nodes {
-		str = "[" + "'" + node.Name + "'" + "]=" + strconv.Itoa(index)
+		name := strings.TrimFunc(node.Name, IsBom)
+		str = "[" + "'" + name + "'" + "]=" + strconv.Itoa(index)
 		if index != length-1 {
 			str = str + ","
 		}
@@ -110,6 +111,14 @@ func printTitleLua(g *Globals, stream *Stream) bool {
 	return true
 }
 
+func IsBom(r rune) bool {
+	if uint32(r) == 65279 {
+		return true
+	} else {
+		return false
+	}
+}
+
 func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 	// 遍历每一行
 	for rIndex, r := range tab.Recs {
@@ -119,11 +128,11 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 
 		// 遍历每一列
 		for rootFieldIndex, node := range r.Nodes {
-
+			name := strings.TrimFunc(node.Name, IsBom)
 			if node.IsRepeated {
-				stream.Printf("%s = {", node.Name)
+				stream.Printf("%s = {", name)
 			} else {
-				stream.Printf("%s = ", node.Name)
+				stream.Printf("%s = ", name)
 			}
 
 			// 普通值

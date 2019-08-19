@@ -40,6 +40,8 @@ type FieldDescriptor struct {
 
 	IsRepeated bool
 
+	Is2DArray bool
+
 	EnumValue int32 // 枚举值
 
 	Comment string // 注释
@@ -219,6 +221,17 @@ func (self *FieldDescriptor) ParseType(fileD *FileDescriptor, rawstr string) boo
 		puretype = rawstr[RepeatedKeywordLen+1:]
 
 		self.IsRepeated = true
+	} else if strings.HasPrefix(rawstr, SliceExKeyWord) {
+		// 解析二维数组类型 这里要先于一维数组
+		puretype = rawstr[SliceExKeyWordLen:]
+		self.Is2DArray = true
+		self.IsRepeated = true
+	} else if strings.HasSuffix(rawstr, SliceExKeyWord) {
+		length := len(rawstr)
+		puretype = rawstr[:length-SliceExKeyWordLen]
+
+		self.Is2DArray = true
+		self.IsRepeated = true
 	} else if strings.HasPrefix(rawstr, SliceKeyword) {
 		puretype = rawstr[SliceKeywordLen:]
 
@@ -228,12 +241,6 @@ func (self *FieldDescriptor) ParseType(fileD *FileDescriptor, rawstr string) boo
 		puretype = rawstr[:length-SliceKeywordLen]
 
 		self.IsRepeated = true
-	} else if strings.HasPrefix(rawstr, SliceExKeyWord) {
-		//二维数组前缀类型[][]
-
-	} else if strings.HasSuffix(rawstr, SliceExKeyWord) {
-		//二维数组后缀类型[][]
-
 	} else {
 		puretype = rawstr
 	}
