@@ -1,10 +1,10 @@
-﻿ID,Name,TextName,IconID,Rate,ItemID,BuffID,BuffID,SkillID,AttackParam,Vector3Test,Vector2Test,key,AwardList,Type,Pos,PosSingle,SkillCache
-int,string,text,int32,float,int32,int32[],[]int32,Vector2[],int32,[]Vector3,Vector2,key,[]int32,ActorType,[]Vec2,Vec2,float[]
-RepeatCheck:true MakeIndex:true,"MakeIndex:true 自定义tag: ""支持go的struct tag""",,,,"Default: ""100""","ListSpliter: ""|""","ListSpliter: ""|""",,,,,,,,,,
-唯一ID,名称,,图标ID,技能比率,物品id,BuffID,BuffID,技能ID列表,攻击参数,Vector3,Vector2,Key值,AwardList,枚举类型,结构体数组,结构体,浮点数类型
-100,黑猫警长,黑猫警长，,,0.1,,,10,"{4,6},{8,9}",1,"{3, 4, 5}","{x=1, y=2}",1,"{10,3,4}",唐僧,"{X=100 , Y=89} ,   {X=20, Y=30}","{X=100 , Y=89}","{0,0.333}"
-101,葫芦\n娃,,,0.5,,3,1,,,,,2,"1,3,5",猪八戒,"{100,89},{20, 39}","100, 20","{0,0.467}"
-102,"舒""克""",,,0.3,,,,,,,,3,,沙僧,,"100 , Y=89","{0,0.533}"
+﻿ID,Name,TextName,IconID,Rate,ItemID,BuffID,BuffID,SkillID,AttackParam,Vector3Test,Vector2Test,key,AwardList,Type,Pos,PosSingle,SkillCache,ArrayEx
+int,string,text,int32,float,int32,int32[],[]int32,Vector2[],int32,[]Vector3,Vector2,key,[]int32,ActorType,[]Vec2,Vec2,float[],int[][]
+RepeatCheck:true MakeIndex:true,"MakeIndex:true 自定义tag: ""支持go的struct tag""",,,,"Default: ""100""","ListSpliter: ""|""","ListSpliter: ""|""",,,,,,,,,,,
+唯一ID,名称,,图标ID,技能比率,物品id,BuffID,BuffID,技能ID列表,攻击参数,Vector3,Vector2,Key值,AwardList,枚举类型,结构体数组,结构体,浮点数类型,二维整型数组
+100,黑猫警长,黑猫警长，,,0.1,,,10,"{4,6},{8,9}",1,"{3, 4, 5}","{x=1, y=2}",1,"{10,3,4}",唐僧,"{X=100 , Y=89} ,   {X=20, Y=30}","{X=100 , Y=89}","{0,0.333}","{{0,1},{2,3}}"
+101,葫芦\n娃,,,0.5,,3,1,,,,,2,"1,3,5",猪八戒,"{100,89},{20, 39}","100, 20","{0,0.467}",
+102,"舒""克""",,,0.3,,,,,,,,3,,沙僧,,"100 , Y=89","{0,0.533}",
 103,"贝
-塔",,,0.6,,,,,,,,one,,孙悟空,,,"{0,0.533}"
-104,邋遢大王,,,0.7,,,,,,,,5,,猪八戒,,,
+塔",,,0.6,,,,,,,,one,,孙悟空,,,"{0,0.533}",
+104,邋遢大王,,,0.7,,,,,,,,5,,猪八戒,,,,

@@ -131,6 +131,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 			name := strings.TrimFunc(node.Name, IsBom)
 			if node.IsRepeated {
 				stream.Printf("%s = {", name)
+				// fmt.Println(name)
 			} else {
 				stream.Printf("%s = ", name)
 			}
@@ -139,13 +140,12 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 			if node.Type != model.FieldType_Struct {
 
 				if node.IsRepeated {
-
+					length := len(node.Child)
 					// repeated 值序列
 					for arrIndex, valueNode := range node.Child {
-
 						stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode))
 						// 多个值分割
-						if arrIndex < len(node.Child)-1 {
+						if arrIndex < len(node.Child)-1 && valueNode.Value != "{" && ((arrIndex+1 < length) && node.Child[arrIndex+1].Value != "}") {
 							stream.Printf(", ")
 						}
 

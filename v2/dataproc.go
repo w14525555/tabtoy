@@ -47,14 +47,21 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 				node = node.AddKey(fd)
 			}
 
-			// 二维数组也要增加一个节点
-			if fd.Is2DArray {
-				node = record.NewNodeByDefine(fd)
-				node = node.AddKey(fd)
-			}
-
 			if raw != "" {
-				if !dataProcessor(file, fd, rawSingle, node) {
+				// 二维数组仍旧需要再次分割
+				if fd.Is2DArray {
+					var subValueList []string
+					rawNew := strings.TrimLeft(rawSingle, "{")
+					rawNew = strings.TrimRight(rawNew, "}")
+					subValueList = strings.Split(rawNew, spliter)
+					newNode := record.NewNodeByDefine(fd)
+					newNode.AddValue("{")
+					for _, vv := range subValueList {
+						dataProcessor(file, fd, vv, node)
+					}
+					newNode = record.NewNodeByDefine(fd)
+					newNode.AddValue("}")
+				} else if !dataProcessor(file, fd, rawSingle, node) {
 					return false
 				}
 			}
@@ -69,12 +76,7 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 
 		// 结构体要多添加一个节点, 处理repeated 结构体情况
 		if fd.Type == model.FieldType_Struct {
-
 			node.StructRoot = true
-			node = node.AddKey(fd)
-		}
-
-		if fd.Is2DArray {
 			node = node.AddKey(fd)
 		}
 
