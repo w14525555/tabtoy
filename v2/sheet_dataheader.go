@@ -16,10 +16,10 @@ import (
 
 const (
 	// 信息所在的行
-	DataSheetHeader_FieldName = 0 // 字段名(对应proto)
+	DataSheetHeader_FieldName = 3 // 字段名(对应proto)
 	DataSheetHeader_FieldType = 1 // 字段类型
 	DataSheetHeader_FieldMeta = 2 // 字段特性
-	DataSheetHeader_Comment   = 3 // 用户注释
+	DataSheetHeader_Comment   = 1 // 用户注释
 	DataSheetHeader_DataBegin = 4 // 数据开始
 )
 
