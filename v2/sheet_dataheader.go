@@ -17,8 +17,8 @@ import (
 const (
 	// 信息所在的行
 	DataSheetHeader_FieldName = 3 // 字段名(对应proto)
-	DataSheetHeader_FieldType = 1 // 字段类型
-	DataSheetHeader_FieldMeta = 2 // 字段特性
+	DataSheetHeader_FieldType = 2 // 字段类型
+	DataSheetHeader_FieldMeta = 0 // 字段特性
 	DataSheetHeader_Comment   = 1 // 用户注释
 	DataSheetHeader_DataBegin = 4 // 数据开始
 )
@@ -40,6 +40,8 @@ func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.
 
 	verticalHeader := localFD.Pragma.GetBool("Vertical")
 
+	fmt.Println(globalFD.Name)
+	
 	// 适用于配置的表格
 	if verticalHeader {
 		// 遍历行(从第二行开始)

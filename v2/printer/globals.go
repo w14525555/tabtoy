@@ -1,6 +1,7 @@
 package printer
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/davyxu/tabtoy/v2/i18n"
@@ -21,6 +22,7 @@ type Globals struct {
 	LuaTabHeader       string
 	GenCSSerailizeCode bool
 	PackageName        string
+	Path               string
 
 	Printers []*PrinterContext
 
@@ -68,7 +70,7 @@ func (self *Globals) hasAnyPrinter(exts ...string) bool {
 }
 
 func (self *Globals) AddOutputType(name string, outfile string) {
-
+	fmt.Println(outfile)
 	if p, ok := printerByExt[name]; ok {
 		self.Printers = append(self.Printers, &PrinterContext{
 			p:       p,
@@ -79,6 +81,12 @@ func (self *Globals) AddOutputType(name string, outfile string) {
 		panic("output type not found:" + name)
 	}
 
+}
+
+func GetOuputName(name string) string {
+	name = strings.Replace(name, ".xlsx", "", 1)
+	name = strings.Replace(name, ".csv", "", 1)
+	return name + ".lua"
 }
 
 func (self *Globals) Print() bool {

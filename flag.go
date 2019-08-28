@@ -14,6 +14,8 @@ var (
 	paramPara = flag.Bool("para", false, "parallel export by your cpu count")
 
 	paramLanguage = flag.String("lan", "en_us", "set output language")
+
+	paramPath = flag.String("path", "Config", "path of files")
 )
 
 // 文件类型导出
