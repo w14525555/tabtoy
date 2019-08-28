@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/davyxu/tabtoy/v2/i18n"
@@ -169,6 +170,7 @@ func NewFile(filename string) *File {
 	if strings.HasSuffix(filename, "xlsx") {
 		self.coreFile, err = xlsx.OpenFile(filename)
 	} else {
+		fmt.Println(filename)
 		self.coreFile = generateXLSXFromCSV(filename, ",")
 		if self.coreFile == nil {
 			fmt.Println("NAnui")
@@ -202,7 +204,8 @@ func generateXLSXFromCSV(csvPath string, delimiter string) *xlsx.File {
 		reader.Comma = rune(',')
 	}
 	xl := xlsx.NewFile()
-	sheet, err := xl.AddSheet(csvPath)
+	_, name := filepath.Split(csvPath)
+	sheet, err := xl.AddSheet(name)
 	if err != nil {
 		fmt.Printf(err.Error())
 	}
@@ -210,6 +213,7 @@ func generateXLSXFromCSV(csvPath string, delimiter string) *xlsx.File {
 	for err == nil {
 		row := sheet.AddRow()
 		for _, field := range fields {
+			field = strings.TrimFunc(field, IsBom)
 			cell := row.AddCell()
 			cell.Value = field
 		}
@@ -219,4 +223,16 @@ func generateXLSXFromCSV(csvPath string, delimiter string) *xlsx.File {
 		fmt.Printf(err.Error())
 	}
 	return xl
+}
+
+func IsBom(r rune) bool {
+	if uint32(r) == 65279 {
+		return true
+	} else {
+		return false
+	}
+}
+
+func ParseCSVName() {
+
 }

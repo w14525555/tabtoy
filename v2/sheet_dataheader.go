@@ -41,7 +41,7 @@ func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.
 	verticalHeader := localFD.Pragma.GetBool("Vertical")
 
 	fmt.Println(globalFD.Name)
-	
+
 	// 适用于配置的表格
 	if verticalHeader {
 		// 遍历行(从第二行开始)

@@ -27,7 +27,6 @@ func main() {
 	}
 
 	fileList := GetInputFileList(*paramPath)
-	fmt.Println(fileList)
 
 	for _, v := range fileList {
 		switch *paramMode {
@@ -45,6 +44,7 @@ func main() {
 	}
 }
 
+// 递归读取表格
 func GetInputFileList(pathname string) []string {
 	fileList := []string{}
 
@@ -58,7 +58,6 @@ func GetInputFileList(pathname string) []string {
 			if !strings.Contains(fi.Name(), ".lua") {
 				name := pathname + "\\" + fi.Name()
 				fileList = append(fileList, name)
-				fmt.Println(fileList)
 			}
 		}
 	}
