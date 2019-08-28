@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 
@@ -22,7 +21,7 @@ var (
 	paramGenCSharpBinarySerializeCode = flag.Bool("cs_gensercode", true, "generate c# binary serialize code, default is true")
 )
 
-func V2Entry() {
+func V2Entry(files []string) {
 	g := printer.NewGlobals()
 
 	if *paramLanguage != "" {
@@ -35,7 +34,7 @@ func V2Entry() {
 
 	// 可自动加载Global类型表 这里单独循环是必要的的 因为Global要加到前面才行
 	hasGlobal := false
-	for _, v := range flag.Args() {
+	for _, v := range files {
 		if v == "Globals.xlsx" {
 			hasGlobal = true
 		}
@@ -45,7 +44,7 @@ func V2Entry() {
 		g.InputFileList = append(g.InputFileList, "Globals.xlsx")
 	}
 
-	for _, v := range flag.Args() {
+	for _, v := range files {
 		g.InputFileList = append(g.InputFileList, v)
 	}
 
@@ -58,7 +57,6 @@ func V2Entry() {
 	g.PackageName = *paramPackageName
 	g.Path = *paramPath
 
-	//fileList := GetInputFileList(g.Path)
 	if *paramProtoOut != "" {
 		g.AddOutputType("proto", *paramProtoOut)
 	}
@@ -105,24 +103,7 @@ func V2Entry() {
 	}
 }
 
-func GetInputFileList(pathname string) []string {
-	fileList := make([]string, 0)
-	rd, _ := ioutil.ReadDir(pathname)
-	for _, fi := range rd {
-		if fi.IsDir() {
-			// fmt.Printf("[%s]\n", pathname+"\\"+fi.Name())
-			GetInputFileList(pathname + "\\" + fi.Name())
-		} else {
-			fmt.Println(fi.Name())
-
-			if !strings.Contains(fi.Name(), ".lua") {
-				fileList = append(fileList, pathname+"\\"+fi.Name())
-			}
-		}
-	}
-	return fileList
-}
-
+// 解析得到导出文件的名称
 func ParseFileList(fileList []string) string {
 	for _, v := range fileList {
 		if v != "Globals.xlsx" {

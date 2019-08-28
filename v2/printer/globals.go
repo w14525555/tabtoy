@@ -1,7 +1,6 @@
 package printer
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/davyxu/tabtoy/v2/i18n"
@@ -70,7 +69,6 @@ func (self *Globals) hasAnyPrinter(exts ...string) bool {
 }
 
 func (self *Globals) AddOutputType(name string, outfile string) {
-	fmt.Println(outfile)
 	if p, ok := printerByExt[name]; ok {
 		self.Printers = append(self.Printers, &PrinterContext{
 			p:       p,
