@@ -110,6 +110,7 @@ func ParseFileList(fileList []string) string {
 			fmt.Println("v:" + v)
 			name := strings.Replace(v, ".xlsx", "", 1)
 			name = strings.Replace(name, ".csv", "", 1)
+			name = strings.Split(name, "+")[0]
 			return name + ".lua"
 		}
 	}
