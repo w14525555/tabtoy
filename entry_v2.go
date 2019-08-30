@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"os"
 	"strings"
 
@@ -107,7 +106,6 @@ func V2Entry(files []string) {
 func ParseFileList(fileList []string) string {
 	for _, v := range fileList {
 		if v != "Globals.xlsx" {
-			fmt.Println("v:" + v)
 			name := strings.Replace(v, ".xlsx", "", 1)
 			name = strings.Replace(name, ".csv", "", 1)
 			name = strings.Split(name, "+")[0]

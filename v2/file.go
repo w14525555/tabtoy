@@ -80,7 +80,7 @@ func (self *File) ExportLocalType(mainFile *File) bool {
 				continue
 			}
 
-			log.Infof("            %s", rawSheet.Name)
+			log.Infof("%s", rawSheet.Name)
 
 			dataHeader := newDataHeadSheet()
 
@@ -122,7 +122,7 @@ func (self *File) ExportData(dataModel *model.DataModel, parentHeader *DataHeade
 
 	for index, d := range self.dataSheets {
 
-		log.Infof("            %s", d.Name)
+		//log.Infof("%s", d.Name)
 
 		// 多个sheet时, 使用和多文件一样的父级
 		if parentHeader == nil && len(self.dataHeaders) > 1 {

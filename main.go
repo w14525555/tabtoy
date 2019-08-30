@@ -28,7 +28,6 @@ func main() {
 	}
 
 	fileList := GetInputFileList(*paramPath)
-	fmt.Println(fileList)
 
 	for _, v := range fileList {
 		// 无下划线 则单文件直接导出
