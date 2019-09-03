@@ -78,6 +78,21 @@ func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.
 				Comment:   sheet.GetCellData(DataSheetHeader_Comment, sheet.Column),
 			}
 
+			// 第一列第一行不支持meta 因为要存放介绍等信息
+			// 以后可能支持 但是由于比较复杂 暂且不做
+			if sheet.Column == 0 {
+				meta := he.FieldMeta
+				he.FieldMeta = ""
+				fmt.Println("Name: " + sheet.file.FileName)
+				// 这里要记录文件导出的模式
+				metas := strings.Split(meta, " ")
+				for _, v := range metas {
+					if strings.Contains(v, "C=") {
+
+					}
+				}
+			}
+
 			if he.FieldName == "" {
 				break
 			}

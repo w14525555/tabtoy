@@ -77,6 +77,11 @@ func V2Entry(files []string) {
 		g.AddOutputType("lua", ParseFileList(fileList))
 	}
 
+	// TODO 这里要加两次因为服务器也可能会用到
+	// if *paramLuaOut != "" {
+	// 	g.AddOutputType("lua", ParseFileList(fileList)+"1")
+	// }
+
 	if *paramCSharpOut != "" {
 		g.AddOutputType("cs", *paramCSharpOut)
 	}
