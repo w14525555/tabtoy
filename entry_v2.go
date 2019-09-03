@@ -55,6 +55,9 @@ func V2Entry(files []string) {
 	g.GenCSSerailizeCode = *paramGenCSharpBinarySerializeCode
 	g.PackageName = *paramPackageName
 	g.Path = *paramPath
+	g.HasReadExportType = false
+	g.ClientOut = *paramClientOut
+	g.ServerOut = *paramServerOut
 
 	if *paramProtoOut != "" {
 		g.AddOutputType("proto", *paramProtoOut)
@@ -73,9 +76,8 @@ func V2Entry(files []string) {
 		fileList = append(fileList, v.(string))
 	}
 
-	if *paramLuaOut != "" {
-		g.AddOutputType("lua", ParseFileList(fileList))
-	}
+	// 直接设置lua导出
+	//g.AddOutputType("lua", ParseFileList(fileList))
 
 	// TODO 这里要加两次因为服务器也可能会用到
 	// if *paramLuaOut != "" {
@@ -102,7 +104,7 @@ func V2Entry(files []string) {
 		g.AddOutputType("type", *paramTypeOut)
 	}
 
-	if !v2.Run(g) {
+	if !v2.Run(g, fileList) {
 		os.Exit(1)
 	}
 }

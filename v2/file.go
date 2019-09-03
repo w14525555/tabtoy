@@ -9,6 +9,7 @@ import (
 
 	"github.com/davyxu/tabtoy/v2/i18n"
 	"github.com/davyxu/tabtoy/v2/model"
+	"github.com/davyxu/tabtoy/v2/printer"
 	"github.com/tealeg/xlsx"
 )
 
@@ -39,7 +40,7 @@ func (self *File) GlobalFileDesc() *model.FileDescriptor {
 
 }
 
-func (self *File) ExportLocalType(mainFile *File) bool {
+func (self *File) ExportLocalType(mainFile *File, g *printer.Globals, fileList []string) bool {
 
 	var sheetCount int
 
@@ -60,7 +61,6 @@ func (self *File) ExportLocalType(mainFile *File) bool {
 			}
 
 			sheetCount++
-
 		}
 	}
 
@@ -85,7 +85,7 @@ func (self *File) ExportLocalType(mainFile *File) bool {
 			dataHeader := newDataHeadSheet()
 
 			// 检查引导头
-			if !dataHeader.ParseProtoField(len(self.dataSheets), dSheet.Sheet, self.LocalFD, self.GlobalFD) {
+			if !dataHeader.ParseProtoField(len(self.dataSheets), dSheet.Sheet, self.LocalFD, self.GlobalFD, g, fileList) {
 				return false
 			}
 

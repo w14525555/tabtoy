@@ -22,6 +22,9 @@ type Globals struct {
 	GenCSSerailizeCode bool
 	PackageName        string
 	Path               string
+	HasReadExportType  bool
+	ServerOut          string
+	ClientOut          string
 
 	Printers []*PrinterContext
 

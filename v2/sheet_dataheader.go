@@ -7,6 +7,7 @@ import (
 	"github.com/davyxu/tabtoy/util"
 	"github.com/davyxu/tabtoy/v2/i18n"
 	"github.com/davyxu/tabtoy/v2/model"
+	"github.com/davyxu/tabtoy/v2/printer"
 )
 
 /*
@@ -36,7 +37,7 @@ type DataHeader struct {
 }
 
 // 检查字段行的长度
-func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.FileDescriptor, globalFD *model.FileDescriptor) bool {
+func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.FileDescriptor, globalFD *model.FileDescriptor, g *printer.Globals, fileList []string) bool {
 
 	verticalHeader := localFD.Pragma.GetBool("Vertical")
 
@@ -84,13 +85,7 @@ func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.
 				meta := he.FieldMeta
 				he.FieldMeta = ""
 				fmt.Println("Name: " + sheet.file.FileName)
-				// 这里要记录文件导出的模式
-				metas := strings.Split(meta, " ")
-				for _, v := range metas {
-					if strings.Contains(v, "C=") {
 
-					}
-				}
 			}
 
 			if he.FieldName == "" {
@@ -125,6 +120,55 @@ ErrorStop:
 
 	log.Errorf("%s|%s(%s)", sheet.file.FileName, sheet.Name, util.R1C1ToA1(r, c))
 	return false
+}
+
+func CheckOutputType(g *printer.Globals, meta string) {
+	// 先判定是否已经读取文件的导出类型
+	if !g.HasReadExportType {
+		// 这里要记录文件导出的模式
+		metas := strings.Split(meta, " ")
+		// 客户端导出
+		client := false
+		server := false
+		// 获取客户端和服务器是否导出
+		for _, v := range metas {
+			if strings.Contains(v, "C=") {
+				value := strings.Replace(v, "C=", "", 1)
+				if value == "none" {
+					client = false
+				} else if value == "lua" {
+					client = true
+				} else {
+					log.Errorf("不支持的导出类型：%s", value)
+					return false
+				}
+			}
+
+			if strings.Contains(v, "S=") {
+				value := strings.Replace(v, "S=", "", 1)
+				if value == "none" {
+					server = false
+				} else if value == "lua" {
+					server = true
+				} else {
+					log.Errorf("不支持的导出类型：%s", value)
+					return false
+				}
+			}
+		}
+
+		fileName := ParseFileList(fileList)
+		// 根据是否导出增加OutPut
+		if client {
+			g.AddOutputType("lua", GetClientPath(fileName, g))
+		}
+
+		if server {
+			g.AddOutputType("lua", GetServerPath(fileName, g))
+		}
+
+		g.HasReadExportType = true
+	}
 }
 
 func (self *DataHeader) RawField(index int) *model.FieldDescriptor {
@@ -261,4 +305,25 @@ func newDataHeadSheet() *DataHeader {
 	return &DataHeader{
 		HeaderByName: make(map[string]*model.FieldDescriptor),
 	}
+}
+
+// 解析得到导出文件的名称
+func ParseFileList(fileList []string) string {
+	for _, v := range fileList {
+		if v != "Globals.xlsx" {
+			name := strings.Replace(v, ".xlsx", "", 1)
+			name = strings.Replace(name, ".csv", "", 1)
+			name = strings.Split(name, "+")[0]
+			return name + ".lua"
+		}
+	}
+	return ""
+}
+
+func GetServerPath(name string, g *printer.Globals) string {
+	return strings.Replace(name, g.Path, g.ServerOut, 1)
+}
+
+func GetClientPath(name string, g *printer.Globals) string {
+	return strings.Replace(name, g.Path, g.ClientOut, 1)
 }

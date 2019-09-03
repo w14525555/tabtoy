@@ -8,14 +8,16 @@ var (
 	paramVersion = flag.Bool("version", false, "Show version")
 
 	// 工作模式
-	paramMode = flag.String("mode", "", "v2")
+	paramMode = flag.String("mode", "v2", "v2")
 
 	// 并发导出,提高导出速度, 输出日志会混乱
 	paramPara = flag.Bool("para", false, "parallel export by your cpu count")
 
 	paramLanguage = flag.String("lan", "en_us", "set output language")
 
-	paramPath = flag.String("path", "Config", "path of files")
+	paramPath      = flag.String("path", "Config", "path of files")
+	paramClientOut = flag.String("c", "Client", "path of client lua")
+	paramServerOut = flag.String("s", "Server", "path of server out")
 )
 
 // 文件类型导出

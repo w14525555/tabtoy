@@ -9,8 +9,7 @@ import (
 	"github.com/davyxu/tabtoy/v2/printer"
 )
 
-func Run(g *printer.Globals) bool {
-
+func Run(g *printer.Globals, fileList []string) bool {
 	if !g.PreExport() {
 		return false
 	}
@@ -48,7 +47,7 @@ func Run(g *printer.Globals) bool {
 			file.GlobalFD = g.FileDescriptor
 
 			// 电子表格数据导出到Table对象
-			if !file.ExportLocalType(mainMergeFile) {
+			if !file.ExportLocalType(mainMergeFile, g, fileList) {
 				return false
 			}
 
