@@ -85,7 +85,9 @@ func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.
 				meta := he.FieldMeta
 				he.FieldMeta = ""
 				fmt.Println("Name: " + sheet.file.FileName)
-
+				if !CheckOutputType(g, meta, fileList) {
+					return false
+				}
 			}
 
 			if he.FieldName == "" {
@@ -122,7 +124,7 @@ ErrorStop:
 	return false
 }
 
-func CheckOutputType(g *printer.Globals, meta string) {
+func CheckOutputType(g *printer.Globals, meta string, fileList []string) bool {
 	// 先判定是否已经读取文件的导出类型
 	if !g.HasReadExportType {
 		// 这里要记录文件导出的模式
@@ -134,7 +136,7 @@ func CheckOutputType(g *printer.Globals, meta string) {
 		for _, v := range metas {
 			if strings.Contains(v, "C=") {
 				value := strings.Replace(v, "C=", "", 1)
-				if value == "none" {
+				if value == "none" || value == "" {
 					client = false
 				} else if value == "lua" {
 					client = true
@@ -169,6 +171,8 @@ func CheckOutputType(g *printer.Globals, meta string) {
 
 		g.HasReadExportType = true
 	}
+
+	return true
 }
 
 func (self *DataHeader) RawField(index int) *model.FieldDescriptor {

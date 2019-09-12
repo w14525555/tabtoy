@@ -1,4 +1,4 @@
-﻿RepeatCheck:true MakeIndex:true,"MakeIndex:true 自定义tag: ""支持go的struct tag""",,,,"Default: ""100""","ListSpliter: ""|""","ListSpliter: ""|""",,,,,,,,,,,,
+﻿C=lua S=lua,"MakeIndex:true 自定义tag: ""支持go的struct tag""",,,,"Default: ""100""","ListSpliter: ""|""","ListSpliter: ""|""",,,,,,,,,,,,
 唯一ID,名称,,图标ID,技能比率,物品id,BuffID,BuffID,技能ID列表,攻击参数,Vector3,Vector2,Key值,AwardList,枚举类型,结构体数组,结构体,浮点数类型,二维整型数组,二维浮点数组
 int,string,text,int32,float,int32,int32[],[]int32,Vector2[],int32,[]Vector3,Vector2,key,[]int32,ActorType,[]Vec2,Vec2,float[],int[][],[][]float
 ID,Name,TextName,IconID,Rate,ItemID,BuffID,BuffID,SkillID,AttackParam,Vector3Test,Vector2Test,key,AwardList,Type,Pos,PosSingle,SkillCache,ArrayEx,ArrayExFloat
