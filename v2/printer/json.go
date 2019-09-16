@@ -23,7 +23,7 @@ func valueWrapperJson(t model.FieldType, node *model.Node) string {
 type jsonPrinter struct {
 }
 
-func (self *jsonPrinter) Run(g *Globals) *Stream {
+func (self *jsonPrinter) Run(g *Globals, outputClass int) *Stream {
 
 	bf := NewStream()
 	bf.Printf("{\n")

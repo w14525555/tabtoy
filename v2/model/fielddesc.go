@@ -46,6 +46,10 @@ type FieldDescriptor struct {
 
 	Comment string // 注释
 
+	ExportClient bool // 客户端是否导出
+
+	ExportServer bool // 服务器是否导出
+
 	Parent *Descriptor
 }
 
@@ -213,8 +217,19 @@ const SliceExKeyWord = "[][]"
 const SliceExKeyWordLen = len(SliceExKeyWord)
 
 func (self *FieldDescriptor) ParseType(fileD *FileDescriptor, rawstr string) bool {
-
 	var puretype string
+
+	self.ExportClient = true
+	self.ExportServer = true
+
+	//首先 去掉类型中的|C 或者|S 并记录导出类型
+	if strings.Contains(rawstr, "|C") {
+		self.ExportServer = false
+		rawstr = strings.Replace(rawstr, "|C", "", 1)
+	} else if strings.Contains(rawstr, "|S") {
+		self.ExportClient = false
+		rawstr = strings.Replace(rawstr, "|S", "", 1)
+	}
 
 	if strings.HasPrefix(rawstr, RepeatedKeyword) {
 

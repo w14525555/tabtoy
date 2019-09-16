@@ -36,7 +36,7 @@ type typeFileModel struct {
 	Enums   []*typeStructModel
 }
 
-func (self *typePrinter) Run(g *Globals) *Stream {
+func (self *typePrinter) Run(g *Globals, outputClass int) *Stream {
 
 	bf := NewStream()
 

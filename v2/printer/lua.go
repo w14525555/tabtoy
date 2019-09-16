@@ -38,7 +38,7 @@ func valueWrapperLua(g *Globals, t model.FieldType, n *model.Node) string {
 type luaPrinter struct {
 }
 
-func (self *luaPrinter) Run(g *Globals) *Stream {
+func (self *luaPrinter) Run(g *Globals, outputClass int) *Stream {
 
 	stream := NewStream()
 
@@ -49,7 +49,7 @@ func (self *luaPrinter) Run(g *Globals) *Stream {
 		stream.Printf("\n%s\n", g.LuaTabHeader)
 	}
 
-	if !printTitleLua(g, stream) {
+	if !printTitleLua(g, stream, outputClass) {
 		return nil
 	}
 
@@ -61,7 +61,7 @@ func (self *luaPrinter) Run(g *Globals) *Stream {
 			continue
 		}
 
-		if !printTableLua(g, stream, tab) {
+		if !printTableLua(g, stream, tab, outputClass) {
 			return nil
 		}
 
@@ -91,15 +91,31 @@ func (self *luaPrinter) Run(g *Globals) *Stream {
 }
 
 // 打印标题
-func printTitleLua(g *Globals, stream *Stream) bool {
+func printTitleLua(g *Globals, stream *Stream, outputClass int) bool {
 	stream.Printf("local title = {")
 
 	nodes := g.Tables[0].Recs[0].Nodes
 	length := len(nodes)
 	var str string
+	var i = 0
 	for index, node := range nodes {
+		// 客户端导出类型
+		if outputClass == 1 {
+			if !node.ExportClient {
+				continue
+			}
+		}
+
+		// 服务器导出类型
+		if outputClass == 2 {
+			if !node.ExportServer {
+				continue
+			}
+		}
+
 		name := strings.TrimFunc(node.Name, IsBom)
-		str = "[" + "'" + name + "'" + "]=" + strconv.Itoa(index)
+		str = "[" + "'" + name + "'" + "]=" + strconv.Itoa(i)
+		i = i + 1
 		if index != length-1 {
 			str = str + ","
 		}
@@ -119,7 +135,7 @@ func IsBom(r rune) bool {
 	}
 }
 
-func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
+func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int) bool {
 	// 遍历每一行
 	for rIndex, r := range tab.Recs {
 
@@ -128,6 +144,19 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 
 		// 遍历每一列
 		for rootFieldIndex, node := range r.Nodes {
+			// 客户端导出类型
+			if outputClass == 1 {
+				if !node.ExportClient {
+					continue
+				}
+			}
+
+			// 服务器导出类型
+			if outputClass == 2 {
+				if !node.ExportServer {
+					continue
+				}
+			}
 			name := strings.TrimFunc(node.Name, IsBom)
 			if node.IsRepeated {
 				stream.Printf("%s = {", name)

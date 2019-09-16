@@ -71,12 +71,13 @@ func (self *Globals) hasAnyPrinter(exts ...string) bool {
 	return false
 }
 
-func (self *Globals) AddOutputType(name string, outfile string) {
+func (self *Globals) AddOutputType(name string, outfile string, class int) {
 	if p, ok := printerByExt[name]; ok {
 		self.Printers = append(self.Printers, &PrinterContext{
 			p:       p,
 			outFile: outfile,
 			name:    name,
+			class:   class,
 		})
 	} else {
 		panic("output type not found:" + name)

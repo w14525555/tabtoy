@@ -162,11 +162,11 @@ func CheckOutputType(g *printer.Globals, meta string, fileList []string) bool {
 		fileName := ParseFileList(fileList)
 		// 根据是否导出增加OutPut
 		if client {
-			g.AddOutputType("lua", GetClientPath(fileName, g))
+			g.AddOutputType("lua", GetClientPath(fileName, g), 1)
 		}
 
 		if server {
-			g.AddOutputType("lua", GetServerPath(fileName, g))
+			g.AddOutputType("lua", GetServerPath(fileName, g), 2)
 		}
 
 		g.HasReadExportType = true

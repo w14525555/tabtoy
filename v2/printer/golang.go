@@ -492,7 +492,7 @@ func collectAllStructInfo(g *Globals, fm *goFileModel) {
 	}
 }
 
-func (self *goPrinter) Run(g *Globals) *Stream {
+func (self *goPrinter) Run(g *Globals, outputClass int) *Stream {
 
 	tpl, err := template.New("golang").Parse(goTemplate)
 	if err != nil {

@@ -99,7 +99,7 @@ type protoFileModel struct {
 type protoPrinter struct {
 }
 
-func (self *protoPrinter) Run(g *Globals) *Stream {
+func (self *protoPrinter) Run(g *Globals, outputClass int) *Stream {
 
 	tpl, err := template.New("proto").Parse(protoTemplate)
 	if err != nil {

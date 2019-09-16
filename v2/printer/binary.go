@@ -3,9 +3,10 @@ package printer
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"strings"
+
 	"github.com/davyxu/tabtoy/v2/i18n"
 	"github.com/davyxu/tabtoy/v2/model"
-	"strings"
 )
 
 const combineFileVersion = 4
@@ -13,7 +14,7 @@ const combineFileVersion = 4
 type binaryPrinter struct {
 }
 
-func (self *binaryPrinter) Run(g *Globals) *Stream {
+func (self *binaryPrinter) Run(g *Globals, outputClass int) *Stream {
 
 	fileStresam := NewStream()
 	fileStresam.WriteString("TT")

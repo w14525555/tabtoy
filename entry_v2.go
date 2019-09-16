@@ -59,17 +59,17 @@ func V2Entry(files []string) {
 	g.ClientOut = *paramClientOut
 	g.ServerOut = *paramServerOut
 
-	if *paramProtoOut != "" {
-		g.AddOutputType("proto", *paramProtoOut)
-	}
+	// if *paramProtoOut != "" {
+	// 	g.AddOutputType("proto", *paramProtoOut)
+	// }
 
-	if *paramPbtOut != "" {
-		g.AddOutputType("pbt", *paramPbtOut)
-	}
+	// if *paramPbtOut != "" {
+	// 	g.AddOutputType("pbt", *paramPbtOut)
+	// }
 
-	if *paramJsonOut != "" {
-		g.AddOutputType("json", *paramJsonOut)
-	}
+	// if *paramJsonOut != "" {
+	// 	g.AddOutputType("json", *paramJsonOut)
+	// }
 
 	fileList := make([]string, 0)
 	for _, v := range g.InputFileList {
@@ -84,25 +84,25 @@ func V2Entry(files []string) {
 	// 	g.AddOutputType("lua", ParseFileList(fileList)+"1")
 	// }
 
-	if *paramCSharpOut != "" {
-		g.AddOutputType("cs", *paramCSharpOut)
-	}
+	// if *paramCSharpOut != "" {
+	// 	g.AddOutputType("cs", *paramCSharpOut)
+	// }
 
-	if *paramGoOut != "" {
-		g.AddOutputType("go", *paramGoOut)
-	}
+	// if *paramGoOut != "" {
+	// 	g.AddOutputType("go", *paramGoOut)
+	// }
 
-	if *paramCppOut != "" {
-		g.AddOutputType("cpp", *paramCppOut)
-	}
+	// if *paramCppOut != "" {
+	// 	g.AddOutputType("cpp", *paramCppOut)
+	// }
 
-	if *paramBinaryOut != "" {
-		g.AddOutputType("bin", *paramBinaryOut)
-	}
+	// if *paramBinaryOut != "" {
+	// 	g.AddOutputType("bin", *paramBinaryOut)
+	// }
 
-	if *paramTypeOut != "" {
-		g.AddOutputType("type", *paramTypeOut)
-	}
+	// if *paramTypeOut != "" {
+	// 	g.AddOutputType("type", *paramTypeOut)
+	// }
 
 	if !v2.Run(g, fileList) {
 		os.Exit(1)
