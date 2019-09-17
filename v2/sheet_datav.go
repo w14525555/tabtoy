@@ -60,7 +60,7 @@ func (self *DataSheet) exportColumnMajor(file *File, dataModel *model.DataModel,
 		}
 
 		// #开头表示注释, 跳过
-		if strings.Index(fieldDef.Name, "#") == 0 {
+		if strings.Index(fieldDef.Name, "#") == 0 || fieldDef.Name == "" {
 			continue
 		}
 

@@ -90,7 +90,7 @@ func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.
 				}
 			}
 
-			if he.FieldName == "" {
+			if he.FieldName == "" && he.Comment == "" && he.FieldType == "" {
 				break
 			}
 
@@ -241,7 +241,7 @@ func (self *DataHeader) addHeaderElement(he *DataHeaderElement, localFD *model.F
 	var errorPos int = -1
 
 	// #开头表示注释, 跳过
-	if strings.Index(he.FieldName, "#") != 0 {
+	if strings.Index(he.FieldName, "#") != 0 && he.FieldName != "" {
 
 		errorPos = he.Parse(def, localFD, globalFD, self.HeaderByName)
 		if errorPos != -1 {

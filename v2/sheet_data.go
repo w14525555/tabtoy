@@ -148,7 +148,7 @@ func (self *DataSheet) processLine(fieldDef *model.FieldDescriptor, line *model.
 	}
 
 	// #开头表示注释, 跳过
-	if strings.Index(fieldDef.Name, "#") == 0 {
+	if strings.Index(fieldDef.Name, "#") == 0 || fieldDef.Name == "" {
 		return lineOp_Continue
 	}
 
@@ -185,7 +185,7 @@ func fieldDefGetter(index int, dataHeader, parentHeader *DataHeader) (*model.Fie
 
 	if parentHeader != nil {
 
-		if strings.Index(fieldDef.Name, "#") == 0 {
+		if strings.Index(fieldDef.Name, "#") == 0 || fieldDef.Name == "" {
 			return fieldDef, true
 		}
 
