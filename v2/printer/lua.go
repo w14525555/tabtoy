@@ -98,6 +98,7 @@ func printTitleLua(g *Globals, stream *Stream, outputClass int) bool {
 	length := len(nodes)
 	var str string
 	var i = 0
+	var hasKey = false
 	for index, node := range nodes {
 		// 客户端导出类型
 		if outputClass == 1 {
@@ -110,6 +111,17 @@ func printTitleLua(g *Globals, stream *Stream, outputClass int) bool {
 		if outputClass == 2 {
 			if !node.ExportServer {
 				continue
+			}
+		}
+
+		// key值类型 导出直接为索引
+		if node.IsKey {
+			if !hasKey {
+				hasKey = true
+				continue
+			} else{
+				log.Errorf("只允许有一列使用|key, %s", node.Name)
+				return false
 			}
 		}
 
@@ -138,12 +150,36 @@ func IsBom(r rune) bool {
 func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int) bool {
 	// 遍历每一行
 	for rIndex, r := range tab.Recs {
+		var hasKey = false
+		// 要先看看是否需要key值索引
+		for _, node := range r.Nodes {
+			// 如果有key 就需要根据key值去索引
+			if node.IsKey {
+				// 只允许有一个key
+				if !hasKey {
+					hasKey = true
+				} else {
+					log.Errorf("只允许有一列使用|key, %s", node.Name)
+					return false
+				}
+
+				if node.Type != model.FieldType_Struct && !node.IsRepeated {
+					valueNode := node.Child[0]
+					stream.Printf("["+"%s"+"]=", valueWrapperLua(g, node.Type, valueNode))
+				} else {
+					log.Errorf("不支持结构体或数组为key！")
+					return false
+				}
+
+			}
+		}
 
 		// 每一行开始
 		stream.Printf("{ ")
 
 		// 遍历每一列
 		for rootFieldIndex, node := range r.Nodes {
+
 			// 客户端导出类型
 			if outputClass == 1 {
 				if !node.ExportClient {
@@ -160,7 +196,6 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 			name := strings.TrimFunc(node.Name, IsBom)
 			if node.IsRepeated {
 				stream.Printf("%s = {", name)
-				// fmt.Println(name)
 			} else {
 				stream.Printf("%s = ", name)
 			}

@@ -50,6 +50,8 @@ type FieldDescriptor struct {
 
 	ExportServer bool // 服务器是否导出
 
+	IsKey bool // 是否为key
+
 	Parent *Descriptor
 }
 
@@ -222,13 +224,21 @@ func (self *FieldDescriptor) ParseType(fileD *FileDescriptor, rawstr string) boo
 	self.ExportClient = true
 	self.ExportServer = true
 
-	//首先 去掉类型中的|C 或者|S 并记录导出类型
+	//首先 去掉类型中的|C 或者|S 并记录导出类型 分开导出
 	if strings.Contains(rawstr, "|C") {
 		self.ExportServer = false
 		rawstr = strings.Replace(rawstr, "|C", "", 1)
 	} else if strings.Contains(rawstr, "|S") {
 		self.ExportClient = false
 		rawstr = strings.Replace(rawstr, "|S", "", 1)
+	}
+
+	// 添加|key的支持
+	if strings.Contains(rawstr, "|key") {
+		self.IsKey = true
+		rawstr = strings.Replace(rawstr, "|key", "", 1)
+	} else {
+		self.IsKey = false
 	}
 
 	if strings.HasPrefix(rawstr, RepeatedKeyword) {
