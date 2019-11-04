@@ -97,7 +97,7 @@ func printTitleLua(g *Globals, stream *Stream, outputClass int) bool {
 	nodes := g.Tables[0].Recs[0].Nodes
 	length := len(nodes)
 	var str string
-	var i = 0
+	var i = 1
 	var hasKey = false
 	for index, node := range nodes {
 		// 客户端导出类型
@@ -119,7 +119,7 @@ func printTitleLua(g *Globals, stream *Stream, outputClass int) bool {
 			if !hasKey {
 				hasKey = true
 				continue
-			} else{
+			} else {
 				log.Errorf("只允许有一列使用|key, %s", node.Name)
 				return false
 			}

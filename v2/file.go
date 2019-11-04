@@ -1,8 +1,10 @@
 package v2
 
 import (
+	"bytes"
 	"encoding/csv"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,6 +13,8 @@ import (
 	"github.com/davyxu/tabtoy/v2/model"
 	"github.com/davyxu/tabtoy/v2/printer"
 	"github.com/tealeg/xlsx"
+	"golang.org/x/text/encoding/simplifiedchinese"
+	"golang.org/x/text/transform"
 )
 
 // 检查单元格值重复结构
@@ -170,7 +174,6 @@ func NewFile(filename string) *File {
 	if strings.HasSuffix(filename, "xlsx") {
 		self.coreFile, err = xlsx.OpenFile(filename)
 	} else {
-		fmt.Println(filename)
 		self.coreFile = generateXLSXFromCSV(filename, ",")
 		if self.coreFile == nil {
 			fmt.Println("NAnui")
@@ -197,6 +200,7 @@ func generateXLSXFromCSV(csvPath string, delimiter string) *xlsx.File {
 		fmt.Printf(err.Error())
 	}
 	defer csvFile.Close()
+
 	reader := csv.NewReader(csvFile)
 	if len(delimiter) > 0 {
 		reader.Comma = rune(delimiter[0])
@@ -210,10 +214,24 @@ func generateXLSXFromCSV(csvPath string, delimiter string) *xlsx.File {
 		fmt.Printf(err.Error())
 	}
 	fields, err := reader.Read()
+	for i := 0; i < len(fields[0]); i++ {
+		fmt.Println(uint32(rune(fields[0][i])))
+	}
+
 	for err == nil {
 		row := sheet.AddRow()
 		for _, field := range fields {
 			field = strings.TrimFunc(field, IsBom)
+			// fmt.Println(field)
+			// for i := 0; i < len(field); i++ {
+			// 	fmt.Println()
+			// }
+			// if len(field) > 0 && uint32(rune(field[0])) > 150 {
+			// 	data, _ := ConvGBKToUTF8([]byte(field))
+			// 	field = string(data)
+			// }
+			// data, _ := ConvGBKToUTF8([]byte(field))
+			// field = string(data)
 			cell := row.AddCell()
 			cell.Value = field
 		}
@@ -223,6 +241,26 @@ func generateXLSXFromCSV(csvPath string, delimiter string) *xlsx.File {
 		fmt.Printf(err.Error())
 	}
 	return xl
+}
+
+func ConvGBKToUTF8(s []byte) ([]byte, error) {
+	I := bytes.NewReader(s)
+	O := transform.NewReader(I, simplifiedchinese.GBK.NewDecoder())
+	d, e := ioutil.ReadAll(O)
+	if e != nil {
+		return nil, e
+	}
+	return d, nil
+}
+
+func ConvUTF8ToGBK(s []byte) ([]byte, error) {
+	I := bytes.NewReader(s)
+	O := transform.NewReader(I, simplifiedchinese.GBK.NewEncoder())
+	d, e := ioutil.ReadAll(O)
+	if e != nil {
+		return nil, e
+	}
+	return d, nil
 }
 
 func IsBom(r rune) bool {

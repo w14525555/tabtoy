@@ -1,0 +1,8 @@
+装备纹耀系统基础 C=lua S=lua,,,
+纹耀ID,纹耀名字,解锁等级,穿戴装备等级
+int,text,int,int
+BadgeID,Name,UnlockLevel,WearLevel
+1,勇武,200,10
+2,睿智,260,12
+3,坚韧,280,13
+4,慷慨,300,14
