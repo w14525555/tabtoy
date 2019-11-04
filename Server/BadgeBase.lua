@@ -2,10 +2,10 @@
 -- Version: 2.9.1
 local title = {['BadgeID']=1,['Name']=2,['UnlockLevel']=3,['WearLevel']=4}
 local data = {
-{ BadgeID = 1, Name = "ÓÂÎä", UnlockLevel = 200, WearLevel = 10},
-{ BadgeID = 2, Name = "î£ÖÇ", UnlockLevel = 260, WearLevel = 12},
-{ BadgeID = 3, Name = "¼áÈÍ", UnlockLevel = 280, WearLevel = 13},
-{ BadgeID = 4, Name = "¿¶¿®", UnlockLevel = 300, WearLevel = 14}
+{ BadgeID = 1, Name = "å‹‡æ­¦", UnlockLevel = 200, WearLevel = 10},
+{ BadgeID = 2, Name = "ç¿æ™º", UnlockLevel = 260, WearLevel = 12},
+{ BadgeID = 3, Name = "åšéŸ§", UnlockLevel = 280, WearLevel = 13},
+{ BadgeID = 4, Name = "æ…·æ…¨", UnlockLevel = 300, WearLevel = 14}
 }
 
 return {data, title}

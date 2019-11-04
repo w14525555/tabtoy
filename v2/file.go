@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/davyxu/tabtoy/v2/i18n"
 	"github.com/davyxu/tabtoy/v2/model"
@@ -214,24 +215,16 @@ func generateXLSXFromCSV(csvPath string, delimiter string) *xlsx.File {
 		fmt.Printf(err.Error())
 	}
 	fields, err := reader.Read()
-	for i := 0; i < len(fields[0]); i++ {
-		fmt.Println(uint32(rune(fields[0][i])))
-	}
 
 	for err == nil {
 		row := sheet.AddRow()
 		for _, field := range fields {
 			field = strings.TrimFunc(field, IsBom)
-			// fmt.Println(field)
-			// for i := 0; i < len(field); i++ {
-			// 	fmt.Println()
-			// }
-			// if len(field) > 0 && uint32(rune(field[0])) > 150 {
-			// 	data, _ := ConvGBKToUTF8([]byte(field))
-			// 	field = string(data)
-			// }
-			// data, _ := ConvGBKToUTF8([]byte(field))
-			// field = string(data)
+			// 如果不符合UTF8标准 则进行转换
+			if len(field) > 0 && !utf8.ValidString(field) {
+				data, _ := ConvGBKToUTF8([]byte(field))
+				field = string(data)
+			}
 			cell := row.AddCell()
 			cell.Value = field
 		}
