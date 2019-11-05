@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// FieldDesc 定义了全部的数据类型 以及对类型的解析
 type FieldType int
 
 const (

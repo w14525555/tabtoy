@@ -1,13 +1,15 @@
 package v2
 
 import (
-	"github.com/davyxu/tabtoy/v2/i18n"
-	"github.com/davyxu/tabtoy/v2/printer"
 	"path/filepath"
 	"strings"
 	"sync"
+
+	"github.com/davyxu/tabtoy/v2/i18n"
+	"github.com/davyxu/tabtoy/v2/printer"
 )
 
+// 获取文件列表
 func getFileList(g *printer.Globals) (ret []string) {
 	// 合并类型
 	for _, in := range g.InputFileList {

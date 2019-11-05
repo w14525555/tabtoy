@@ -86,6 +86,7 @@ func Run(g *printer.Globals, fileList []string) bool {
 		dataModel := model.NewDataModel()
 
 		tab := model.NewTable()
+		// 本文件的类型描述表
 		tab.LocalFD = file.LocalFD
 
 		// 主表

@@ -90,8 +90,13 @@ func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.
 				}
 			}
 
-			if he.FieldName == "" && he.Comment == "" && he.FieldType == "" {
+			if he.FieldName == "" && he.Comment == "" {
 				break
+			}
+
+			// 默认类型为int
+			if he.FieldType == "" {
+				he.FieldType = "int"
 			}
 
 			if errorPos := self.addHeaderElement(he, localFD, globalFD); errorPos != -1 {

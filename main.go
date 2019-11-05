@@ -26,7 +26,7 @@ func main() {
 		fmt.Printf("%s", Version)
 		return
 	}
-
+	// 递归获取表格文件列表
 	fileList := GetInputFileList(*paramPath)
 
 	for _, v := range fileList {

@@ -1,0 +1,7 @@
+观光飞船配置 C=lua S=lua,,,,,,,,,,,,,,,
+飞船ID,路径所在地图,路径ID,转向角速度,水平速度,升空高度,竖直速度,是否需要上升,是否需要下降,下一段飞行路径,模型路径,特效路径，默认左右脚各挂一个,隐藏单位范围（相差x毫秒的单位）,完成任务步骤触发,接受任务步骤触发,头顶血条偏移
+int|key,,,float|C,,int|C,int|C,int|C,int|C,int|S,string|C,string|C,float|C,int|S,int|S,float|C
+AirshipID,MapType,PathID,AngularSpeed,HorizontalSpeed,Height,VerticalSpeed,NeedMoveUp,NeedMoveDown,NextAirship,ModelPath,EffectPath,HideAnimalRange,FinishQuestStep,AcceptQuestStep,HudOffset
+1,6,1,40,15,40,15,1,0,2,vehicle/vehicle_07/vehicle_07_01_prefab,,200,0,0,8
+2,7,1,40,15,40,15,0,1,0,vehicle/vehicle_07/vehicle_07_01_prefab,,200,0,0,8
+9,7,9,40,15,40,15,1,1,0,vehicle/vehicle_07/vehicle_07_01_prefab,,200,0,0,5

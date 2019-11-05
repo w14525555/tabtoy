@@ -113,11 +113,13 @@ func printTitleLua(g *Globals, stream *Stream, outputClass int) bool {
 	stream.Printf("local title = {")
 
 	nodes := g.Tables[0].Recs[0].Nodes
-	length := len(nodes)
+	length := getNumOfNodes(outputClass, nodes)
+	var realIndex = 0
+
 	var str string
 	var i = 1
 	var hasKey = false
-	for index, node := range nodes {
+	for _, node := range nodes {
 		// 客户端导出类型
 		if outputClass == 1 {
 			if !node.ExportClient {
@@ -146,9 +148,10 @@ func printTitleLua(g *Globals, stream *Stream, outputClass int) bool {
 		name := strings.TrimFunc(node.Name, IsBom)
 		str = "[" + "'" + name + "'" + "]=" + strconv.Itoa(i)
 		i = i + 1
-		if index != length-1 {
+		if realIndex < length - 1 {
 			str = str + ","
 		}
+		realIndex++
 		stream.Printf(str)
 	}
 
@@ -197,8 +200,12 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 		// 每一行开始
 		stream.Printf("{ ")
 
+		realSize := getNumOfNodes(outputClass, r.Nodes)
+
+		var realIndex = 0
+
 		// 遍历每一列
-		for rootFieldIndex, node := range r.Nodes {
+		for _, node := range r.Nodes {
 
 			// 客户端导出类型
 			if outputClass == 1 {
@@ -290,9 +297,11 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 			}
 
 			// 根字段分割
-			if rootFieldIndex < len(r.Nodes)-1 {
+			if realIndex < realSize - 1 {
 				stream.Printf(",")
 			}
+
+			realIndex++
 
 		}
 
@@ -309,6 +318,23 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 
 	return true
 
+}
+
+func getNumOfNodes(outputClass int, nodes []*model.Node) int {
+	var count = 0
+
+	for _, v := range nodes {
+		// 客户端字段为key便会添加索引
+		if outputClass == 1 && v.ExportClient && !v.IsKey {
+			count = count + 1
+		}
+
+		if outputClass == 2 && v.ExportServer {
+			count = count + 1
+		}
+	}
+
+	return count
 }
 
 func anyFieldOutput(d *model.Descriptor) bool {
