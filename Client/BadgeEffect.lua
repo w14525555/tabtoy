@@ -2,18 +2,17 @@
 -- Version: 2.9.1
 local title = {['BadgeID']=1,['BadgeLevel']=2,['EffectPath']=3}
 local data = {
-{ BadgeID = 1, BadgeLevel = 1, EffectPath = 'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile1' },
-{ BadgeID = 1, BadgeLevel = 3, EffectPath = 'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile2' },
-{ BadgeID = 1, BadgeLevel = 5, EffectPath = 'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile3' },
-{ BadgeID = 2, BadgeLevel = 1, EffectPath = 'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile1' },
-{ BadgeID = 2, BadgeLevel = 3, EffectPath = 'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile2' },
-{ BadgeID = 2, BadgeLevel = 5, EffectPath = 'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile3' },
-{ BadgeID = 3, BadgeLevel = 1, EffectPath = 'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile1' },
-{ BadgeID = 3, BadgeLevel = 3, EffectPath = 'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile2' },
-{ BadgeID = 3, BadgeLevel = 5, EffectPath = 'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile3' },
-{ BadgeID = 4, BadgeLevel = 1, EffectPath = 'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile1' },
-{ BadgeID = 4, BadgeLevel = 3, EffectPath = 'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile2' },
-{ BadgeID = 4, BadgeLevel = 5, EffectPath = 'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile3' }
+{ 1,1,'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile1' },
+{ 1,3,'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile2' },
+{ 1,5,'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile3' },
+{ 2,1,'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile1' },
+{ 2,3,'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile2' },
+{ 2,5,'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile3' },
+{ 3,1,'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile1' },
+{ 3,3,'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile2' },
+{ 3,5,'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile3' },
+{ 4,1,'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile1' },
+{ 4,3,'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile2' },
+{ 4,5,'ui/UI_effect_beile/shengtangwenyao/shengtangwenyao_beile3' }
 }
-
 return {data, title}

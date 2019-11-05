@@ -85,7 +85,7 @@ func (self *luaPrinter) Run(g *Globals, outputClass int) *Stream {
 	// 	return stream
 	// }
 
-	stream.Printf("\nreturn {data, title}")
+	stream.Printf("return {data, title}")
 
 	return stream
 }
@@ -193,11 +193,14 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 					continue
 				}
 			}
-			name := strings.TrimFunc(node.Name, IsBom)
+			// name := strings.TrimFunc(node.Name, IsBom)
+			// if node.IsRepeated {
+			// 	stream.Printf("%s = {", name)
+			// } else {
+			// 	stream.Printf("%s = ", name)
+			// }
 			if node.IsRepeated {
-				stream.Printf("%s = {", name)
-			} else {
-				stream.Printf("%s = ", name)
+				stream.Printf("{")
 			}
 
 			// 普通值
@@ -210,7 +213,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 						stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode))
 						// 多个值分割
 						if arrIndex < len(node.Child)-1 && valueNode.Value != "{" && ((arrIndex+1 < length) && node.Child[arrIndex+1].Value != "}") {
-							stream.Printf(", ")
+							stream.Printf(",")
 						}
 
 					}
@@ -262,7 +265,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 
 			// 根字段分割
 			if rootFieldIndex < len(r.Nodes)-1 {
-				stream.Printf(", ")
+				stream.Printf(",")
 			}
 
 		}

@@ -2,16 +2,15 @@
 -- Version: 2.9.1
 local title = {['ID']=1,['Name']=2,['TextName']=3,['IconID']=4,['ItemID']=5,['BuffID']=6,['SkillID']=7,['AttackParam']=8,['Vector3Test']=9,['Vector2Test']=10,['key']=11,['AwardList']=12,['Type']=13,['Pos']=14,['PosSingle']=15,['SkillCache']=16,['ArrayEx']=17,['ArrayExFloat']=18}
 local data = {
-{ ID = 100, Name = '黑猫警长', TextName = '黑猫警长，', IconID = 0, ItemID = 100, BuffID = {10}, SkillID = {{x=4,y=6}, {x=8,y=9}}, AttackParam = 1, Vector3Test = {{x=3,y=4,z=5}}, Vector2Test = {x=1,y=2}, key = 1, AwardList = {10, 3, 4}, Type = 0, Pos = {{X=100,Y=89},{X=20,Y=30}}, PosSingle = {X=100,Y=89}, SkillCache = {0, 0.333}, ArrayEx = {{0, 1}, {2, 3}}, ArrayExFloat = {{0.1, 0.2, 0.3}, {0.4, 0.5, 0.6}} },
-{ ID = 101, Name = '葫芦\n娃', TextName = '', IconID = 0, ItemID = 100, BuffID = {3, 1}, SkillID = {}, AttackParam = 0, Vector3Test = {}, Vector2Test = {x=0,y=0}, key = 2, AwardList = {1, 3, 5}, Type = 2, Pos = {{X=100,Y=89},{X=20,Y=39}}, PosSingle = {X=100,Y=20}, SkillCache = {0, 0.467}, ArrayEx = {}, ArrayExFloat = {} },
-{ ID = 102, Name = '舒\"克\"', TextName = '', IconID = 0, ItemID = 100, BuffID = {}, SkillID = {}, AttackParam = 0, Vector3Test = {}, Vector2Test = {x=0,y=0}, key = 3, AwardList = {}, Type = 3, Pos = {{}}, PosSingle = {X=100,Y=89}, SkillCache = {0, 0.533}, ArrayEx = {}, ArrayExFloat = {} },
-{ ID = 103, Name = '贝\n塔', TextName = '', IconID = 0, ItemID = 100, BuffID = {}, SkillID = {}, AttackParam = 0, Vector3Test = {}, Vector2Test = {x=0,y=0}, key = 'one', AwardList = {}, Type = 1, Pos = {{}}, PosSingle = {X=0,Y=0}, SkillCache = {0, 0.533}, ArrayEx = {}, ArrayExFloat = {} },
-{ ID = 104, Name = '邋遢大王', TextName = '', IconID = 0, ItemID = 100, BuffID = {}, SkillID = {}, AttackParam = 0, Vector3Test = {}, Vector2Test = {x=0,y=0}, key = 5, AwardList = {}, Type = 2, Pos = {{}}, PosSingle = {X=0,Y=0}, SkillCache = {}, ArrayEx = {}, ArrayExFloat = {} },
-{ ID = 105, Name = '黑猫警长', TextName = '黑猫警长，', IconID = 0, ItemID = 100, BuffID = {10}, SkillID = {{x=4,y=6}, {x=8,y=9}}, AttackParam = 1, Vector3Test = {{x=3,y=4,z=5}}, Vector2Test = {x=1,y=2}, key = 6, AwardList = {10, 3, 4}, Type = 0, Pos = {{X=100,Y=89},{X=20,Y=30}}, PosSingle = {X=100,Y=89}, SkillCache = {0, 0.333}, ArrayEx = {{0, 1}, {2, 3}}, ArrayExFloat = {{0.1, 0.2, 0.3}, {0.4, 0.5, 0.6}} },
-{ ID = 106, Name = '葫芦\n娃', TextName = '', IconID = 0, ItemID = 100, BuffID = {3, 1}, SkillID = {}, AttackParam = 0, Vector3Test = {}, Vector2Test = {x=0,y=0}, key = 7, AwardList = {1, 3, 5}, Type = 2, Pos = {{X=100,Y=89},{X=20,Y=39}}, PosSingle = {X=100,Y=20}, SkillCache = {0, 0.467}, ArrayEx = {}, ArrayExFloat = {} },
-{ ID = 107, Name = '舒\"克\"', TextName = '', IconID = 0, ItemID = 100, BuffID = {}, SkillID = {}, AttackParam = 0, Vector3Test = {}, Vector2Test = {x=0,y=0}, key = 8, AwardList = {}, Type = 3, Pos = {{}}, PosSingle = {X=100,Y=89}, SkillCache = {0, 0.533}, ArrayEx = {}, ArrayExFloat = {} },
-{ ID = 108, Name = '贝\n塔', TextName = '', IconID = 0, ItemID = 100, BuffID = {}, SkillID = {}, AttackParam = 0, Vector3Test = {}, Vector2Test = {x=0,y=0}, key = 'Two', AwardList = {}, Type = 1, Pos = {{}}, PosSingle = {X=0,Y=0}, SkillCache = {0, 0.533}, ArrayEx = {}, ArrayExFloat = {} },
-{ ID = 109, Name = '邋遢大王', TextName = '', IconID = 0, ItemID = 100, BuffID = {}, SkillID = {}, AttackParam = 0, Vector3Test = {}, Vector2Test = {x=0,y=0}, key = 10, AwardList = {}, Type = 2, Pos = {{}}, PosSingle = {X=0,Y=0}, SkillCache = {}, ArrayEx = {}, ArrayExFloat = {} }
+{ 100,'黑猫警长','黑猫警长，',0,100,{10},{{x=4,y=6},{x=8,y=9}},1,{{x=3,y=4,z=5}},{x=1,y=2},1,{10,3,4},0,{{X=100,Y=89},{X=20,Y=30}},{X=100,Y=89},{0,0.333},{{0,1},{2,3}},{{0.1,0.2,0.3},{0.4,0.5,0.6}} },
+{ 101,'葫芦\n娃','',0,100,{3,1},{},0,{},{x=0,y=0},2,{1,3,5},2,{{X=100,Y=89},{X=20,Y=39}},{X=100,Y=20},{0,0.467},{},{} },
+{ 102,'舒\"克\"','',0,100,{},{},0,{},{x=0,y=0},3,{},3,{{}},{X=100,Y=89},{0,0.533},{},{} },
+{ 103,'贝\n塔','',0,100,{},{},0,{},{x=0,y=0},'one',{},1,{{}},{X=0,Y=0},{0,0.533},{},{} },
+{ 104,'邋遢大王','',0,100,{},{},0,{},{x=0,y=0},5,{},2,{{}},{X=0,Y=0},{},{},{} },
+{ 105,'黑猫警长','黑猫警长，',0,100,{10},{{x=4,y=6},{x=8,y=9}},1,{{x=3,y=4,z=5}},{x=1,y=2},6,{10,3,4},0,{{X=100,Y=89},{X=20,Y=30}},{X=100,Y=89},{0,0.333},{{0,1},{2,3}},{{0.1,0.2,0.3},{0.4,0.5,0.6}} },
+{ 106,'葫芦\n娃','',0,100,{3,1},{},0,{},{x=0,y=0},7,{1,3,5},2,{{X=100,Y=89},{X=20,Y=39}},{X=100,Y=20},{0,0.467},{},{} },
+{ 107,'舒\"克\"','',0,100,{},{},0,{},{x=0,y=0},8,{},3,{{}},{X=100,Y=89},{0,0.533},{},{} },
+{ 108,'贝\n塔','',0,100,{},{},0,{},{x=0,y=0},'Two',{},1,{{}},{X=0,Y=0},{0,0.533},{},{} },
+{ 109,'邋遢大王','',0,100,{},{},0,{},{x=0,y=0},10,{},2,{{}},{X=0,Y=0},{},{},{} }
 }
-
 return {data, title}
