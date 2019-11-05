@@ -24,21 +24,20 @@ func StringEscape(s string) string {
 		case '\r':
 			b = append(b, '\\')
 			b = append(b, 'r')
-		case '\\':
+		// case '\\':
 
-			var nextChar byte
-			if index+1 < len(s) {
-				nextChar = s[index+1]
-			}
+		// 	var nextChar byte
+		// 	if index+1 < len(s) {
+		// 		nextChar = s[index+1]
+		// 	}
 
-			b = append(b, '\\')
+		// 	b = append(b, '\\')
 
-			switch nextChar {
-			case 'n', 'r':
-			default:
-				b = append(b, c)
-			}
-
+		// 	switch nextChar {
+		// 	case 'n', 'r':
+		// 	default:
+		// 		b = append(b, c)
+		// 	}
 		default:
 			b = append(b, c)
 		}
