@@ -85,7 +85,7 @@ func (self *luaPrinter) Run(g *Globals, outputClass int) *Stream {
 	// 	return stream
 	// }
 
-	stream.Printf("return {data, title}")
+	stream.Printf("return {data, title}\n")
 
 	return stream
 }
