@@ -220,7 +220,7 @@ func generateXLSXFromCSV(csvPath string, delimiter string) *xlsx.File {
 		row := sheet.AddRow()
 		for _, field := range fields {
 			field = strings.TrimFunc(field, IsBom)
-			// 如果不符合UTF8标准 则进行转换
+			// 如果不符合UTF8标准 则进行转换 注意只能支持从GBK格式的转换
 			if len(field) > 0 && !utf8.ValidString(field) {
 				data, _ := ConvGBKToUTF8([]byte(field))
 				field = string(data)
