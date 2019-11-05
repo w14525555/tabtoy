@@ -133,7 +133,7 @@ func printTitleLua(g *Globals, stream *Stream, outputClass int) bool {
 		}
 
 		// key值类型 导出直接为索引
-		if node.IsKey {
+		if node.IsKey && outputClass != 2 {
 			if !hasKey {
 				hasKey = true
 				continue
@@ -169,26 +169,28 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 	// 遍历每一行
 	for _, r := range tab.Recs {
 		var hasKey = false
-		// 要先看看是否需要key值索引
-		for _, node := range r.Nodes {
-			// 如果有key 就需要根据key值去索引
-			if node.IsKey {
-				// 只允许有一个key
-				if !hasKey {
-					hasKey = true
-				} else {
-					log.Errorf("只允许有一列使用|key, %s", node.Name)
-					return false
-				}
+		// 要先看看是否需要key值索引 只有客户端需要
+		if outputClass == 1 {
+			for _, node := range r.Nodes {
+				// 如果有key 就需要根据key值去索引
+				if node.IsKey {
+					// 只允许有一个key
+					if !hasKey {
+						hasKey = true
+					} else {
+						log.Errorf("只允许有一列使用|key, %s", node.Name)
+						return false
+					}
 
-				if node.Type != model.FieldType_Struct && !node.IsRepeated {
-					valueNode := node.Child[0]
-					stream.Printf("["+"%s"+"]=", valueWrapperLua(g, node.Type, valueNode))
-				} else {
-					log.Errorf("不支持结构体或数组为key！")
-					return false
-				}
+					if node.Type != model.FieldType_Struct && !node.IsRepeated {
+						valueNode := node.Child[0]
+						stream.Printf("["+"%s"+"]=", valueWrapperLua(g, node.Type, valueNode))
+					} else {
+						log.Errorf("不支持结构体或数组为key！")
+						return false
+					}
 
+				}
 			}
 		}
 
@@ -211,6 +213,12 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 					continue
 				}
 			}
+
+			// 如果为key 则客户端已经有索引
+			if node.IsKey && outputClass == 1 {
+				continue
+			}
+
 			// name := strings.TrimFunc(node.Name, IsBom)
 			// if node.IsRepeated {
 			// 	stream.Printf("%s = {", name)
