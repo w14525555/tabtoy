@@ -268,7 +268,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 		}
 
 		// 每一行结束
-		stream.Printf("}")
+		stream.Printf(" }")
 
 		if rIndex < len(tab.Recs)-1 {
 			stream.Printf(",")

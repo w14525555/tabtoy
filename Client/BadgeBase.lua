@@ -2,10 +2,10 @@
 -- Version: 2.9.1
 local title = {['BadgeID']=1,['Name']=2,['UnlockLevel']=3,['WearLevel']=4}
 local data = {
-{ BadgeID = 1, Name = '勇武', UnlockLevel = 200, WearLevel = 10},
-{ BadgeID = 2, Name = '睿智', UnlockLevel = 260, WearLevel = 12},
-{ BadgeID = 3, Name = '坚韧', UnlockLevel = 280, WearLevel = 13},
-{ BadgeID = 4, Name = '慷慨', UnlockLevel = 300, WearLevel = 14}
+{ BadgeID = 1, Name = '勇武', UnlockLevel = 200, WearLevel = 10 },
+{ BadgeID = 2, Name = '睿智', UnlockLevel = 260, WearLevel = 12 },
+{ BadgeID = 3, Name = '坚韧', UnlockLevel = 280, WearLevel = 13 },
+{ BadgeID = 4, Name = '慷慨', UnlockLevel = 300, WearLevel = 14 }
 }
 
 return {data, title}
