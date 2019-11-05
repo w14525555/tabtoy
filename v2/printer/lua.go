@@ -85,7 +85,25 @@ func (self *luaPrinter) Run(g *Globals, outputClass int) *Stream {
 	// 	return stream
 	// }
 
-	stream.Printf("return {data, title}\n")
+	// 如果是服务器配置 则要设置metaTable
+	if outputClass == 2 {
+		stream.Printf("local mt = {__index = function (table,key)\n")
+		stream.Printf("    local temp = title[key]\n")
+		stream.Printf("    if temp then\n")
+		stream.Printf("        return table[temp]\n")
+		stream.Printf("    end\n")
+		stream.Printf("    return nil\n")
+		stream.Printf("end}\n")
+		stream.Printf("for k, v in pairs(data) do\n")
+		stream.Printf("    setmetatable(v, mt)\n")
+		stream.Printf("end\n")
+	}
+
+	if outputClass == 2 {
+		stream.Printf("return {data=data, title=title}\n")
+	} else {
+		stream.Printf("return {data, title}\n")
+	}
 
 	return stream
 }

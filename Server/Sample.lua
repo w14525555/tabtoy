@@ -6,4 +6,14 @@ local data = {
 [0.6]={ 103,'贝\n塔','',0,0.6,100,{},{},0,{},{x=0,y=0},'one',{},1,{{}},{X=0,Y=0},{0,0.533},{},{},false },
 [0.7]={ 104,'邋遢大王','',0,0.7,100,{},{},0,{},{x=0,y=0},5,{},2,{{}},{X=0,Y=0},{},{},{},false },
 }
-return {data, title}
+local mt = {__index = function (table,key)
+    local temp = title[key]
+    if temp then
+        return table[temp]
+    end
+    return nil
+end}
+for k, v in pairs(data) do
+    setmetatable(v, mt)
+end
+return {data=data, title=title}

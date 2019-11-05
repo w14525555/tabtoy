@@ -46,4 +46,14 @@ local data = {
 { 9,4,80,{14,15},{5323,443},63377 },
 { 9,5,100,{6},{532},76053 },
 }
-return {data, title}
+local mt = {__index = function (table,key)
+    local temp = title[key]
+    if temp then
+        return table[temp]
+    end
+    return nil
+end}
+for k, v in pairs(data) do
+    setmetatable(v, mt)
+end
+return {data=data, title=title}
