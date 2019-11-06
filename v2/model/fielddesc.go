@@ -238,6 +238,9 @@ func (self *FieldDescriptor) ParseType(fileD *FileDescriptor, rawstr string) boo
 	if strings.Contains(rawstr, "|key") {
 		self.IsKey = true
 		rawstr = strings.Replace(rawstr, "|key", "", 1)
+	} else if strings.Contains(rawstr, "key|") {
+		self.IsKey = true
+		rawstr = strings.Replace(rawstr, "key|", "", 1)
 	} else if rawstr == "key" {
 		self.IsKey = true
 	} else {
