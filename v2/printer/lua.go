@@ -232,24 +232,36 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 			// } else {
 			// 	stream.Printf("%s = ", name)
 			// }
+
+			length := len(node.Child)
+
+			// 空值时 客户端显示为nil 服务器显示为{}
 			if node.IsRepeated {
-				stream.Printf("{")
+				// 导出格式为服务器或者长度大于0
+				if outputClass == 2 || length > 0 {
+					stream.Printf("{")
+				}
 			}
 
 			// 普通值
 			if node.Type != model.FieldType_Struct {
 
 				if node.IsRepeated {
-					length := len(node.Child)
-					// repeated 值序列
-					for arrIndex, valueNode := range node.Child {
-						stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode))
-						// 多个值分割
-						if arrIndex < len(node.Child)-1 && valueNode.Value != "{" && ((arrIndex+1 < length) && node.Child[arrIndex+1].Value != "}") {
-							stream.Printf(",")
-						}
+					// 客户端输出为nil值 节约内存
+					if length == 0 && outputClass == 1 {
+						stream.Printf("nil")
+					} else {
+						// repeated 值序列
+						for arrIndex, valueNode := range node.Child {
+							stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode))
+							// 多个值分割
+							if arrIndex < len(node.Child)-1 && valueNode.Value != "{" && ((arrIndex+1 < length) && node.Child[arrIndex+1].Value != "}") {
+								stream.Printf(",")
+							}
 
+						}
 					}
+
 				} else {
 					// 单值
 					valueNode := node.Child[0]
@@ -292,8 +304,12 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 
 			}
 
+			// 空值时 客户端显示为nil 服务器显示为{}
 			if node.IsRepeated {
-				stream.Printf("}")
+				// 导出格式为服务器或者长度大于0
+				if outputClass == 2 || length > 0 {
+					stream.Printf("}")
+				}
 			}
 
 			// 根字段分割

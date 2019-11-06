@@ -31,8 +31,11 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 		_, err := strconv.ParseInt(value, 10, 64)
 
 		if err != nil {
-			log.Debugln(err)
-			return "", false
+			_, err := strconv.ParseFloat(value, 32)
+			if err != nil {
+				log.Debugln(err)
+				return "", false
+			}
 		}
 
 		ret = value

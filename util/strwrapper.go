@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"strings"
 )
 
 func StringEscape(s string) string {
@@ -55,11 +56,35 @@ func StringEscape(s string) string {
 		return strB
 	}
 
+	// 双引号返回
 	var length = len(strB)
 	if length > 0 && strB[0] == '"' && strB[length-1] == '"' {
 		return strB
 	}
 
+	// 单引号也直接返回
+	if length > 0 && rune(strB[0]) == 39 {
+		return strB
+	}
+
+	// 数字直接返回数字
+	if length > 0 && isDigits(strB) {
+		return strB
+	}
+
 	return fmt.Sprintf("'%s'", strB)
 
+}
+
+func isDigits(str string) bool {
+	if str == "" {
+		return false
+	}
+
+	for _, v := range str {
+		if !strings.Contains("0123456789", string(v)) {
+			return false
+		}
+	}
+	return true
 }

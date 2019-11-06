@@ -56,6 +56,7 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 					// 如果最后一位是逗号 则需要干掉这个逗号 否则分割会错误
 					rawNew = strings.TrimRight(rawNew, "},")
 
+					//fmt.Println(rawNew)
 					subValueList = strings.Split(rawNew, spliter)
 					newNode := record.NewNodeByDefine(fd)
 					newNode.AddValue("{")
