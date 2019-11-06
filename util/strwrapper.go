@@ -15,15 +15,18 @@ func StringEscape(s string) string {
 		c := s[index]
 
 		switch c {
-		case '"':
-			b = append(b, '\\')
-			b = append(b, '"')
+		// case '"':
+		// 	b = append(b, '\\')
+		// 	b = append(b, '"')
 		case '\n':
 			b = append(b, '\\')
 			b = append(b, 'n')
 		case '\r':
 			b = append(b, '\\')
 			b = append(b, 'r')
+		// case '{':
+		// 	fmt.Println("111111111111")
+		// 	b = append(b, '{')
 		// case '\\':
 
 		// 	var nextChar byte
@@ -46,6 +49,17 @@ func StringEscape(s string) string {
 
 	}
 
-	return fmt.Sprintf("'%s'", string(b))
+	// 如果是{}类型的节点 说明是二维数组自己加的节点 不能返回引号形式
+	var strB = string(b)
+	if strB == "{" || strB == "}" {
+		return strB
+	}
+
+	var length = len(strB)
+	if length > 0 && strB[0] == '"' && strB[length - 1] == '"' {
+		return strB
+	}
+
+	return fmt.Sprintf("'%s'", strB)
 
 }

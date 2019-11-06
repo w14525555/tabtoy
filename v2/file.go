@@ -45,6 +45,7 @@ func (self *File) GlobalFileDesc() *model.FileDescriptor {
 
 }
 
+// 解析表格 判定是类型表还是数据表
 func (self *File) ExportLocalType(mainFile *File, g *printer.Globals, fileList []string) bool {
 
 	var sheetCount int
