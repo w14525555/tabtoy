@@ -10,10 +10,16 @@ import (
 	"github.com/davyxu/tabtoy/v2/model"
 )
 
-func valueWrapperLua(g *Globals, t model.FieldType, n *model.Node) string {
+func valueWrapperLua(g *Globals, t model.FieldType, n *model.Node, isSingle bool) string {
 
 	switch t {
-	case model.FieldType_String, model.FieldType_Text:
+	case model.FieldType_String:
+		if !isSingle {
+			return util.StringEscape(n.Value)
+		} else {
+			return util.StringEscapeForSingle(n.Value)
+		}
+	case model.FieldType_Text:
 		return util.StringEscape(n.Value)
 	case model.FieldType_Key:
 		// 暂时用int64的方式来解析key
@@ -187,7 +193,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 
 					if node.Type != model.FieldType_Struct && !node.IsRepeated {
 						valueNode := node.Child[0]
-						stream.Printf("["+"%s"+"]=", valueWrapperLua(g, node.Type, valueNode))
+						stream.Printf("["+"%s"+"]=", valueWrapperLua(g, node.Type, valueNode, false))
 					} else {
 						log.Errorf("不支持结构体或数组为key！")
 						return false
@@ -253,7 +259,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 					} else {
 						// repeated 值序列
 						for arrIndex, valueNode := range node.Child {
-							stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode))
+							stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode, false))
 							// 多个值分割
 							if arrIndex < len(node.Child)-1 && valueNode.Value != "{" && ((arrIndex+1 < length) && node.Child[arrIndex+1].Value != "}") {
 								stream.Printf(",")
@@ -266,7 +272,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 					// 单值
 					valueNode := node.Child[0]
 
-					stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode))
+					stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode, true))
 				}
 
 			} else {
@@ -283,7 +289,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 						// 值节点总是在第一个
 						valueNode := fieldNode.Child[0]
 
-						stream.Printf("%s=%s", fieldNode.Name, valueWrapperLua(g, fieldNode.Type, valueNode))
+						stream.Printf("%s=%s", fieldNode.Name, valueWrapperLua(g, fieldNode.Type, valueNode, false))
 
 						// 结构体字段分割
 						if structFieldIndex < len(structNode.Child)-1 {
