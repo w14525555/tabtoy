@@ -148,7 +148,7 @@ func printTitleLua(g *Globals, stream *Stream, outputClass int) bool {
 		name := strings.TrimFunc(node.Name, IsBom)
 		str = "[" + "'" + name + "'" + "]=" + strconv.Itoa(i)
 		i = i + 1
-		if realIndex < length - 1 {
+		if realIndex < length-1 {
 			str = str + ","
 		}
 		realIndex++
@@ -297,7 +297,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 			}
 
 			// 根字段分割
-			if realIndex < realSize - 1 {
+			if realIndex < realSize-1 {
 				stream.Printf(",")
 			}
 

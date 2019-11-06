@@ -68,7 +68,6 @@ func (self *Stream) WriteBytes(v []byte) {
 }
 
 func (self *Stream) WriteNodeValue(ft model.FieldType, value *model.Node) {
-
 	switch ft {
 	case model.FieldType_Int32:
 		v, _ := strconv.ParseInt(value.Value, 10, 32)

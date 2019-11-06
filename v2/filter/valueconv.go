@@ -27,6 +27,7 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 		node.AddValue(ret)
 	// 添加新的支持类型 int默认为int64
 	case model.FieldType_Int64, model.FieldType_Int:
+		value = strings.TrimRight(value, "}")
 		_, err := strconv.ParseInt(value, 10, 64)
 
 		if err != nil {

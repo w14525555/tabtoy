@@ -1,6 +1,8 @@
 package util
 
-import "strconv"
+import (
+	"strconv"
+)
 
 func StringToPrimitive(str string, value interface{}) (error, bool) {
 	switch raw := value.(type) {

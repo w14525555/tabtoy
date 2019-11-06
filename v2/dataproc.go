@@ -53,6 +53,9 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 					var subValueList []string
 					rawNew := strings.TrimLeft(rawSingle, "{")
 					rawNew = strings.TrimRight(rawNew, "}")
+					// 如果最后一位是逗号 则需要干掉这个逗号 否则分割会错误
+					rawNew = strings.TrimRight(rawNew, "},")
+
 					subValueList = strings.Split(rawNew, spliter)
 					newNode := record.NewNodeByDefine(fd)
 					newNode.AddValue("{")

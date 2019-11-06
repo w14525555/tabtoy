@@ -56,7 +56,7 @@ func StringEscape(s string) string {
 	}
 
 	var length = len(strB)
-	if length > 0 && strB[0] == '"' && strB[length - 1] == '"' {
+	if length > 0 && strB[0] == '"' && strB[length-1] == '"' {
 		return strB
 	}
 
