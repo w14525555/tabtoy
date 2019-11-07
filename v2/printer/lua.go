@@ -38,7 +38,6 @@ func valueWrapperLua(g *Globals, t model.FieldType, n *model.Node, isSingle bool
 	case model.FieldType_CustomEnum:
 		return n.Value
 	case model.FieldType_Bool:
-		fmt.Println(n.Value)
 		if n.Value == "true" {
 			return "1"
 		} else {

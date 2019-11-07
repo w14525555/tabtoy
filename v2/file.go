@@ -197,6 +197,7 @@ func NewFile(filename string) *File {
 }
 
 func generateXLSXFromCSV(csvPath string, delimiter string) *xlsx.File {
+	var isGBK = false
 	csvFile, err := os.Open(csvPath)
 	if err != nil {
 		fmt.Printf(err.Error())
@@ -222,7 +223,8 @@ func generateXLSXFromCSV(csvPath string, delimiter string) *xlsx.File {
 		for _, field := range fields {
 			field = strings.TrimFunc(field, IsBom)
 			// 如果不符合UTF8标准 则进行转换 注意只能支持从GBK格式的转换
-			if len(field) > 0 && !utf8.ValidString(field) {
+			if isGBK || len(field) > 0 && !utf8.ValidString(field) {
+				isGBK = true
 				data, _ := ConvGBKToUTF8([]byte(field))
 				field = string(data)
 			}
