@@ -106,32 +106,32 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 	case model.FieldType_Text:
 		ret = value
 		node.AddValue(ret)
-	case model.FieldType_Vector3:
-		values := parseVectors(value)
-		if len(values) == 3 {
-			ret = "{" + "x=" + values[0] + "," + "y=" + values[1] + "," + "z=" + values[2] + "}"
-			ret = strings.Trim(ret, " ")
-			node.AddValue(ret)
-		} else if value == "" {
-			ret = "{x=0,y=0,z=0}"
-			node.AddValue(ret)
-		} else {
-			log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_VectorError), value)
-			return "", false
-		}
-	case model.FieldType_Vector2:
-		values := parseVectors(value)
-		if len(values) == 2 {
-			ret = "{" + "x=" + values[0] + "," + "y=" + values[1] + "}"
-			ret = strings.Trim(ret, " ")
-			node.AddValue(ret)
-		} else if value == "" {
-			ret = "{x=0,y=0}"
-			node.AddValue(ret)
-		} else {
-			log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_VectorError), value)
-			return "", false
-		}
+	// case model.FieldType_Vector3:
+	// 	values := parseVectors(value)
+	// 	if len(values) == 3 {
+	// 		ret = "{" + "x=" + values[0] + "," + "y=" + values[1] + "," + "z=" + values[2] + "}"
+	// 		ret = strings.Trim(ret, " ")
+	// 		node.AddValue(ret)
+	// 	} else if value == "" {
+	// 		ret = "{x=0,y=0,z=0}"
+	// 		node.AddValue(ret)
+	// 	} else {
+	// 		log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_VectorError), value)
+	// 		return "", false
+	// 	}
+	// case model.FieldType_Vector2:
+	// 	values := parseVectors(value)
+	// 	if len(values) == 2 {
+	// 		ret = "{" + "x=" + values[0] + "," + "y=" + values[1] + "}"
+	// 		ret = strings.Trim(ret, " ")
+	// 		node.AddValue(ret)
+	// 	} else if value == "" {
+	// 		ret = "{x=0,y=0}"
+	// 		node.AddValue(ret)
+	// 	} else {
+	// 		log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_VectorError), value)
+	// 		return "", false
+	// 	}
 	case model.FieldType_Key:
 		if value == "" {
 			log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_KeyNil), fd.Name)

@@ -117,7 +117,7 @@ func (self *typeModelRoot) ParseData(localFD *model.FileDescriptor, globalFD *mo
 			globalFD.Fdmap = make(map[string][]string)
 		}
 
-		// 已经存在 则添加新的元素
+		// 这里把结构体相关的数据保存到一个map 根据类型索引
 		if m.fd.Name != "" {
 			if _, ok := globalFD.Fdmap[rawTypeName]; ok {
 				globalFD.Fdmap[rawTypeName] = append(globalFD.Fdmap[rawTypeName], m.fd.Name)

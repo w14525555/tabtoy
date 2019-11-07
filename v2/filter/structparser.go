@@ -1,6 +1,8 @@
 package filter
 
 import (
+	"fmt"
+
 	"github.com/davyxu/golexer"
 	"github.com/davyxu/tabtoy/v2/i18n"
 	"github.com/davyxu/tabtoy/v2/model"
@@ -119,8 +121,9 @@ func parseStruct(fd *model.FieldDescriptor, value string, fileD *model.FileDescr
 
 		bnField := fd.Complex.FieldByValueAndMeta(key)
 		if bnField == nil {
-			// 有可能为空 空就从全局读
+			// 如果为空就从全局结构体map中读取
 			bnField = fd.Complex.FieldByGlobalMap(key, count)
+			fmt.Println(bnField)
 			if bnField == nil {
 				log.Errorf("%s, '%s'", i18n.String(i18n.StructParser_FieldNotFound), key)
 

@@ -22,10 +22,6 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 		if fd.Type == model.FieldType_Struct || fd.Is2DArray {
 			// 结构体数组分割
 			valueList = strings.Split(raw, "},{")
-		} else if fd.Type != model.FieldType_Vector2 && fd.Type != model.FieldType_Vector3 {
-			raw = strings.TrimLeft(raw, "{")
-			raw = strings.TrimRight(raw, "}")
-			valueList = strings.Split(raw, spliter)
 		} else {
 			valueList = parseVector(fd.Type, raw)
 		}
@@ -100,11 +96,11 @@ func parseVector(ft model.FieldType, raw string) []string {
 	raw = strings.Replace(raw, "}", "", -1)
 	valueList := strings.Split(raw, ",")
 
-	if ft == model.FieldType_Vector2 {
-		return getVectorResult(2, valueList)
-	} else if ft == model.FieldType_Vector3 {
-		return getVectorResult(3, valueList)
-	}
+	// if ft == model.FieldType_Vector2 {
+	// 	return getVectorResult(2, valueList)
+	// } else if ft == model.FieldType_Vector3 {
+	// 	return getVectorResult(3, valueList)
+	// }
 
 	return valueList
 }
