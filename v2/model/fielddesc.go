@@ -2,6 +2,7 @@ package model
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -9,22 +10,23 @@ import (
 type FieldType int
 
 const (
-	FieldType_None    FieldType = 0
-	FieldType_Int32   FieldType = 1
-	FieldType_Int64   FieldType = 2
-	FieldType_UInt32  FieldType = 3
-	FieldType_UInt64  FieldType = 4
-	FieldType_Float   FieldType = 5
-	FieldType_String  FieldType = 6
-	FieldType_Bool    FieldType = 7
-	FieldType_Enum    FieldType = 8
-	FieldType_Struct  FieldType = 9
-	FieldType_Table   FieldType = 10 // 表格, 仅限二进制使用
-	FieldType_Int     FieldType = 11 // = int64
-	FieldType_Text    FieldType = 12 // 可以有中文逗号
-	FieldType_Vector3 FieldType = 13
-	FieldType_Vector2 FieldType = 14
-	FieldType_Key     FieldType = 15 // key 这里会检查是否重复
+	FieldType_None       FieldType = 0
+	FieldType_Int32      FieldType = 1
+	FieldType_Int64      FieldType = 2
+	FieldType_UInt32     FieldType = 3
+	FieldType_UInt64     FieldType = 4
+	FieldType_Float      FieldType = 5
+	FieldType_String     FieldType = 6
+	FieldType_Bool       FieldType = 7
+	FieldType_Enum       FieldType = 8
+	FieldType_Struct     FieldType = 9
+	FieldType_Table      FieldType = 10 // 表格, 仅限二进制使用
+	FieldType_Int        FieldType = 11 // = int64
+	FieldType_Text       FieldType = 12 // 可以有中文逗号
+	FieldType_Vector3    FieldType = 13
+	FieldType_Vector2    FieldType = 14
+	FieldType_Key        FieldType = 15 // key 这里会检查是否重复
+	FieldType_CustomEnum FieldType = 16 // 类型行定义的枚举类型
 )
 
 // 一列的描述
@@ -54,6 +56,10 @@ type FieldDescriptor struct {
 	IsKey bool // 是否为key
 
 	Parent *Descriptor
+
+	EnumMap map[string]int
+
+	IsCustomEnum bool
 }
 
 func NewFieldDescriptor() *FieldDescriptor {
@@ -182,16 +188,17 @@ var strByFieldDescriptor = map[FieldType]string{
 	FieldType_UInt32: "uint32",
 	FieldType_UInt64: "uint64",
 
-	FieldType_Float:   "float",
-	FieldType_String:  "string",
-	FieldType_Bool:    "bool",
-	FieldType_Enum:    "enum",
-	FieldType_Struct:  "struct",
-	FieldType_Int:     "int",
-	FieldType_Text:    "text",
-	FieldType_Vector3: "Vector3",
-	FieldType_Vector2: "Vector2",
-	FieldType_Key:     "key",
+	FieldType_Float:      "float",
+	FieldType_String:     "string",
+	FieldType_Bool:       "bool",
+	FieldType_Enum:       "enum",
+	FieldType_Struct:     "struct",
+	FieldType_Int:        "int",
+	FieldType_Text:       "text",
+	FieldType_Vector3:    "Vector3",
+	FieldType_Vector2:    "Vector2",
+	FieldType_Key:        "key",
+	FieldType_CustomEnum: "customEnum",
 }
 
 var fieldTypeByString = make(map[string]FieldType)
@@ -276,6 +283,42 @@ func (self *FieldDescriptor) ParseType(fileD *FileDescriptor, rawstr string) boo
 		puretype = rawstr
 	}
 
+	// 枚举类型 单独定义
+	if strings.Contains(rawstr, "{") && strings.Contains(rawstr, "}") {
+		self.EnumMap = make(map[string]int)
+		valueList := strings.Split(rawstr, "\n")
+		for i, v := range valueList {
+			// 零值应该是枚举的名称 这里暂时不处理
+			if i == 0 {
+			} else if i == 1 {
+				// 第二个元素应该是大阔号
+				v = strings.TrimSpace(v)
+				if v != "{" {
+					return false
+				}
+			} else {
+				// 后面的元素应该是枚举值或末尾的大阔号
+				v = strings.TrimSpace(v)
+				if v == "}" {
+					break
+				} else {
+					keyValue := strings.Split(v, "=")
+					if len(keyValue) != 2 {
+						return false
+					} else {
+						key := strings.TrimSpace(keyValue[0])
+						value := strings.TrimSpace(keyValue[1])
+						nValue, _ := strconv.Atoi(value)
+						self.EnumMap[key] = nValue
+					}
+				}
+			}
+		}
+		self.IsCustomEnum = true
+		puretype = "customEnum"
+	}
+
+	// 这里得到类型的字符串
 	if ft, ok := ParseFieldType(puretype); ok {
 		self.Type = ft
 		return true
@@ -304,5 +347,4 @@ func init() {
 	for k, v := range strByFieldDescriptor {
 		fieldTypeByString[v] = k
 	}
-
 }
