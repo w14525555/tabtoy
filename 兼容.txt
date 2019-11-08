@@ -1,0 +1,3 @@
+1. 结构体数组中间没有逗号也可以正常转出，"}{"和"},{"两种格式
+2. PlanetaryEngineReward中Position应该配成Vector3类型才对，这里选择不兼容，需要规范。
+3. rescuePlanBase中的checkPointTypeIDs,应该配成int数组类型
