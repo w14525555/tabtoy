@@ -173,6 +173,7 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 		}
 
 		if value == "" {
+			node.IsEmpty = true
 			if !fillStructDefaultValue(fd.Complex, fileD, node) {
 				return "", false
 			}

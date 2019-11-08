@@ -283,9 +283,12 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 				}
 
 			} else {
-
 				// 遍历repeated的结构体
 				for structIndex, structNode := range node.Child {
+					if structNode.IsEmpty {
+						stream.Printf("nil")
+						break
+					}
 
 					// 结构体开始
 					stream.Printf("{")

@@ -9,6 +9,7 @@ type Node struct {
 	Value     string
 	EnumValue int32
 	Raw       []byte
+	IsEmpty   bool
 
 	Child []*Node // 优先遍历值, 再key
 
