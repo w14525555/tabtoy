@@ -198,7 +198,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 
 					if node.Type != model.FieldType_Struct && !node.IsRepeated {
 						valueNode := node.Child[0]
-						stream.Printf("["+"%s"+"]=", valueWrapperLua(g, node.Type, valueNode, false))
+						stream.Printf("["+"%s"+"]=", valueWrapperLua(g, node.Type, valueNode, true))
 					} else {
 						log.Errorf("不支持结构体或数组为key！")
 						return false
