@@ -137,8 +137,21 @@ func CheckOutputType(g *printer.Globals, meta string, fileList []string) bool {
 		// 客户端导出
 		client := false
 		server := false
-		// 获取客户端和服务器是否导出
+
+		// 逗号分隔的
+		metaSplitByComma := make([]string, 0, 0)
+		// 因为可能存在着逗号分割的情况 因此要兼容
 		for _, v := range metas {
+			if strings.Contains(v, ",") {
+				values := strings.Split(v, ",")
+				metaSplitByComma = append(metaSplitByComma, values...)
+			} else {
+				metaSplitByComma = append(metaSplitByComma, v)
+			}
+		}
+
+		// 获取客户端和服务器是否导出
+		for _, v := range metaSplitByComma {
 			if strings.Contains(v, "C=") {
 				value := strings.Replace(v, "C=", "", 1)
 				if value == "none" || value == "" {
