@@ -1,0 +1,58 @@
+C=lua S=lua,,,,,,,,,,,,,,,,,,,
+坐骑ID,展示顺序,组ID（同一时装不同颜色）,坐骑名,默认坐骑ID,"限时价格
+[时限类型
+1为7天，2为30天，3为永久,100为读解锁条件表中该坐骑id对应的条件;
+消耗类型1:物品 2:钱；ID；数量]",坐骑描述,颜色,材质路径,坐骑模型路径,是否能赠送(1可赠送，0不可赠送),坐骑图标,"坐骑特效
+[82] = {'G_Additional01', 'G_Additional01'},
+[83] = {'G_Additional02', 'G_Additional02'},
+[84] = {'G_Additional03', 'G_Additional03'},
+[85] = {'G_Additional04', 'G_Additional04'},
+[86] = {'G_Additional05', 'G_Additional05'},
+[87] = {'G_Weapon_A', 'G_Weapon_A'}, -- EffectBindType.WeaponA
+[88] = {'G_Weapon_B', 'G_Weapon_B'}, -- EffectBindType.WeaponB
+[89] = {'G_Buff', 'G_Head'}, -- EffectBindType.Buff
+[90] = {'G_Step', 'Bip001'}, -- EffectBindType.Step
+[91] = {'G_Weapon_L', 'Dummy002'}, -- EffectBindType.LeftWeapon
+[92] = {'G_Weapon_R', 'Dummy002'}, -- EffectBindType.RightWeapon
+[93] = {'G_zuoqi', 'G_zuoqi'}, -- EffectBindType.MountZuoQi
+[94] = {'G_Weiyan', 'G_Weiyan'}, -- EffectBindType.MountWeiYan
+[95] = {'G_Foot_L', 'Bip001 L Foot'}, -- EffectBindType.MountLeftFoot
+[96] = {'G_Foot_R', 'Bip001 R Foot'}, -- EffectBindType.MountRightFoot
+[97] = {'G_Hand_L', 'Bip001 L Hand'}, -- EffectBindType.MountLeftHand
+[98] = {'G_Hand_R', 'Bip001 R Hand'}, -- EffectBindType.MountRightHand
+[99] = {'G_Head', 'Bip001 Head'}, -- EffectBindType.MountHead
+[100] = {'G_Spine', 'Bip001 Spine1'}, -- EffectBindType.MountSpine",特效坐标,特效旋转,坐骑移动速度加成，配百分比，50=50%,购买确认图标,坐骑移动使用的音效,是否显示武器,是否临时坐骑，临时坐骑不能买
+int,int,int,text,int,int[][],text,"MountColorType
+{
+Red = 1        
+Green = 2
+Gray = 3
+Blue = 4
+Gold = 5
+Brown = 6
+Orange = 7
+Purple = 8
+White = 9
+}
+",string|C,string|C,bool,string|C,string[][]|C,Vector3[]|C,Vector3[]|C,int,string|C,string|C,bool,bool
+MountID,ShowOrder,SetID,Name,DefaultID,Price,Desc,Color,MaterialPath,PrefabPath,Gift,Icon,EffectList,EffectPosList,EffectRotList,MountSpeed,ItemIcon,SoundName,IsShowWeapon,IsTmp
+1,1,1,地狱男爵,1,"{1,2,1,2000},{2,2,1,6000},{3,2,1,12000}",以地球人类“哈雷”为原型设计而成的金属战车。\n骑乘时移动速度增加40%,White,,vehicle/vehicle_03/vehicle_03_mo_prefab,1,Icon/Wardrobe/坐骑/地狱男爵坐骑.png,"{100,""vehicle_03_mo_beile""}","{0,0.97,-2.08}","{0,180,0}",40,Icon/Wardrobe/坐骑/地狱男爵购买.png,MountRun1,0,0
+2,2,2,萌面骑士,2,"{1,2,1,2000},{2,2,1,6000},{3,2,1,12000}",萌仔机甲经过变化改装后可以变化的形态。\n骑乘时移动速度增加40%,White,,machine/machine_jz/jz_A_02/jz_A_02_prefab,1,Icon/Wardrobe/坐骑/萌仔坐骑.png,"{100,""jz_A_02_beile""}","{0,-1.09,-0.94}","{94.2,0,0}",40,Icon/Wardrobe/坐骑/萌面骑士购买.png,MountRun2,0,0
+3,3,3,刀锋幻影,3,"{1,2,1,4000},{2,2,1,12000},{3,2,1,24000}",经过改装后的刀锋机甲，如幻如影般的飞驰。\n骑乘时移动速度增加50%,White,,machine/machine_jz/jz_C_02/jz_C_02_prefab,1,Icon/Wardrobe/坐骑/刀锋坐骑.png,"{100,""jz_C_02_beile""}","{0,-0.97,-0.86}","{90,0,0}",50,Icon/Wardrobe/坐骑/刀锋幻影购买.png,MountRun3,0,0
+4,4,4,毁灭之光,4,"{1,2,1,6000},{2,2,1,18000},{3,2,1,36000}",拥有最强大的“雷神毁灭推进器”启动时速度达到极致。\n骑乘时移动速度增加60%,White,,machine/machine_jz/jz_D_02/jz_D_02_prefab,1,Icon/Wardrobe/坐骑/杀戮祖隆坐骑.png,"{100,""jz_D_02_beile""}","{0,-0.9,-0.86}","{94,0,0}",60,Icon/Wardrobe/坐骑/杀戮祖隆购买.png,MountRun4,0,0
+5,5,5,麒麟·荒雷,5,"{1,1,9601002,1},{2,1,9601004,1},{3,1,9601006,1}",依据古老地球神话，运用最先进的金属生命科技造就的梦幻坐骑。\n骑乘时移动速度增加50%,White,,mount/mount_shou_qilin01/Mount_Shou_Qilin01_prefab,1,Icon/Wardrobe/坐骑/麒麟坐骑.png,"{100,""qilin01_Spine1""}","{-0.3,-0.3,0}","{0,0,0}",50,Icon/Wardrobe/坐骑/麒麟购买.png,,1,0
+6,6,6,凤凰·火云,6,"{3,2,1,100000}",依据古老地球神话，运用最先进的金属生命科技造就的梦幻坐骑。\n骑乘时移动速度增加70%,White,,mount/mount_shou_zhuque01/mount_shou_zhuque01_prefab,1,Icon/Wardrobe/坐骑/朱雀坐骑.png,"{97,""zhuque_hand""},{98,""zhuque_hand""},{94,""zhuque_weiyan""}","{1.3,0.35,0.8},{1.3,0.35,-0.8},{0,0,0}","{0,0,0},{0,0,0}{0,0,0}",70,Icon/Wardrobe/坐骑/朱雀购买.png,,1,0
+7,7,7,星空滑板,7,"{1,2,1,2000},{2,2,1,6000},{3,2,1,12000}",多美冒险爱好者喜爱的滑板坐骑。\n骑乘时移动速度增加40%,White,,mount/mount_stand_xingkonghuaban01/mount_stand_xingkonghuaban01_prefab,1,Icon/Wardrobe/坐骑/滑板坐骑.png,"{93,""xingkonghuaban_zuoqi""}","{0,0,0}","{0,0,0}",40,Icon/Wardrobe/坐骑/星空滑板购买.png,,1,0
+8,8,8,水晶月轮,8,"{1,1,1020100,1}","月出皎兮,佼人僚兮。美轮美奂的水晶月轮，是对你的思念。\n骑乘时移动速度增加70%",White,,mount/mount_cezuo_yuelun01/Mount_cezuo_yuelun01_prefab,0,Icon/Wardrobe/坐骑/月轮坐骑.png,"{99,""yuelun_G_Head_beile""},{100,""yuelun_G_Spine_beile""}","{0,0,0},{0,0,0.6}","{0,0,0},{0,0,0}",70,Icon/Wardrobe/坐骑/水晶月轮购买.png,,0,0
+9,9,9,壁垒380,9,"{1,2,1,10000},{2,2,1,25000},{3,2,1,50000}",壁垒380为多美联邦为铁血军团特制的战斗坐骑。\n骑乘时移动速度增加60%,White,,mount/mount_jixie02_bilei01/mount_jixie02_bilei01_prefab,1,Icon/Wardrobe/坐骑/壁垒380坐骑.png,"{100,""jixie02_spine""}","{0,0,0},{0,0,0.6}","{0,0,0},{0,0,0}",60,Icon/Wardrobe/坐骑/壁垒380购买.png,,0,0
+10,10,10,雷霆战车,10,"{1,2,1,6000},{2,2,1,18000},{3,2,1,36000}",雷神海盗王奥丁和奥尔菲亚共同研究的而成的能够适应任何地形的雷霆战车。\n骑乘时移动速度增加60%,White,,mount/mount_jixie_leitingzhanche01/mount_jixie_leitingzhanche01_prefab,1,Icon/Wardrobe/坐骑/雷霆战车坐骑.png,"{100,""leitingzhanche_spine""}","{0,0,0},{0,0,0.6}","{0,0,0},{0,0,0}",60,Icon/Wardrobe/坐骑/雷霆战车购买.png,,0,0
+12,11,12,合金幽狼,12,"{1,2,1,4000},{2,2,1,12000},{3,2,1,24000}",阿波菲斯天南十字军团的专属坐骑。\n骑乘时移动速度增加50%,White,,mount/mount_shou_youlanghejin01/mount_shou_youlanghejin01_prefab,1,Icon/Wardrobe/坐骑/合金幽狼坐骑.png,"{99,""youlanghejin_Head""}","{0.3,0,0}","{0,0,0}",50,Icon/Wardrobe/坐骑/合金幽狼购买.png,,1,0
+14,12,14,浣熊气球,14,"{1,2,1,10000},{2,2,1,25000},{3,2,1,50000}",地球联邦为了星际观光而发明的永动漂浮形坐骑。\n骑乘时移动速度增加60%,White,,mount/mount_panzuo_huanxiongqiqiu01/mount_jixie_huanxiongrenqiqiu01_prefab,1,Icon/Wardrobe/坐骑/浣熊气球坐骑.png,"{93,""huanxiong_zuoqi""}","{0,0,0}","{0,0,0}",60,Icon/Wardrobe/坐骑/浣熊气球购买.png,,0,0
+20,,20,星空滑板-五一活动,20,,五一活动的滑板坐骑。\n骑乘时移动速度增加45%,White,,mount/mount_stand_xingkonghuaban01/mount_stand_xingkonghuaban02_prefab,1,Icon/Wardrobe/坐骑/滑板坐骑.png,"{100,""xingkonghuaban_zuoqi""}","{0,1.2,0}","{0,0,0}",60,Icon/Wardrobe/坐骑/星空滑板购买.png,,1,1
+23,13,23,凤凰·灼焰,23,"{1,1,9600132,1},{2,1,9600134,1},{3,1,9600136,1}",顶级生命金属锻造淬以星体聚变级能量的凤凰坐骑。\n骑乘时移动速度增加70%,Red,,mount/mount_shou_zhuque01/mount_shou_zhuque_dark_prefab,1,Icon/Wardrobe/坐骑/凤凰玄焰重生坐骑.png,"{97,""zhuque_hand_high""},{98,""zhuque_hand_high""},{94,""zhuque_weiyan_high""}","{1.3,0.35,0.8},{1.3,0.35,-0.8},{0,0,0}","{0,0,0},{0,0,0},{0,0,0}",70,Icon/Wardrobe/坐骑/凤凰玄焰重生.png,,1,0
+24,14,24,壁垒426,24,"{1,1,9600142,1},{2,1,9600144,1},{3,1,9600146,1}",壁垒426为赛特将军为黑血精锐量身打造的全能坐骑。\n骑乘时移动速度增加60%,Gray,,mount/mount_jixie02_bilei01/mount_jixie02_bilei02_prefab,1,Icon/Wardrobe/坐骑/壁垒426坐骑.png,"{100,""jixie02_spine""}","{0,0,0},{0,0,0.6}","{0,0,0},{0,0,0}",60,Icon/Wardrobe/坐骑/壁垒426购买.png,,0,0
+25,15,25,梵塔幽狼,25,"{1,1,9600152,1},{2,1,9600154,1},{3,1,9600156,1}",天南十字军团吸收宇宙暗能淬染梵塔黑级护甲的幽狼坐骑。\n骑乘时移动速度增加50%,Gray,,mount/mount_shou_youlanghejin01/mount_shou_youlanghejin02_prefab,1,Icon/Wardrobe/坐骑/梵塔幽狼坐骑.png,"{99,""youlanghejin_Head""}","{0.3,0,0}","{0,0,0}",50,Icon/Wardrobe/坐骑/梵塔幽狼购买.png,,1,0
+26,16,26,月轮·鹊桥,26,"{1,1,9600161,1},{2,1,9600162,1},{3,1,9600163,1}",织女绣云锦，牛郎河西盼。鹊桥河间架，七夕终短暂。月轮·鹊桥，是心上人之间的感情依托。\n骑乘时移动速度增加70%,Purple,,mount/mount_cezuo_yuelun01/Mount_cezuo_yuelun_qixi_prefab,0,Icon/Wardrobe/坐骑/月轮·鹊桥.png,"{99,""yuelun_qixi_G_Head_beile""},{100,""yuelun_qixi_G_Spine_beile""}","{0,0,0},{0,0,0.6}","{0,0,0},{0,0,0}",70,Icon/Wardrobe/坐骑/月轮·鹊桥购买.png,,0,0
+27,17,27,星空滑板·国庆,27,"{1,1,9600181,1},{2,1,9600182,1},{3,1,9600183,1}",多美冒险爱好者喜爱的滑板坐骑，国庆专属。\n骑乘时移动速度增加50%,White,,mount/mount_stand_xingkonghuaban01/mount_stand_xingkonghuaban03_guoqing_prefab,1,Icon/Wardrobe/坐骑/星空滑板-国庆.png,"{93,""xingkonghuaban_zuoqi""}","{0,0,0}","{0,0,0}",50,Icon/Wardrobe/坐骑/星空滑板-国庆购买.png,,1,0
+28,,28,星空滑板·国庆,28,,多美冒险爱好者喜爱的滑板坐骑，国庆专属。\n骑乘时移动速度增加40%,White,,mount/mount_stand_xingkonghuaban01/mount_stand_xingkonghuaban04_guoqing_chongya_prefab,1,Icon/Wardrobe/坐骑/星空滑板-国庆.png,"{93,""xingkonghuaban_zuoqi""}","{0,0,0}","{0,0,0}",60,Icon/Wardrobe/坐骑/星空滑板-国庆购买.png,,1,1
+29,18,29,凤凰·极寒,29,"{1,1,9600122,1},{2,1,9600124,1},{3,1,9600126,1}",在极寒星核中使用顶级生命金属锻造的特制凤凰坐骑，只有在跨服星战中占领神王星的军团领袖才能获得该坐骑\n骑乘时移动速度增加70%,Blue,,mount/mount_shou_zhuque01/mount_shou_zhuque_bing_prefab,0,Icon/Wardrobe/坐骑/凤凰·极寒坐骑.png,"{94,""Ice_zhuque_weiyan_high""},{97,""Ice_zhuque_hand_high""},{98,""Ice_zhuque_hand_high""},{100,""Ice_zhuque_G_Spine_high""},","{0,0,0},{1.3,0.35,0.8},{1.3,0.35,-0.8},{0,0,0}","{0,0,0},{0,0,0},{0,0,0},{0,0,0}",70,Icon/Wardrobe/坐骑/凤凰·极寒购买.png,,1,0

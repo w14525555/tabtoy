@@ -21,7 +21,9 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 		raw = strings.ReplaceAll(raw, " ", "")
 		if fd.Type == model.FieldType_Struct || fd.Is2DArray {
 			// 结构体数组分割
-			valueList = strings.Split(raw, "},{")
+			raw = strings.TrimSpace(raw)
+			raw = strings.Replace(raw, "},{", "}{", -1)
+			valueList = strings.Split(raw, "}{")
 		} else {
 			valueList = parseVector(fd.Type, raw)
 		}
