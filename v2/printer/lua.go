@@ -13,14 +13,12 @@ import (
 func valueWrapperLua(g *Globals, t model.FieldType, n *model.Node, isSingle bool) string {
 
 	switch t {
-	case model.FieldType_String:
+	case model.FieldType_String, model.FieldType_Text:
 		if !isSingle {
 			return util.StringEscape(n.Value)
 		} else {
 			return util.StringEscapeForSingle(n.Value)
 		}
-	case model.FieldType_Text:
-		return util.StringEscape(n.Value)
 	case model.FieldType_Key:
 		// 暂时用int64的方式来解析key
 		_, err := strconv.ParseInt(n.Value, 10, 64)
