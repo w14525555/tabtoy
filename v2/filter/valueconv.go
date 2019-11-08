@@ -184,7 +184,13 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 		}
 	case model.FieldType_CustomEnum:
 		value = strings.TrimSpace(value)
-		ret = strconv.Itoa(fd.EnumMap[value])
+		mapValue := fd.EnumMap[value]
+		// 如果没找到 就直接导出原值
+		if mapValue == 0 {
+			ret = value
+		} else {
+			ret = strconv.Itoa(fd.EnumMap[value])
+		}
 		node.AddValue(ret)
 	default:
 		log.Errorf("%s, '%s' '%s'", i18n.String(i18n.ConvertValue_UnknownFieldType), fd.Name, fd.Name)

@@ -1,8 +1,6 @@
 package filter
 
 import (
-	"fmt"
-
 	"github.com/davyxu/golexer"
 	"github.com/davyxu/tabtoy/v2/i18n"
 	"github.com/davyxu/tabtoy/v2/model"
@@ -28,7 +26,7 @@ type structParser struct {
 	*golexer.Parser
 }
 
-func (self *structParser) Run(fd *model.FieldDescriptor, callback func(string, string, int) bool) (ok bool) {
+func (self *structParser) Run(fd *model.FieldDescriptor, callback func(string, string, int, string) bool) (ok bool) {
 
 	defer golexer.ErrorCatcher(func(err error) {
 
@@ -37,6 +35,7 @@ func (self *structParser) Run(fd *model.FieldDescriptor, callback func(string, s
 
 	self.NextToken()
 
+	// 记录是第几个结构体
 	count := 0
 
 	for self.TokenID() != Token_EOF {
@@ -55,19 +54,22 @@ func (self *structParser) Run(fd *model.FieldDescriptor, callback func(string, s
 		// 	log.Errorf("%s, '%s'", i18n.String(i18n.StructParser_UnexpectedSpliter), key)
 		// 	return false
 		// } else
+
+		// 一种是不带等号的格式
 		if self.TokenID() != Token_Equal {
 			value := key
 			// 这是解析{1}， 这里是相对于{x=1}的类型的
-			if !callback(fd.Complex.Name, value, count) {
+			if !callback(fd.Complex.Name, value, count, "") {
 				return false
 			}
 			self.NextToken()
 		} else {
+			// 另外就是带有x = 1, 这样的格式
 			self.NextToken()
 
 			value := self.TokenValue()
 
-			if !callback(key, value, count) {
+			if !callback(fd.Complex.Name, value, count, key) {
 				return false
 			}
 
@@ -117,13 +119,11 @@ func parseStruct(fd *model.FieldDescriptor, value string, fileD *model.FileDescr
 
 	// 检查字段有没有重复
 	sfList := newStructFieldList()
-	result := p.Run(fd, func(key, value string, count int) bool {
-
+	result := p.Run(fd, func(key, value string, count int, name string) bool {
 		bnField := fd.Complex.FieldByValueAndMeta(key)
 		if bnField == nil {
 			// 如果为空就从全局结构体map中读取
-			bnField = fd.Complex.FieldByGlobalMap(key, count)
-			fmt.Println(bnField)
+			bnField = fd.Complex.FieldByGlobalMap(key, value, count, name)
 			if bnField == nil {
 				log.Errorf("%s, '%s'", i18n.String(i18n.StructParser_FieldNotFound), key)
 
@@ -147,6 +147,9 @@ func parseStruct(fd *model.FieldDescriptor, value string, fileD *model.FileDescr
 
 	// 结构体中未填的字段如果是Default, 也要输出
 	for _, structField := range fd.Complex.Fields {
+		if sfList.Len() >= len(fd.Complex.Fields) {
+			break
+		}
 
 		if sfList.Exists(structField) {
 			continue
@@ -159,7 +162,7 @@ func parseStruct(fd *model.FieldDescriptor, value string, fileD *model.FileDescr
 	}
 
 	// 结构体输出是map顺序, 必须按照定义时的order进行排序, 否则在二进制中顺序是错的
-	sfList.Sort()
+	// sfList.Sort()
 
 	for i := 0; i < sfList.Len(); i++ {
 

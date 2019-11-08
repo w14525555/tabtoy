@@ -2,6 +2,7 @@ package model
 
 import (
 	"errors"
+	"strings"
 )
 
 type DescriptorKind int
@@ -87,13 +88,27 @@ func (self *Descriptor) FieldByValueAndMeta(value string) *FieldDescriptor {
 	return nil
 }
 
-func (self *Descriptor) FieldByGlobalMap(value string, count int) *FieldDescriptor {
-	mapList := self.FdMap[value]
+// 结构体寻找
+func (self *Descriptor) FieldByGlobalMap(key string, value string, count int, subFieldName string) *FieldDescriptor {
+	mapList := self.FdMap[key]
+	// fmt.Println(key, value, count, subFieldName)
 	if mapList != nil {
-		name := mapList[count]
-		if name == "" {
-			return nil
+		// 根据是第几个元素去读取字段名称
+		var name string
+
+		subFieldName = strings.TrimSpace(subFieldName)
+		if len(subFieldName) > 0 {
+			name = subFieldName
+		} else {
+			name = mapList[count]
+			if name == "" {
+				return nil
+			}
 		}
+
+		var sample FieldDescriptor
+		count := 0
+		// fmt.Println(key, self.FieldByName)
 		for _, v := range self.FieldByName {
 			if v.Name == name {
 				return v
@@ -102,7 +117,18 @@ func (self *Descriptor) FieldByGlobalMap(value string, count int) *FieldDescript
 			if v.Meta.GetString("Alias") == name {
 				return v
 			}
+
+			if count == 0 {
+				sample = *v
+			}
+			count++
 		}
+		copy := NewFieldDescriptor()
+		// fmt.Println(subFieldName, sample.Type)
+		copy.Name = name
+		copy.Type = sample.Type
+		// fmt.Println(copy)
+		return copy
 	}
 
 	return nil
