@@ -153,7 +153,15 @@ func CheckOutputType(g *printer.Globals, meta string, fileList []string) bool {
 		// 获取客户端和服务器是否导出
 		for _, v := range metaSplitByComma {
 			if strings.Contains(v, "C=") {
-				value := strings.Replace(v, "C=", "", 1)
+				index := strings.Index(v, "C=")
+				var value string
+				if index != 0 {
+					// 如果C=前面还有别的字符 那就截取掉
+					value = v[index:]
+				} else {
+					value = v
+				}
+				value = strings.Replace(value, "C=", "", 1)
 				if value == "none" || value == "" {
 					client = false
 				} else if value == "lua" {
@@ -165,7 +173,16 @@ func CheckOutputType(g *printer.Globals, meta string, fileList []string) bool {
 			}
 
 			if strings.Contains(v, "S=") {
-				value := strings.Replace(v, "S=", "", 1)
+				index := strings.Index(v, "S=")
+				var value string
+				if index != 0 {
+					// 如果C=前面还有别的字符 那就截取掉
+					value = v[index:]
+					fmt.Println("11111", value)
+				} else {
+					value = v
+				}
+				value = strings.Replace(value, "S=", "", 1)
 				if value == "none" {
 					server = false
 				} else if value == "lua" {
