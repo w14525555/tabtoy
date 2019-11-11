@@ -135,8 +135,8 @@ func CheckOutputType(g *printer.Globals, meta string, fileList []string) bool {
 		// 这里要记录文件导出的模式
 		metas := strings.Split(meta, " ")
 		// 客户端导出
-		client := false
-		server := false
+		client := true
+		server := true
 
 		// 逗号分隔的
 		metaSplitByComma := make([]string, 0, 0)
@@ -162,13 +162,10 @@ func CheckOutputType(g *printer.Globals, meta string, fileList []string) bool {
 					value = v
 				}
 				value = strings.Replace(value, "C=", "", 1)
-				if value == "none" || value == "" || value == "nil" || value == "non" {
-					client = false
-				} else if value == "lua" {
+				if value == "lua" {
 					client = true
 				} else {
-					log.Errorf("不支持的导出类型：%s", value)
-					return false
+					client = false
 				}
 			}
 
@@ -178,19 +175,20 @@ func CheckOutputType(g *printer.Globals, meta string, fileList []string) bool {
 				if index != 0 {
 					// 如果C=前面还有别的字符 那就截取掉
 					value = v[index:]
-					fmt.Println("11111", value)
 				} else {
 					value = v
 				}
+
 				value = strings.Replace(value, "S=", "", 1)
-				if value == "none" || value == "nil" || value == "nil" || value == "non" {
-					server = false
-				} else if value == "lua" {
+				if value == "lua" {
 					server = true
 				} else {
-					log.Errorf("不支持的导出类型：%s", value)
-					return false
+					server = false
 				}
+				// } else {
+				// 	log.Errorf("不支持的导出类型：%s", value)
+				// 	return false
+				// }
 			}
 		}
 

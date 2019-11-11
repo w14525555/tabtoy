@@ -8,6 +8,8 @@ import (
 	"github.com/davyxu/tabtoy/v2/model"
 )
 
+var DictSpliter = "**++--**"
+
 // 从单元格原始数据到最终输出的数值, 检查并转换, 处理默认值及根据meta转换情况
 func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDescriptor, node *model.Node) (ret string, ok bool) {
 	// 空格, 且有默认值时, 使用默认值
@@ -106,32 +108,6 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 	case model.FieldType_Text:
 		ret = value
 		node.AddValue(ret)
-	// case model.FieldType_Vector3:
-	// 	values := parseVectors(value)
-	// 	if len(values) == 3 {
-	// 		ret = "{" + "x=" + values[0] + "," + "y=" + values[1] + "," + "z=" + values[2] + "}"
-	// 		ret = strings.Trim(ret, " ")
-	// 		node.AddValue(ret)
-	// 	} else if value == "" {
-	// 		ret = "{x=0,y=0,z=0}"
-	// 		node.AddValue(ret)
-	// 	} else {
-	// 		log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_VectorError), value)
-	// 		return "", false
-	// 	}
-	// case model.FieldType_Vector2:
-	// 	values := parseVectors(value)
-	// 	if len(values) == 2 {
-	// 		ret = "{" + "x=" + values[0] + "," + "y=" + values[1] + "}"
-	// 		ret = strings.Trim(ret, " ")
-	// 		node.AddValue(ret)
-	// 	} else if value == "" {
-	// 		ret = "{x=0,y=0}"
-	// 		node.AddValue(ret)
-	// 	} else {
-	// 		log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_VectorError), value)
-	// 		return "", false
-	// 	}
 	case model.FieldType_Key:
 		if value == "" {
 			log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_KeyNil), fd.Name)
@@ -166,7 +142,6 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 		node.AddValue(ret).EnumValue = evd.EnumValue
 
 	case model.FieldType_Struct:
-
 		if fd.Complex == nil {
 			log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_StructTypeNil), fd.Name)
 			return "", false
@@ -193,6 +168,20 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 			ret = strconv.Itoa(fd.EnumMap[value])
 		}
 		node.AddValue(ret)
+	case model.FieldType_Dict:
+		value = strings.TrimSpace(value)
+		value = strings.Replace(value, "{", "", 1)
+		value = strings.Replace(value, "}", "", 1)
+		if strings.Contains(value, "=") {
+			values := strings.Split(value, "=")
+			value1 := convertValueForDict(fd.DictTypes[0], values[0])
+			value2 := convertValueForDict(fd.DictTypes[1], values[1])
+			ret = value1 + DictSpliter + value2
+		} else {
+			ret = value
+		}
+
+		node.AddValue(ret)
 	default:
 		log.Errorf("%s, '%s' '%s'", i18n.String(i18n.ConvertValue_UnknownFieldType), fd.Name, fd.Name)
 		return "", false
@@ -201,6 +190,95 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 	ok = true
 
 	return
+}
+
+func convertValueForDict(fType model.FieldType, value string) string {
+	switch fType {
+	case model.FieldType_Int32:
+		_, err := strconv.ParseInt(value, 10, 32)
+		if err != nil {
+			log.Debugln(err)
+			return ""
+		}
+
+		return value
+	// 添加新的支持类型 int默认为int64
+	case model.FieldType_Int64, model.FieldType_Int:
+		value = strings.TrimRight(value, "}")
+		_, err := strconv.ParseInt(value, 10, 64)
+
+		if err != nil {
+			_, err := strconv.ParseFloat(value, 32)
+			if err != nil {
+				log.Debugln(err)
+				return ""
+			}
+		}
+
+		return value
+	case model.FieldType_UInt32:
+		_, err := strconv.ParseUint(value, 10, 32)
+		if err != nil {
+			log.Debugln(err)
+			return ""
+		}
+
+		return value
+	case model.FieldType_UInt64:
+		_, err := strconv.ParseUint(value, 10, 64)
+		if err != nil {
+			log.Debugln(err)
+			return ""
+		}
+
+		return value
+	case model.FieldType_Float:
+		_, err := strconv.ParseFloat(value, 32)
+		if err != nil {
+			log.Debugln(err)
+			return ""
+		}
+		return value
+	case model.FieldType_Bool:
+		var ret string
+		for {
+			if value == "是" {
+				ret = "true"
+				break
+			} else if value == "否" {
+				ret = "false"
+				break
+			}
+
+			v, err := strconv.ParseBool(value)
+
+			if err != nil {
+				log.Debugln(err)
+				return ""
+			}
+
+			if v {
+				ret = "true"
+			} else {
+				ret = "false"
+			}
+			break
+		}
+
+		return ret
+	case model.FieldType_String:
+		// 这里要检查中文字符
+		if strings.Contains(value, "，") {
+			log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_CannotHaveCNComma), value)
+			return ""
+		} else {
+			return value
+		}
+	case model.FieldType_Text:
+		return value
+	default:
+		return ""
+	}
 }
 
 func parseVectors(value string) []string {

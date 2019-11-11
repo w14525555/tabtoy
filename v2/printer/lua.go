@@ -10,40 +10,48 @@ import (
 	"github.com/davyxu/tabtoy/v2/model"
 )
 
-func valueWrapperLua(g *Globals, t model.FieldType, n *model.Node, isSingle bool) string {
+var DictSpliter = "**++--**"
+
+func valueWrapperLua(g *Globals, t model.FieldType, n *model.Node, isSingle bool, dictIndex int) string {
+	value := n.Value
+
+	if dictIndex >= 0 {
+		values := strings.Split(value, DictSpliter)
+		value = values[dictIndex]
+	}
 
 	switch t {
 	case model.FieldType_String, model.FieldType_Text:
 		if !isSingle {
-			return util.StringEscape(n.Value)
+			return util.StringEscape(value)
 		} else {
-			return util.StringEscapeForSingle(n.Value)
+			return util.StringEscapeForSingle(value)
 		}
 	case model.FieldType_Key:
 		// 暂时用int64的方式来解析key
-		_, err := strconv.ParseInt(n.Value, 10, 64)
+		_, err := strconv.ParseInt(value, 10, 64)
 
 		// 不等于0 则认为是str key
 		if err != nil {
-			return util.StringEscape(n.Value)
+			return util.StringEscape(value)
 		}
 	case model.FieldType_Enum:
 		if g.LuaEnumIntValue {
 			return fmt.Sprintf("%d", n.EnumValue)
 		} else {
-			return fmt.Sprintf("\"%s\"", n.Value)
+			return fmt.Sprintf("\"%s\"", value)
 		}
 	case model.FieldType_CustomEnum:
-		return n.Value
+		return value
 	case model.FieldType_Bool:
-		if n.Value == "true" {
+		if value == "true" {
 			return "1"
 		} else {
 			return "0"
 		}
 	}
 
-	return n.Value
+	return value
 }
 
 type luaPrinter struct {
@@ -197,7 +205,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 
 					if node.Type != model.FieldType_Struct && !node.IsRepeated {
 						valueNode := node.Child[0]
-						stream.Printf("["+"%s"+"]=", valueWrapperLua(g, node.Type, valueNode, true))
+						stream.Printf("["+"%s"+"]=", valueWrapperLua(g, node.Type, valueNode, true, -1))
 					} else {
 						log.Errorf("不支持结构体或数组为key！")
 						return false
@@ -263,7 +271,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 					} else {
 						// repeated 值序列
 						for arrIndex, valueNode := range node.Child {
-							stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode, false))
+							stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode, false, -1))
 							// 多个值分割
 							if arrIndex < len(node.Child)-1 && valueNode.Value != "{" && ((arrIndex+1 < length) && node.Child[arrIndex+1].Value != "}") {
 								stream.Printf(",")
@@ -275,8 +283,19 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 				} else {
 					// 单值
 					valueNode := node.Child[0]
-
-					stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode, true))
+					if node.Type == model.FieldType_Dict {
+						if valueNode.Value == "" {
+							stream.Printf("''")
+						} else {
+							//values := strings.Split(valueNode.Value, DictSpliter)
+							values := strings.Split(valueNode.Value, DictSpliter)
+							// key值直接输出
+							stream.Printf("{%s=", values[0])
+							stream.Printf("%s}", valueWrapperLua(g, node.DictTypes[1], valueNode, true, 1))
+						}
+					} else {
+						stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode, true, -1))
+					}
 				}
 
 			} else {
@@ -296,7 +315,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 						// 值节点总是在第一个
 						valueNode := fieldNode.Child[0]
 
-						stream.Printf("%s=%s", fieldNode.Name, valueWrapperLua(g, fieldNode.Type, valueNode, false))
+						stream.Printf("%s=%s", fieldNode.Name, valueWrapperLua(g, fieldNode.Type, valueNode, false, -1))
 
 						// 结构体字段分割
 						if structFieldIndex < len(structNode.Child)-1 {

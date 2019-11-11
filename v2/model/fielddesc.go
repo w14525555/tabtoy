@@ -27,6 +27,7 @@ const (
 	// FieldType_Vector2    FieldType = 14
 	FieldType_Key        FieldType = 15 // key 这里会检查是否重复
 	FieldType_CustomEnum FieldType = 16 // 类型行定义的枚举类型
+	FieldType_Dict       FieldType = 17 // 字典类型 [type]=[type]
 )
 
 // 一列的描述
@@ -60,6 +61,8 @@ type FieldDescriptor struct {
 	EnumMap map[string]int
 
 	IsCustomEnum bool
+
+	DictTypes [2]FieldType // 字典类型的种类
 }
 
 func NewFieldDescriptor() *FieldDescriptor {
@@ -198,6 +201,7 @@ var strByFieldDescriptor = map[FieldType]string{
 	// FieldType_Vector3:    "Vector3",
 	FieldType_Key:        "key",
 	FieldType_CustomEnum: "customEnum",
+	FieldType_Dict:       "dict",
 }
 
 var fieldTypeByString = make(map[string]FieldType)
@@ -315,6 +319,23 @@ func (self *FieldDescriptor) ParseType(fileD *FileDescriptor, rawstr string) boo
 		}
 		self.IsCustomEnum = true
 		puretype = "customEnum"
+	}
+
+	// 字典类型
+	if strings.Index(rawstr, "[") == 0 && strings.Index(rawstr, "]") != 1 {
+		rawstr = strings.TrimSpace(rawstr)
+		rawstr = strings.Replace(rawstr, "[", "", 1)
+		typeStrs := strings.Split(rawstr, "]")
+		if len(typeStrs) == 2 {
+			keyType, _ := ParseFieldType(typeStrs[0])
+			valueType, _ := ParseFieldType(typeStrs[1])
+			self.DictTypes[0] = keyType
+			self.DictTypes[1] = valueType
+			puretype = "dict"
+		} else {
+			log.Errorf("字典类型解析错误：%s", rawstr)
+			return false
+		}
 	}
 
 	// 这里得到类型的字符串
