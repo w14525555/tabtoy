@@ -122,7 +122,6 @@ func (self *luaPrinter) Run(g *Globals, outputClass int) *Stream {
 // 打印标题
 func printTitleLua(g *Globals, stream *Stream, outputClass int) bool {
 	stream.Printf("local title = {")
-
 	nodes := g.Tables[0].Recs[0].Nodes
 	length := getNumOfNodes(outputClass, nodes)
 	var realIndex = 0

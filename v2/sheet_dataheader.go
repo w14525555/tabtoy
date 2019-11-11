@@ -162,7 +162,7 @@ func CheckOutputType(g *printer.Globals, meta string, fileList []string) bool {
 					value = v
 				}
 				value = strings.Replace(value, "C=", "", 1)
-				if value == "none" || value == "" {
+				if value == "none" || value == "" || value == "nil" || value == "non" {
 					client = false
 				} else if value == "lua" {
 					client = true
@@ -183,7 +183,7 @@ func CheckOutputType(g *printer.Globals, meta string, fileList []string) bool {
 					value = v
 				}
 				value = strings.Replace(value, "S=", "", 1)
-				if value == "none" {
+				if value == "none" || value == "nil" || value == "nil" || value == "non" {
 					server = false
 				} else if value == "lua" {
 					server = true

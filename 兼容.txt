@@ -2,3 +2,9 @@
 2. PlanetaryEngineReward中Position应该配成Vector3类型才对，这里选择不兼容，需要规范。
 3. rescuePlanBase中的checkPointTypeIDs,应该配成int数组类型
 4. VIPbase中，Price配成了未知类型，选择不兼容，需要规范。
+5. Transfer Fashion中，key值重复，选择不兼容，需要规范。
+6. AuctionLimit表中，ServerLevel的类型应该为int[]而不是int
+7. TitleBase表，ColorGradient的类型应该为text[]
+8. TitleStyle表，TitleColor的类型应该为text或者string而不是int
+9. StoreTimeLimit，是个空表，对于空表的支持。这个打算支持，但是还没做。
+10. LimitedTimeStore，这个表中startTime,EndTime已经呆了双引号，但是导出又加了个双引号，这里不打算兼容，需要规范。
