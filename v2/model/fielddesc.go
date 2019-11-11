@@ -293,18 +293,12 @@ func (self *FieldDescriptor) ParseType(fileD *FileDescriptor, rawstr string) boo
 		for i, v := range valueList {
 			// 零值应该是枚举的名称 这里暂时不处理
 			if i == 0 {
-			} else if i == 1 {
-				// 第二个元素应该是大阔号
-				v = strings.TrimSpace(v)
-				if v != "{" {
-					return false
-				}
 			} else {
 				// 后面的元素应该是枚举值或末尾的大阔号
 				v = strings.TrimSpace(v)
-				if v == "}" {
-					break
-				} else {
+				v = strings.Replace(v, "{", "", 1)
+				v = strings.Replace(v, "}", "", 1)
+				if strings.Contains(v, "=") {
 					keyValue := strings.Split(v, "=")
 					if len(keyValue) != 2 {
 						return false
