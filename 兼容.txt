@@ -10,3 +10,4 @@
 10. LimitedTimeStore，这个表中startTime,EndTime已经呆了双引号，但是导出又加了个双引号，这里不打算兼容，需要规范。
 11. StoreShowLimitData，这个表中LevelLimit应该是LevelLimit结构体类型。
 12 StoreItemSet, 这个表中CanShowInGainWayView配成了大写，导出成了大写的TRUE, FALSE错误
+13. StallPage中的SubPage的类型为int[],配置成了{}空表的形式，原导出转出的结果也为{}，现在导出客户端会变成nil值，服务器不变。

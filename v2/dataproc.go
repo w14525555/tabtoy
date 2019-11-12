@@ -99,9 +99,12 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 func parseVector(ft model.FieldType, raw string) []string {
 	raw = strings.Replace(raw, "{", "", -1)
 	raw = strings.Replace(raw, "}", "", -1)
-	valueList := strings.Split(raw, ",")
-
-	return valueList
+	if raw == "" {
+		return nil
+	} else {
+		valueList := strings.Split(raw, ",")
+		return valueList
+	}
 }
 
 func getVectorResult(vectorNum int, valueList []string) []string {

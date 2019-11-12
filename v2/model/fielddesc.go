@@ -28,6 +28,7 @@ const (
 	FieldType_Key        FieldType = 15 // key 这里会检查是否重复
 	FieldType_CustomEnum FieldType = 16 // 类型行定义的枚举类型
 	FieldType_Dict       FieldType = 17 // 字典类型 [type]=[type]
+	FieldType_Double     FieldType = 18 // double类型 同float
 )
 
 // 一列的描述
@@ -152,7 +153,8 @@ func (self *FieldDescriptor) DefaultValue() string {
 		FieldType_Int64,
 		FieldType_UInt64,
 		FieldType_Int,
-		FieldType_Float:
+		FieldType_Float,
+		FieldType_Double:
 		return "0"
 	case FieldType_Bool:
 		return "false"
@@ -202,6 +204,7 @@ var strByFieldDescriptor = map[FieldType]string{
 	FieldType_Key:        "key",
 	FieldType_CustomEnum: "customEnum",
 	FieldType_Dict:       "dict",
+	FieldType_Double:     "double",
 }
 
 var fieldTypeByString = make(map[string]FieldType)

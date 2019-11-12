@@ -60,7 +60,7 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 
 		ret = value
 		node.AddValue(ret)
-	case model.FieldType_Float:
+	case model.FieldType_Float, model.FieldType_Double:
 		_, err := strconv.ParseFloat(value, 32)
 		if err != nil {
 			log.Debugln(err)
@@ -184,94 +184,94 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 	return
 }
 
-func convertValueForDict(fType model.FieldType, value string) string {
-	switch fType {
-	case model.FieldType_Int32:
-		_, err := strconv.ParseInt(value, 10, 32)
-		if err != nil {
-			log.Debugln(err)
-			return ""
-		}
+// func convertValueForDict(fType model.FieldType, value string) string {
+// 	switch fType {
+// 	case model.FieldType_Int32:
+// 		_, err := strconv.ParseInt(value, 10, 32)
+// 		if err != nil {
+// 			log.Debugln(err)
+// 			return ""
+// 		}
 
-		return value
-	// 添加新的支持类型 int默认为int64
-	case model.FieldType_Int64, model.FieldType_Int:
-		value = strings.TrimRight(value, "}")
-		_, err := strconv.ParseInt(value, 10, 64)
+// 		return value
+// 	// 添加新的支持类型 int默认为int64
+// 	case model.FieldType_Int64, model.FieldType_Int:
+// 		value = strings.TrimRight(value, "}")
+// 		_, err := strconv.ParseInt(value, 10, 64)
 
-		if err != nil {
-			_, err := strconv.ParseFloat(value, 32)
-			if err != nil {
-				log.Debugln(err)
-				return ""
-			}
-		}
+// 		if err != nil {
+// 			_, err := strconv.ParseFloat(value, 32)
+// 			if err != nil {
+// 				log.Debugln(err)
+// 				return ""
+// 			}
+// 		}
 
-		return value
-	case model.FieldType_UInt32:
-		_, err := strconv.ParseUint(value, 10, 32)
-		if err != nil {
-			log.Debugln(err)
-			return ""
-		}
+// 		return value
+// 	case model.FieldType_UInt32:
+// 		_, err := strconv.ParseUint(value, 10, 32)
+// 		if err != nil {
+// 			log.Debugln(err)
+// 			return ""
+// 		}
 
-		return value
-	case model.FieldType_UInt64:
-		_, err := strconv.ParseUint(value, 10, 64)
-		if err != nil {
-			log.Debugln(err)
-			return ""
-		}
+// 		return value
+// 	case model.FieldType_UInt64:
+// 		_, err := strconv.ParseUint(value, 10, 64)
+// 		if err != nil {
+// 			log.Debugln(err)
+// 			return ""
+// 		}
 
-		return value
-	case model.FieldType_Float:
-		_, err := strconv.ParseFloat(value, 32)
-		if err != nil {
-			log.Debugln(err)
-			return ""
-		}
-		return value
-	case model.FieldType_Bool:
-		var ret string
-		for {
-			if value == "是" {
-				ret = "true"
-				break
-			} else if value == "否" {
-				ret = "false"
-				break
-			}
+// 		return value
+// 	case model.FieldType_Float:
+// 		_, err := strconv.ParseFloat(value, 32)
+// 		if err != nil {
+// 			log.Debugln(err)
+// 			return ""
+// 		}
+// 		return value
+// 	case model.FieldType_Bool:
+// 		var ret string
+// 		for {
+// 			if value == "是" {
+// 				ret = "true"
+// 				break
+// 			} else if value == "否" {
+// 				ret = "false"
+// 				break
+// 			}
 
-			v, err := strconv.ParseBool(value)
+// 			v, err := strconv.ParseBool(value)
 
-			if err != nil {
-				log.Debugln(err)
-				return ""
-			}
+// 			if err != nil {
+// 				log.Debugln(err)
+// 				return ""
+// 			}
 
-			if v {
-				ret = "true"
-			} else {
-				ret = "false"
-			}
-			break
-		}
+// 			if v {
+// 				ret = "true"
+// 			} else {
+// 				ret = "false"
+// 			}
+// 			break
+// 		}
 
-		return ret
-	case model.FieldType_String:
-		// 这里要检查中文字符
-		if strings.Contains(value, "，") {
-			log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_CannotHaveCNComma), value)
-			return ""
-		} else {
-			return value
-		}
-	case model.FieldType_Text:
-		return value
-	default:
-		return ""
-	}
-}
+// 		return ret
+// 	case model.FieldType_String:
+// 		// 这里要检查中文字符
+// 		if strings.Contains(value, "，") {
+// 			log.Errorf("%s, '%s'", i18n.String(i18n.ConvertValue_CannotHaveCNComma), value)
+// 			return ""
+// 		} else {
+// 			return value
+// 		}
+// 	case model.FieldType_Text:
+// 		return value
+// 	default:
+// 		return ""
+// 	}
+// }
 
 func parseVectors(value string) []string {
 	value = strings.Trim(value, "{")
