@@ -28,9 +28,7 @@ func Run(g *printer.Globals, fileList []string) bool {
 		var mainMergeFile *File
 
 		mergeFileList := strings.Split(inputFile, "+")
-
 		for index, fileName := range mergeFileList {
-
 			file, _ := cachedFile[fileName]
 
 			if file == nil {
@@ -50,7 +48,6 @@ func Run(g *printer.Globals, fileList []string) bool {
 			if !file.ExportLocalType(mainMergeFile, g, fileList) {
 				return false
 			}
-
 			// 主文件才写入全局信息
 			if index == 0 {
 
@@ -64,10 +61,8 @@ func Run(g *printer.Globals, fileList []string) bool {
 
 					fileObjList = append(fileObjList, file)
 				}
-
 				mainMergeFile = file
 			} else {
-
 				// 添加自文件
 				mainMergeFile.mergeList = append(mainMergeFile.mergeList, file)
 
