@@ -10,14 +10,14 @@ import (
 	"github.com/davyxu/tabtoy/v2/model"
 )
 
-var DictSpliter = "**++--**"
+var DictSpliter = "="
+var EmptyStr = ""
 
-func valueWrapperLua(g *Globals, t model.FieldType, n *model.Node, isSingle bool, dictIndex int) string {
+func valueWrapperLua(g *Globals, t model.FieldType, n *model.Node, isSingle bool, dictValue string) string {
 	value := n.Value
 
-	if dictIndex >= 0 {
-		values := strings.Split(value, DictSpliter)
-		value = values[dictIndex]
+	if dictValue != "" {
+		value = dictValue
 	}
 
 	switch t {
@@ -205,7 +205,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 
 					if node.Type != model.FieldType_Struct && !node.IsRepeated {
 						valueNode := node.Child[0]
-						stream.Printf("["+"%s"+"]=", valueWrapperLua(g, node.Type, valueNode, true, -1))
+						stream.Printf("["+"%s"+"]=", valueWrapperLua(g, node.Type, valueNode, true, EmptyStr))
 					} else {
 						log.Errorf("不支持结构体或数组为key！")
 						return false
@@ -271,7 +271,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 					} else {
 						// repeated 值序列
 						for arrIndex, valueNode := range node.Child {
-							stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode, false, -1))
+							stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode, false, EmptyStr))
 							// 多个值分割
 							if arrIndex < len(node.Child)-1 && valueNode.Value != "{" && ((arrIndex+1 < length) && node.Child[arrIndex+1].Value != "}") {
 								stream.Printf(",")
@@ -284,17 +284,27 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 					// 单值
 					valueNode := node.Child[0]
 					if node.Type == model.FieldType_Dict {
-						if valueNode.Value == "" {
+						if !strings.Contains(valueNode.Value, "=") {
 							stream.Printf("''")
 						} else {
 							//values := strings.Split(valueNode.Value, DictSpliter)
-							values := strings.Split(valueNode.Value, DictSpliter)
-							// key值直接输出
-							stream.Printf("{%s=", values[0])
-							stream.Printf("%s}", valueWrapperLua(g, node.DictTypes[1], valueNode, true, 1))
+							fmt.Println(valueNode.Value)
+
+							dicts := strings.Split(valueNode.Value, ",")
+							stream.Printf("{")
+							for i, v := range dicts {
+								values := strings.Split(v, "=")
+								// key值直接输出
+								stream.Printf("%s=", values[0])
+								stream.Printf("%s", valueWrapperLua(g, node.DictTypes[1], valueNode, true, values[1]))
+								if i < len(dicts)-1 {
+									stream.Printf(",")
+								}
+							}
+							stream.Printf("}")
 						}
 					} else {
-						stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode, true, -1))
+						stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode, true, EmptyStr))
 					}
 				}
 
@@ -315,7 +325,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 						// 值节点总是在第一个
 						valueNode := fieldNode.Child[0]
 
-						stream.Printf("%s=%s", fieldNode.Name, valueWrapperLua(g, fieldNode.Type, valueNode, false, -1))
+						stream.Printf("%s=%s", fieldNode.Name, valueWrapperLua(g, fieldNode.Type, valueNode, false, EmptyStr))
 
 						// 结构体字段分割
 						if structFieldIndex < len(structNode.Child)-1 {

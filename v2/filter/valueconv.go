@@ -172,15 +172,7 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 		value = strings.TrimSpace(value)
 		value = strings.Replace(value, "{", "", 1)
 		value = strings.Replace(value, "}", "", 1)
-		if strings.Contains(value, "=") {
-			values := strings.Split(value, "=")
-			value1 := convertValueForDict(fd.DictTypes[0], values[0])
-			value2 := convertValueForDict(fd.DictTypes[1], values[1])
-			ret = value1 + DictSpliter + value2
-		} else {
-			ret = value
-		}
-
+		ret = value
 		node.AddValue(ret)
 	default:
 		log.Errorf("%s, '%s' '%s'", i18n.String(i18n.ConvertValue_UnknownFieldType), fd.Name, fd.Name)
