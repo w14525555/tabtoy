@@ -18,7 +18,10 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 		}
 
 		var valueList []string
-		raw = strings.ReplaceAll(raw, " ", "")
+		// 字符串和文字类型不可以随便去空格
+		if fd.Type != model.FieldType_Text && fd.Type != model.FieldType_String {
+			raw = strings.ReplaceAll(raw, " ", "")
+		}
 		if fd.Type == model.FieldType_Struct || fd.Is2DArray {
 			// 结构体数组分割
 			raw = strings.TrimSpace(raw)
@@ -97,12 +100,6 @@ func parseVector(ft model.FieldType, raw string) []string {
 	raw = strings.Replace(raw, "{", "", -1)
 	raw = strings.Replace(raw, "}", "", -1)
 	valueList := strings.Split(raw, ",")
-
-	// if ft == model.FieldType_Vector2 {
-	// 	return getVectorResult(2, valueList)
-	// } else if ft == model.FieldType_Vector3 {
-	// 	return getVectorResult(3, valueList)
-	// }
 
 	return valueList
 }
