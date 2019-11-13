@@ -22,7 +22,7 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 		_, err := strconv.ParseInt(value, 10, 32)
 		if err != nil {
 			log.Debugln(err)
-			return "", false
+			//return "", false
 		}
 
 		ret = value
@@ -36,7 +36,7 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 			_, err := strconv.ParseFloat(value, 32)
 			if err != nil {
 				log.Debugln(err)
-				return "", false
+				//return "", false
 			}
 		}
 
@@ -46,7 +46,7 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 		_, err := strconv.ParseUint(value, 10, 32)
 		if err != nil {
 			log.Debugln(err)
-			return "", false
+			//return "", false
 		}
 
 		ret = value
@@ -55,7 +55,7 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 		_, err := strconv.ParseUint(value, 10, 64)
 		if err != nil {
 			log.Debugln(err)
-			return "", false
+			//return "", false
 		}
 
 		ret = value
@@ -64,7 +64,7 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 		_, err := strconv.ParseFloat(value, 32)
 		if err != nil {
 			log.Debugln(err)
-			return "", false
+			//return "", false
 		}
 		ret = value
 		node.AddValue(ret)
@@ -83,7 +83,7 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 
 			if err != nil {
 				log.Debugln(err)
-				return "", false
+				//return "", false
 			}
 
 			if v {
