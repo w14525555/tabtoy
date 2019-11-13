@@ -68,6 +68,11 @@ func (self *luaPrinter) Run(g *Globals, outputClass int) *Stream {
 		stream.Printf("\n%s\n", g.LuaTabHeader)
 	}
 
+	if len(g.Tables[0].Recs) == 0 {
+		log.Errorf("表格为空")
+		return stream
+	}
+
 	if !printTitleLua(g, stream, outputClass) {
 		return nil
 	}
@@ -288,7 +293,6 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 							stream.Printf("''")
 						} else {
 							//values := strings.Split(valueNode.Value, DictSpliter)
-							fmt.Println(valueNode.Value)
 
 							dicts := strings.Split(valueNode.Value, ",")
 							stream.Printf("{")

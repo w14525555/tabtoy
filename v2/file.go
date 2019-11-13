@@ -177,9 +177,6 @@ func NewFile(filename string) *File {
 	if strings.HasSuffix(filename, "xlsx") {
 		self.coreFile, err = xlsx.OpenFile(filename)
 	} else {
-		if filename == "Config\\test\\AHSysGoods.csv" {
-			fmt.Println(111)
-		}
 		self.coreFile = generateXLSXFromCSV(filename, ",")
 		if self.coreFile == nil {
 			fmt.Println("NAnui")

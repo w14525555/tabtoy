@@ -1,0 +1,4 @@
+C=lua S=lua,,,,,
+键值,内容,目标类型(1单局排名2存活时间),天数,目标值,奖励
+int,string,int,int,int,int[][]
+ID,Content,TargetType,Day,Num,Award
