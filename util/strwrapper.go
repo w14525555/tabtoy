@@ -89,7 +89,7 @@ func isDigits(str string) bool {
 	return true
 }
 
-// 单值的字符串处理
+// 单值的字符串处理 数字不返回
 func StringEscapeForSingle(s string) string {
 
 	b := make([]byte, 0)
