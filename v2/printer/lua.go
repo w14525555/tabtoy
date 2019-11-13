@@ -68,11 +68,6 @@ func (self *luaPrinter) Run(g *Globals, outputClass int) *Stream {
 		stream.Printf("\n%s\n", g.LuaTabHeader)
 	}
 
-	if len(g.Tables[0].Recs) == 0 {
-		log.Errorf("表格为空")
-		return stream
-	}
-
 	if !printTitleLua(g, stream, outputClass) {
 		return nil
 	}
@@ -135,6 +130,13 @@ func (self *luaPrinter) Run(g *Globals, outputClass int) *Stream {
 // 打印标题
 func printTitleLua(g *Globals, stream *Stream, outputClass int) bool {
 	stream.Printf("local title = {")
+
+	if len(g.Tables[0].Recs) == 0 {
+		log.Errorf("表格为空")
+		stream.Printf("}")
+		return true
+	}
+
 	nodes := g.Tables[0].Recs[0].Nodes
 	length := getNumOfNodes(outputClass, nodes)
 	var realIndex = 0
