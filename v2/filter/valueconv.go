@@ -8,8 +8,6 @@ import (
 	"github.com/davyxu/tabtoy/v2/model"
 )
 
-var DictSpliter = "**++--**"
-
 // 从单元格原始数据到最终输出的数值, 检查并转换, 处理默认值及根据meta转换情况
 func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDescriptor, node *model.Node) (ret string, ok bool) {
 	// 空格, 且有默认值时, 使用默认值
@@ -29,14 +27,16 @@ func ConvertValue(fd *model.FieldDescriptor, value string, fileD *model.FileDesc
 		node.AddValue(ret)
 	// 添加新的支持类型 int默认为int64
 	case model.FieldType_Int64, model.FieldType_Int:
-		value = strings.TrimRight(value, "}")
-		_, err := strconv.ParseInt(value, 10, 64)
+		// value = strings.TrimRight(value, "}")
+		if value != "" {
+			_, err := strconv.ParseInt(value, 10, 64)
 
-		if err != nil {
-			_, err := strconv.ParseFloat(value, 32)
 			if err != nil {
-				log.Debugln(err)
-				//return "", false
+				_, err := strconv.ParseFloat(value, 32)
+				if err != nil {
+					log.Debugln(err)
+					//return "", false
+				}
 			}
 		}
 

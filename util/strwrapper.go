@@ -141,11 +141,11 @@ func StringEscapeForSingle(s string) string {
 		return strB
 	}
 
-	// 双引号返回
+	// // 双引号返回
 	var length = len(strB)
-	if length > 0 && strB[0] == '"' && strB[length-1] == '"' {
-		return strB
-	}
+	// if length > 0 && strB[0] == '"' && strB[length-1] == '"' {
+	// 	return strB
+	// }
 
 	// 单引号也直接返回
 	if length > 0 && rune(strB[0]) == 39 {

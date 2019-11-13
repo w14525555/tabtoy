@@ -28,7 +28,7 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 			raw = strings.Replace(raw, "},{", "}{", -1)
 			valueList = strings.Split(raw, "}{")
 		} else {
-			valueList = parseVector(fd.Type, raw)
+			valueList = parseSimpleArray(fd.Type, raw)
 		}
 
 		var node *model.Node
@@ -96,9 +96,11 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 }
 
 // 解析vector类型
-func parseVector(ft model.FieldType, raw string) []string {
-	raw = strings.Replace(raw, "{", "", -1)
-	raw = strings.Replace(raw, "}", "", -1)
+func parseSimpleArray(ft model.FieldType, raw string) []string {
+	raw = strings.TrimPrefix(raw, "{")
+	raw = strings.TrimSuffix(raw, "}")
+	raw = strings.TrimSuffix(raw, ",")
+
 	if raw == "" {
 		return nil
 	} else {

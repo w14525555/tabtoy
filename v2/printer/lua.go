@@ -278,7 +278,9 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 					} else {
 						// repeated 值序列
 						for arrIndex, valueNode := range node.Child {
-							stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode, false, EmptyStr))
+							if valueNode.Value != "" {
+								stream.Printf("%s", valueWrapperLua(g, node.Type, valueNode, false, EmptyStr))
+							}
 							// 多个值分割
 							if arrIndex < len(node.Child)-1 && valueNode.Value != "{" && ((arrIndex+1 < length) && node.Child[arrIndex+1].Value != "}") {
 								stream.Printf(",")
@@ -302,7 +304,7 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table, outputClass int
 								values := strings.Split(v, "=")
 								// key值直接输出
 								stream.Printf("%s=", values[0])
-								stream.Printf("%s", valueWrapperLua(g, node.DictTypes[1], valueNode, true, values[1]))
+								stream.Printf("%s", valueWrapperLua(g, node.DictTypes[1], valueNode, false, values[1]))
 								if i < len(dicts)-1 {
 									stream.Printf(",")
 								}
