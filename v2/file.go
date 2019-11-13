@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/csv"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -178,7 +179,7 @@ func NewFile(filename string) *File {
 	} else {
 		if filename == "Config\\test\\AHSysGoods.csv" {
 			fmt.Println(111)
-		} //fmt.Println(filename)
+		}
 		self.coreFile = generateXLSXFromCSV(filename, ",")
 		if self.coreFile == nil {
 			fmt.Println("NAnui")
@@ -216,11 +217,11 @@ func generateXLSXFromCSV(csvPath string, delimiter string) *xlsx.File {
 	xl := xlsx.NewFile()
 	_, name := filepath.Split(csvPath)
 	sheet, err := xl.AddSheet(name)
-	// if err != nil {
-	// 	fmt.Printf(err.Error())
-	// }
+	if err != nil {
+		fmt.Printf(err.Error())
+	}
 
-	// fields, err := reader.Read()
+	fields, err := reader.Read()
 	// for i := len(fields); i < count; i++ {
 	// 	fields = append(fields, " ")
 	// // }
@@ -229,8 +230,30 @@ func generateXLSXFromCSV(csvPath string, delimiter string) *xlsx.File {
 	// fmt.Println(len(fields))
 
 	// 一次性读取所有的行
-	fieldsList, err := reader.ReadAll()
-	for _, fields := range fieldsList {
+	// fieldsList, err := reader.ReadAll()
+	// fmt.Println(fieldsList)
+	// for _, fields := range fieldsList {
+	// 	row := sheet.AddRow()
+	// 	for _, field := range fields {
+	// 		field = strings.TrimFunc(field, IsBom)
+	// 		// 如果不符合UTF8标准 则进行转换 注意只能支持从GBK格式的转换
+	// 		if isGBK || len(field) > 0 && !utf8.ValidString(field) {
+	// 			isGBK = true
+	// 			data, _ := ConvGBKToUTF8([]byte(field))
+	// 			field = string(data)
+	// 		}
+	// 		cell := row.AddCell()
+	// 		cell.Value = field
+	// 	}
+	// 	// fields, err = reader.Read()
+
+	// 	//这里可能存在由于逗号数量不足导致的报错 这个不发这个报错的信息
+	// 	if err != nil {
+	// 		fmt.Printf(err.Error())
+	// 	}
+	// }
+
+	for err != io.EOF {
 		row := sheet.AddRow()
 		for _, field := range fields {
 			field = strings.TrimFunc(field, IsBom)
@@ -245,33 +268,10 @@ func generateXLSXFromCSV(csvPath string, delimiter string) *xlsx.File {
 		}
 		fields, err = reader.Read()
 
-		// 这里可能存在由于逗号数量不足导致的报错 这个不发这个报错的信息
 		// if err != nil {
-		// 	fmt.Printf(err.Error())
+		// 	fmt.Println("报错啦")
 		// }
 	}
-
-	// for err == nil {
-	// 	row := sheet.AddRow()
-	// 	for _, field := range fields {
-	// 		field = strings.TrimFunc(field, IsBom)
-	// 		// 如果不符合UTF8标准 则进行转换 注意只能支持从GBK格式的转换
-	// 		if isGBK || len(field) > 0 && !utf8.ValidString(field) {
-	// 			isGBK = true
-	// 			data, _ := ConvGBKToUTF8([]byte(field))
-	// 			field = string(data)
-	// 		}
-	// 		cell := row.AddCell()
-	// 		cell.Value = field
-	// 	}
-	// 	fields, err = reader.Read()
-	// 	fmt.Println(fields)
-	// 	fmt.Println(len(fields))
-
-	// 	if err != nil {
-	// 		fmt.Println("报错啦")
-	// 	}
-	// }
 
 	// if err != nil {
 	// 	fmt.Printf(err.Error())
