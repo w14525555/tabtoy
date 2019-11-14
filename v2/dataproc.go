@@ -57,8 +57,21 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 					// 如果最后一位是逗号 则需要干掉这个逗号 否则分割会错误
 					rawNew = strings.TrimRight(rawNew, "},")
 
-					//fmt.Println(rawNew)
-					subValueList = strings.Split(rawNew, spliter)
+					// 字符串类型可能含有英文逗号 因此分割可能出问题 这里需要对其进行拼接
+					if fd.Type == model.FieldType_String || fd.Type == model.FieldType_Text {
+						subValueListCopy := strings.Split(rawNew, spliter)
+						for i, v := range subValueListCopy {
+							length := len(v)
+							if i != 0 && length > 0 && v[length-1] == '"' && v[0] != '"' {
+								subValueList[len(subValueList)-1] = subValueList[len(subValueList)-1] + "," + v
+							} else {
+								subValueList = append(subValueList, v)
+							}
+						}
+					} else {
+						subValueList = strings.Split(rawNew, spliter)
+					}
+
 					newNode := record.NewNodeByDefine(fd)
 					newNode.AddValue("{")
 					for _, vv := range subValueList {
