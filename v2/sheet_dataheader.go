@@ -3,6 +3,7 @@ package v2
 import (
 	"fmt"
 	"strings"
+	"unicode"
 
 	"github.com/davyxu/tabtoy/util"
 	"github.com/davyxu/tabtoy/v2/i18n"
@@ -199,13 +200,30 @@ func CheckOutputType(g *printer.Globals, meta string, fileList []string) bool {
 		}
 
 		if server {
-			g.AddOutputType("lua", GetServerPath(fileName, g), 2)
+			// 服务器名称 最后一个字母小写
+			nameList := strings.Split(fileName, "\\")
+			finaleFileName := ""
+			for i := 0; i < len(nameList); i++ {
+				if i != len(nameList)-1 {
+					finaleFileName = finaleFileName + nameList[i] + "\\"
+				} else {
+					finaleFileName = finaleFileName + Lcfirst(nameList[i])
+				}
+			}
+			g.AddOutputType("lua", GetServerPath(finaleFileName, g), 2)
 		}
 
 		g.HasReadExportType = true
 	}
 
 	return true
+}
+
+func Lcfirst(str string) string {
+	for i, v := range str {
+		return string(unicode.ToLower(v)) + str[i+1:]
+	}
+	return ""
 }
 
 func (self *DataHeader) RawField(index int) *model.FieldDescriptor {
